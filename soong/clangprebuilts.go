@@ -42,10 +42,17 @@ func init() {
 func getClangDirs(ctx android.LoadHookContext) (libDir string, headerDir string) {
 	clangDir := path.Join(
 		"./",
+<<<<<<< HEAD
 		ctx.AConfig().GetenvWithDefault("LLVM_PREBUILTS_VERSION", config.ClangDefaultVersion),
 	)
 	headerDir = path.Join(clangDir, "prebuilt_include", "llvm", "lib", "Fuzzer")
 	releaseVersion := ctx.AConfig().GetenvWithDefault("LLVM_RELEASE_VERSION",
+=======
+		ctx.AConfig().GetenvWithDefault("LLVM_PREBUILTS_BENZO", config.ClangDefaultVersion),
+	)
+	headerDir = path.Join(clangDir, "prebuilt_include", "llvm", "lib", "Fuzzer")
+	releaseVersion := ctx.AConfig().GetenvWithDefault("LLVM_PREBUILTS_BENZO",
+>>>>>>> 0459045... clang: prebuilts: Modified prebuilt files for 8.1_r1
 		config.ClangDefaultShortVersion)
 	libDir = path.Join(clangDir, "lib64", "clang", releaseVersion, "lib", "linux")
 	return

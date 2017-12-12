@@ -16,18 +16,20 @@
 
 LOCAL_PATH := $(call my-dir)
 
+LLVM_PREBUILTS_BENZO := aosp_prebuilts
+
 # Use these prebuilts unless we are actually building from a newly rebased
 # LLVM. This variable is set by external/clang/build.py.
 ifneq (true,$(FORCE_BUILD_SANITIZER_SHARED_OBJECTS))
 
-libclang_dir := $(LLVM_PREBUILTS_VERSION)/lib64/clang/$(LLVM_RELEASE_VERSION)
+libclang_dir := $(LLVM_PREBUILTS_BENZO)/lib64/clang/$(LLVM_RELEASE_VERSION)
 
 # Also build/install the newest asan_test for each arch
 # We rename it to asan-test for now to avoid duplicate definitions.
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := asan-test
-LOCAL_SRC_FILES := $(LLVM_PREBUILTS_VERSION)/test/arm/bin/asan_test
+LOCAL_SRC_FILES := $(LLVM_PREBUILTS_BENZO)/test/arm/bin/asan_test
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_SUFFIX :=
 LOCAL_MODULE_PATH := $($(TARGET_2ND_ARCH_VAR_PREFIX)TARGET_OUT_DATA_NATIVE_TESTS)/$(LOCAL_MODULE)
@@ -40,7 +42,7 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := asan-test
-LOCAL_SRC_FILES := $(LLVM_PREBUILTS_VERSION)/test/aarch64/bin/asan_test
+LOCAL_SRC_FILES := $(LLVM_PREBUILTS_BENZO)/test/aarch64/bin/asan_test
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_SUFFIX :=
 LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/$(LOCAL_MODULE)
@@ -53,7 +55,7 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := asan-test
-LOCAL_SRC_FILES := $(LLVM_PREBUILTS_VERSION)/test/i686/bin/asan_test
+LOCAL_SRC_FILES := $(LLVM_PREBUILTS_BENZO)/test/i686/bin/asan_test
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_SUFFIX :=
 LOCAL_MODULE_PATH := $($(TARGET_2ND_ARCH_VAR_PREFIX)TARGET_OUT_DATA_NATIVE_TESTS)/$(LOCAL_MODULE)
@@ -68,7 +70,7 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := asan-test
-LOCAL_SRC_FILES := $(LLVM_PREBUILTS_VERSION)/test/mips/bin/asan_test
+LOCAL_SRC_FILES := $(LLVM_PREBUILTS_BENZO)/test/mips/bin/asan_test
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_SUFFIX :=
 LOCAL_MODULE_PATH := $($(TARGET_2ND_ARCH_VAR_PREFIX)TARGET_OUT_DATA_NATIVE_TESTS)/$(LOCAL_MODULE)
@@ -81,7 +83,7 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := asan-test
-LOCAL_SRC_FILES := $(LLVM_PREBUILTS_VERSION)/test/mips64/bin/asan_test
+LOCAL_SRC_FILES := $(LLVM_PREBUILTS_BENZO)/test/mips64/bin/asan_test
 LOCAL_MODULE_CLASS := EXECUTABLES
 LOCAL_MODULE_SUFFIX :=
 LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_NATIVE_TESTS)/$(LOCAL_MODULE)
