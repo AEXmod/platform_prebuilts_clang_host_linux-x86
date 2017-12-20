@@ -170,7 +170,7 @@ func libClangRtPrebuiltLibraryStatic(ctx android.LoadHookContext) {
 }
 
 func llvmPrebuiltLibraryStaticFactory() android.Module {
-	module, _ := cc.NewPrebuiltStaticLibrary(android.HostAndDeviceSupported)
+	module, _ := cc.NewPrebuiltStaticLibrary(android.DeviceSupported)
 	android.AddLoadHook(module, llvmPrebuiltLibraryStatic)
 	return module.Init()
 }
