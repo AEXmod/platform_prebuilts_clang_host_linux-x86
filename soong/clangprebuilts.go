@@ -142,7 +142,7 @@ func libClangRtPrebuiltLibraryShared(ctx android.LoadHookContext) {
 
 	p := &props{}
 
-	name := strings.Replace(ctx.ModuleName(), "prebuilt_", "", 1)
+	name := strings.TrimPrefix(ctx.ModuleName(), "prebuilt_")
 
 	p.Srcs = []string{path.Join(libDir, name+".so")}
 	p.System_shared_libs = []string{}
@@ -162,7 +162,7 @@ func libClangRtPrebuiltLibraryStatic(ctx android.LoadHookContext) {
 		Srcs []string
 	}
 
-	name := strings.Replace(ctx.ModuleName(), "prebuilt_", "", 1)
+	name := strings.TrimPrefix(ctx.ModuleName(), "prebuilt_")
 
 	p := &props{}
 	p.Srcs = []string{path.Join(libDir, name + ".a")}
