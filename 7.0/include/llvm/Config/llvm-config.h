@@ -77,4 +77,9 @@
 /* LLVM version string */
 #define LLVM_VERSION_STRING "7.0.0svn"
 
+/* Whether LLVM records statistics for use with GetStatistics(),
+ * PrintStatistics() or PrintStatisticsJSON()
+ */
+#define LLVM_FORCE_ENABLE_STATS 0
+
 #endif

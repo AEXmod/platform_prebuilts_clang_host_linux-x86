@@ -73,6 +73,7 @@
   __interceptor___wcstoul_l;
   __interceptor___wcstoull_internal;
   __interceptor___wcstoull_l;
+  __interceptor___wcsxfrm_l;
   __interceptor___woverflow;
   __interceptor___wuflow;
   __interceptor___wunderflow;
@@ -492,6 +493,8 @@
   __interceptor_wcstoul_l;
   __interceptor_wcstoull;
   __interceptor_wcstoull_l;
+  __interceptor_wcsxfrm;
+  __interceptor_wcsxfrm_l;
   __interceptor_wmemcpy;
   __interceptor_wmemmove;
   __interceptor_wmempcpy;
@@ -1289,6 +1292,7 @@
   __wcstoul_l;
   __wcstoull_internal;
   __wcstoull_l;
+  __wcsxfrm_l;
   __woverflow;
   __wuflow;
   __wunderflow;
@@ -1704,6 +1708,8 @@
   wcstoul_l;
   wcstoull;
   wcstoull_l;
+  wcsxfrm;
+  wcsxfrm_l;
   wmemcpy;
   wmemmove;
   wmempcpy;

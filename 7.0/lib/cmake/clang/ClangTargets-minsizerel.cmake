@@ -528,6 +528,16 @@ set_target_properties(clangTidyPlugin PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS clangTidyPlugin )
 list(APPEND _IMPORT_CHECK_FILES_FOR_clangTidyPlugin "${_IMPORT_PREFIX}/lib/libclangTidyPlugin.a" )
 
+# Import target "clangTidyPortabilityModule" for configuration "MinSizeRel"
+set_property(TARGET clangTidyPortabilityModule APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(clangTidyPortabilityModule PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_MINSIZEREL "CXX"
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/lib/libclangTidyPortabilityModule.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS clangTidyPortabilityModule )
+list(APPEND _IMPORT_CHECK_FILES_FOR_clangTidyPortabilityModule "${_IMPORT_PREFIX}/lib/libclangTidyPortabilityModule.a" )
+
 # Import target "clangTidyReadabilityModule" for configuration "MinSizeRel"
 set_property(TARGET clangTidyReadabilityModule APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(clangTidyReadabilityModule PROPERTIES

@@ -592,38 +592,103 @@ void AlignedAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) con
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((aligned(";
-    if (isalignmentExpr && alignmentExpr)
-      alignmentExpr->printPretty(OS, nullptr, Policy);
-    OS << ")))";
-    break;
-  }
-  case 1 : {
-    OS << " [[gnu::aligned(";
-    if (isalignmentExpr && alignmentExpr)
-      alignmentExpr->printPretty(OS, nullptr, Policy);
-    OS << ")]]";
-    break;
-  }
-  case 2 : {
-    OS << " __declspec(align(";
-    if (isalignmentExpr && alignmentExpr)
-      alignmentExpr->printPretty(OS, nullptr, Policy);
+    OS << " __attribute__((aligned";
+    unsigned TrailingOmittedArgs = 0;
+    if (!isalignmentExpr || !alignmentExpr)
+      ++TrailingOmittedArgs;
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << "(";
+    OS << "";
+    if (!(!isalignmentExpr || !alignmentExpr)) {
+      OS << "";
+    alignmentExpr->printPretty(OS, nullptr, Policy);
+    OS << "";
+    }
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << ")";
     OS << "))";
     break;
   }
-  case 3 : {
-    OS << " alignas(";
-    if (isalignmentExpr && alignmentExpr)
-      alignmentExpr->printPretty(OS, nullptr, Policy);
+  case 1 : {
+    OS << " [[gnu::aligned";
+    unsigned TrailingOmittedArgs = 0;
+    if (!isalignmentExpr || !alignmentExpr)
+      ++TrailingOmittedArgs;
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << "(";
+    OS << "";
+    if (!(!isalignmentExpr || !alignmentExpr)) {
+      OS << "";
+    alignmentExpr->printPretty(OS, nullptr, Policy);
+    OS << "";
+    }
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << ")";
+    OS << "]]";
+    break;
+  }
+  case 2 : {
+    OS << " __declspec(align";
+    unsigned TrailingOmittedArgs = 0;
+    if (!isalignmentExpr || !alignmentExpr)
+      ++TrailingOmittedArgs;
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << "(";
+    OS << "";
+    if (!(!isalignmentExpr || !alignmentExpr)) {
+      OS << "";
+    alignmentExpr->printPretty(OS, nullptr, Policy);
+    OS << "";
+    }
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << ")";
     OS << ")";
     break;
   }
+  case 3 : {
+    OS << " alignas";
+    unsigned TrailingOmittedArgs = 0;
+    if (!isalignmentExpr || !alignmentExpr)
+      ++TrailingOmittedArgs;
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << "(";
+    OS << "";
+    if (!(!isalignmentExpr || !alignmentExpr)) {
+      OS << "";
+    alignmentExpr->printPretty(OS, nullptr, Policy);
+    OS << "";
+    }
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << ")";
+    OS << "";
+    break;
+  }
   case 4 : {
-    OS << " _Alignas(";
-    if (isalignmentExpr && alignmentExpr)
-      alignmentExpr->printPretty(OS, nullptr, Policy);
-    OS << ")";
+    OS << " _Alignas";
+    unsigned TrailingOmittedArgs = 0;
+    if (!isalignmentExpr || !alignmentExpr)
+      ++TrailingOmittedArgs;
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << "(";
+    OS << "";
+    if (!(!isalignmentExpr || !alignmentExpr)) {
+      OS << "";
+    alignmentExpr->printPretty(OS, nullptr, Policy);
+    OS << "";
+    }
+    OS << "";
+    if (TrailingOmittedArgs < 1)
+       OS << ")";
+    OS << "";
     break;
   }
 }
@@ -697,11 +762,33 @@ void AllocSizeAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((alloc_size(" << getElemSizeParam() << ", " << getNumElemsParam() << ")))";
+    OS << " __attribute__((alloc_size";
+    unsigned TrailingOmittedArgs = 0;
+    if (0 == getNumElemsParam())
+      ++TrailingOmittedArgs;
+    OS << "(" << getElemSizeParam() << "";
+    if (1 < 2 - TrailingOmittedArgs)
+      OS << ", ";
+    OS << "";
+    if (!(0 == getNumElemsParam())) {
+      OS << "" << getNumElemsParam() << "";
+    }
+    OS << ")))";
     break;
   }
   case 1 : {
-    OS << " [[gnu::alloc_size(" << getElemSizeParam() << ", " << getNumElemsParam() << ")]]";
+    OS << " [[gnu::alloc_size";
+    unsigned TrailingOmittedArgs = 0;
+    if (0 == getNumElemsParam())
+      ++TrailingOmittedArgs;
+    OS << "(" << getElemSizeParam() << "";
+    if (1 < 2 - TrailingOmittedArgs)
+      OS << ", ";
+    OS << "";
+    if (!(0 == getNumElemsParam())) {
+      OS << "" << getNumElemsParam() << "";
+    }
+    OS << ")]]";
     break;
   }
 }
@@ -961,39 +1048,27 @@ void ArgumentWithTypeTagAttr::printPretty(raw_ostream &OS, const PrintingPolicy 
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((argument_with_type_tag(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")))";
+    OS << " __attribute__((argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")))";
     break;
   }
   case 1 : {
-    OS << " [[clang::argument_with_type_tag(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::argument_with_type_tag(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
     break;
   }
   case 3 : {
-    OS << " __attribute__((pointer_with_type_tag(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")))";
+    OS << " __attribute__((pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")))";
     break;
   }
   case 4 : {
-    OS << " [[clang::pointer_with_type_tag(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
     break;
   }
   case 5 : {
-    OS << " [[clang::pointer_with_type_tag(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
     break;
   }
 }
@@ -1301,15 +1376,11 @@ void AvailabilityAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy
     break;
   }
   case 1 : {
-    OS << " [[clang::availability(";
-    OS << getPlatform()->getName();
-    OS << ", introduced=" << getIntroduced() << ", deprecated=" << getDeprecated() << ", obsoleted=" << getObsoleted() << ", " << getUnavailable() << ", \"" << getMessage() << "\", " << getStrict() << ", \"" << getReplacement() << "\")]]";
+    OS << " [[clang::availability(" << (getPlatform() ? getPlatform()->getName() : "") << ", introduced=" << getIntroduced() << ", deprecated=" << getDeprecated() << ", obsoleted=" << getObsoleted() << ", " << getUnavailable() << ", \"" << getMessage() << "\", " << getStrict() << ", \"" << getReplacement() << "\")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::availability(";
-    OS << getPlatform()->getName();
-    OS << ", introduced=" << getIntroduced() << ", deprecated=" << getDeprecated() << ", obsoleted=" << getObsoleted() << ", " << getUnavailable() << ", \"" << getMessage() << "\", " << getStrict() << ", \"" << getReplacement() << "\")]]";
+    OS << " [[clang::availability(" << (getPlatform() ? getPlatform()->getName() : "") << ", introduced=" << getIntroduced() << ", deprecated=" << getDeprecated() << ", obsoleted=" << getObsoleted() << ", " << getUnavailable() << ", \"" << getMessage() << "\", " << getStrict() << ", \"" << getReplacement() << "\")]]";
     break;
   }
 }
@@ -3062,15 +3133,11 @@ void FormatAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) cons
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((format(";
-    OS << getType()->getName();
-    OS << ", " << getFormatIdx() << ", " << getFirstArg() << ")))";
+    OS << " __attribute__((format(" << (getType() ? getType()->getName() : "") << ", " << getFormatIdx() << ", " << getFirstArg() << ")))";
     break;
   }
   case 1 : {
-    OS << " [[gnu::format(";
-    OS << getType()->getName();
-    OS << ", " << getFormatIdx() << ", " << getFirstArg() << ")]]";
+    OS << " [[gnu::format(" << (getType() ? getType()->getName() : "") << ", " << getFormatIdx() << ", " << getFirstArg() << ")]]";
     break;
   }
 }
@@ -4265,15 +4332,11 @@ void ModeAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const 
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((mode(";
-    OS << getMode()->getName();
-    OS << ")))";
+    OS << " __attribute__((mode(" << (getMode() ? getMode()->getName() : "") << ")))";
     break;
   }
   case 1 : {
-    OS << " [[gnu::mode(";
-    OS << getMode()->getName();
-    OS << ")]]";
+    OS << " [[gnu::mode(" << (getMode() ? getMode()->getName() : "") << ")]]";
     break;
   }
 }
@@ -5359,21 +5422,15 @@ void ObjCBridgeAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) 
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((objc_bridge(";
-    OS << getBridgedType()->getName();
-    OS << ")))";
+    OS << " __attribute__((objc_bridge(" << (getBridgedType() ? getBridgedType()->getName() : "") << ")))";
     break;
   }
   case 1 : {
-    OS << " [[clang::objc_bridge(";
-    OS << getBridgedType()->getName();
-    OS << ")]]";
+    OS << " [[clang::objc_bridge(" << (getBridgedType() ? getBridgedType()->getName() : "") << ")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::objc_bridge(";
-    OS << getBridgedType()->getName();
-    OS << ")]]";
+    OS << " [[clang::objc_bridge(" << (getBridgedType() ? getBridgedType()->getName() : "") << ")]]";
     break;
   }
 }
@@ -5407,21 +5464,15 @@ void ObjCBridgeMutableAttr::printPretty(raw_ostream &OS, const PrintingPolicy &P
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((objc_bridge_mutable(";
-    OS << getBridgedType()->getName();
-    OS << ")))";
+    OS << " __attribute__((objc_bridge_mutable(" << (getBridgedType() ? getBridgedType()->getName() : "") << ")))";
     break;
   }
   case 1 : {
-    OS << " [[clang::objc_bridge_mutable(";
-    OS << getBridgedType()->getName();
-    OS << ")]]";
+    OS << " [[clang::objc_bridge_mutable(" << (getBridgedType() ? getBridgedType()->getName() : "") << ")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::objc_bridge_mutable(";
-    OS << getBridgedType()->getName();
-    OS << ")]]";
+    OS << " [[clang::objc_bridge_mutable(" << (getBridgedType() ? getBridgedType()->getName() : "") << ")]]";
     break;
   }
 }
@@ -5455,33 +5506,15 @@ void ObjCBridgeRelatedAttr::printPretty(raw_ostream &OS, const PrintingPolicy &P
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((objc_bridge_related(";
-    OS << getRelatedClass()->getName();
-    OS << ", ";
-    if (getClassMethod()) OS << getClassMethod()->getName();
-    OS << ", ";
-    if (getInstanceMethod()) OS << getInstanceMethod()->getName();
-    OS << ")))";
+    OS << " __attribute__((objc_bridge_related(" << (getRelatedClass() ? getRelatedClass()->getName() : "") << ", " << (getClassMethod() ? getClassMethod()->getName() : "") << ", " << (getInstanceMethod() ? getInstanceMethod()->getName() : "") << ")))";
     break;
   }
   case 1 : {
-    OS << " [[clang::objc_bridge_related(";
-    OS << getRelatedClass()->getName();
-    OS << ", ";
-    if (getClassMethod()) OS << getClassMethod()->getName();
-    OS << ", ";
-    if (getInstanceMethod()) OS << getInstanceMethod()->getName();
-    OS << ")]]";
+    OS << " [[clang::objc_bridge_related(" << (getRelatedClass() ? getRelatedClass()->getName() : "") << ", " << (getClassMethod() ? getClassMethod()->getName() : "") << ", " << (getInstanceMethod() ? getInstanceMethod()->getName() : "") << ")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::objc_bridge_related(";
-    OS << getRelatedClass()->getName();
-    OS << ", ";
-    if (getClassMethod()) OS << getClassMethod()->getName();
-    OS << ", ";
-    if (getInstanceMethod()) OS << getInstanceMethod()->getName();
-    OS << ")]]";
+    OS << " [[clang::objc_bridge_related(" << (getRelatedClass() ? getRelatedClass()->getName() : "") << ", " << (getClassMethod() ? getClassMethod()->getName() : "") << ", " << (getInstanceMethod() ? getInstanceMethod()->getName() : "") << ")]]";
     break;
   }
 }
@@ -6373,9 +6406,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((ownership_holds(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " __attribute__((ownership_holds(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6386,9 +6417,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 1 : {
-    OS << " [[clang::ownership_holds(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " [[clang::ownership_holds(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6399,9 +6428,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 2 : {
-    OS << " [[clang::ownership_holds(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " [[clang::ownership_holds(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6412,9 +6439,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 3 : {
-    OS << " __attribute__((ownership_returns(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " __attribute__((ownership_returns(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6425,9 +6450,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 4 : {
-    OS << " [[clang::ownership_returns(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " [[clang::ownership_returns(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6438,9 +6461,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 5 : {
-    OS << " [[clang::ownership_returns(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " [[clang::ownership_returns(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6451,9 +6472,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 6 : {
-    OS << " __attribute__((ownership_takes(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " __attribute__((ownership_takes(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6464,9 +6483,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 7 : {
-    OS << " [[clang::ownership_takes(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " [[clang::ownership_takes(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -6477,9 +6494,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     break;
   }
   case 8 : {
-    OS << " [[clang::ownership_takes(";
-    OS << getModule()->getName();
-    OS << ", ";
+    OS << " [[clang::ownership_takes(" << (getModule() ? getModule()->getName() : "") << ", ";
   bool isFirst = true;
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
@@ -8378,21 +8393,15 @@ void TypeTagForDatatypeAttr::printPretty(raw_ostream &OS, const PrintingPolicy &
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((type_tag_for_datatype(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getMatchingCType().getAsString() << ", " << getLayoutCompatible() << ", " << getMustBeNull() << ")))";
+    OS << " __attribute__((type_tag_for_datatype(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getMatchingCType().getAsString() << ", " << getLayoutCompatible() << ", " << getMustBeNull() << ")))";
     break;
   }
   case 1 : {
-    OS << " [[clang::type_tag_for_datatype(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getMatchingCType().getAsString() << ", " << getLayoutCompatible() << ", " << getMustBeNull() << ")]]";
+    OS << " [[clang::type_tag_for_datatype(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getMatchingCType().getAsString() << ", " << getLayoutCompatible() << ", " << getMustBeNull() << ")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::type_tag_for_datatype(";
-    OS << getArgumentKind()->getName();
-    OS << ", " << getMatchingCType().getAsString() << ", " << getLayoutCompatible() << ", " << getMustBeNull() << ")]]";
+    OS << " [[clang::type_tag_for_datatype(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getMatchingCType().getAsString() << ", " << getLayoutCompatible() << ", " << getMustBeNull() << ")]]";
     break;
   }
 }

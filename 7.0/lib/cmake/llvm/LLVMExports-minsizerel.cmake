@@ -1039,6 +1039,15 @@ set_target_properties(llvm-lto2 PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS llvm-lto2 )
 list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-lto2 "${_IMPORT_PREFIX}/bin/llvm-lto2" )
 
+# Import target "llvm-mca" for configuration "MinSizeRel"
+set_property(TARGET llvm-mca APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(llvm-mca PROPERTIES
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/bin/llvm-mca"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS llvm-mca )
+list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-mca "${_IMPORT_PREFIX}/bin/llvm-mca" )
+
 # Import target "BugpointPasses" for configuration "MinSizeRel"
 set_property(TARGET BugpointPasses APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(BugpointPasses PROPERTIES

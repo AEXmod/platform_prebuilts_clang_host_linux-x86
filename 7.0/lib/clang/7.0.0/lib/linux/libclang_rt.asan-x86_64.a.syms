@@ -35,11 +35,13 @@
   __interceptor___sprintf_chk;
   __interceptor___strdup;
   __interceptor___strndup;
+  __interceptor___strxfrm_l;
   __interceptor___tls_get_addr;
   __interceptor___uflow;
   __interceptor___underflow;
   __interceptor___vsnprintf_chk;
   __interceptor___vsprintf_chk;
+  __interceptor___wcsxfrm_l;
   __interceptor___woverflow;
   __interceptor___wuflow;
   __interceptor___wunderflow;
@@ -210,6 +212,8 @@
   __interceptor_mktime;
   __interceptor_mlock;
   __interceptor_mlockall;
+  __interceptor_mmap;
+  __interceptor_mmap64;
   __interceptor_modf;
   __interceptor_modff;
   __interceptor_modfl;
@@ -355,6 +359,8 @@
   __interceptor_strtol;
   __interceptor_strtoll;
   __interceptor_strtoumax;
+  __interceptor_strxfrm;
+  __interceptor_strxfrm_l;
   __interceptor_swapcontext;
   __interceptor_sysinfo;
   __interceptor_tcgetattr;
@@ -390,6 +396,8 @@
   __interceptor_wcsnrtombs;
   __interceptor_wcsrtombs;
   __interceptor_wcstombs;
+  __interceptor_wcsxfrm;
+  __interceptor_wcsxfrm_l;
   __interceptor_wordexp;
   __interceptor_write;
   __interceptor_writev;
@@ -1154,12 +1162,14 @@
   __sprintf_chk;
   __strdup;
   __strndup;
+  __strxfrm_l;
   __tls_get_addr;
   __ubsan_*;
   __uflow;
   __underflow;
   __vsnprintf_chk;
   __vsprintf_chk;
+  __wcsxfrm_l;
   __woverflow;
   __wuflow;
   __wunderflow;
@@ -1329,6 +1339,8 @@
   mktime;
   mlock;
   mlockall;
+  mmap;
+  mmap64;
   modf;
   modff;
   modfl;
@@ -1471,6 +1483,8 @@
   strtol;
   strtoll;
   strtoumax;
+  strxfrm;
+  strxfrm_l;
   swapcontext;
   sysinfo;
   tcgetattr;
@@ -1506,6 +1520,8 @@
   wcsnrtombs;
   wcsrtombs;
   wcstombs;
+  wcsxfrm;
+  wcsxfrm_l;
   wordexp;
   write;
   writev;

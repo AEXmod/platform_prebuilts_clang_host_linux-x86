@@ -5471,17 +5471,6 @@ public:
   {
   }
 
-  ObjCBridgeRelatedAttr(SourceRange R, ASTContext &Ctx
-              , IdentifierInfo * RelatedClass
-              , unsigned SI
-             )
-    : InheritableAttr(attr::ObjCBridgeRelated, R, SI, false, false)
-              , relatedClass(RelatedClass)
-              , classMethod()
-              , instanceMethod()
-  {
-  }
-
   ObjCBridgeRelatedAttr *clone(ASTContext &C) const;
   void printPretty(raw_ostream &OS,
                    const PrintingPolicy &Policy) const;
