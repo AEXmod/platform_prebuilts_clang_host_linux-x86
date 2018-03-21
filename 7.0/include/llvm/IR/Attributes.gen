@@ -22,6 +22,7 @@ Nest,
 NoAlias,
 NoBuiltin,
 NoCapture,
+NoCfCheck,
 NoDuplicate,
 NoImplicitFloat,
 NoInline,
@@ -82,6 +83,7 @@ static Attribute::AttrKind getAttrKindFromName(StringRef AttrName) {
     .Case("noalias", Attribute::NoAlias)
     .Case("nobuiltin", Attribute::NoBuiltin)
     .Case("nocapture", Attribute::NoCapture)
+    .Case("nocf_check", Attribute::NoCfCheck)
     .Case("noduplicate", Attribute::NoDuplicate)
     .Case("noimplicitfloat", Attribute::NoImplicitFloat)
     .Case("noinline", Attribute::NoInline)
@@ -258,6 +260,11 @@ struct NoBuiltinAttr : EnumAttr {
 struct NoCaptureAttr : EnumAttr {
   static enum Attribute::AttrKind getKind() {
     return llvm::Attribute::NoCapture;
+  }
+};
+struct NoCfCheckAttr : EnumAttr {
+  static enum Attribute::AttrKind getKind() {
+    return llvm::Attribute::NoCfCheck;
   }
 };
 struct NoDuplicateAttr : EnumAttr {

@@ -159,6 +159,13 @@
         return 1;
     break;
   }
+  case AT_AnyX86NoCfCheck: {
+    if (Name == "nocf_check" && SyntaxUsed == 0 && Scope == "")
+        return 0;
+    if (Name == "nocf_check" && SyntaxUsed == 1 && Scope == "gnu")
+        return 1;
+    break;
+  }
   case AT_ArcWeakrefUnavailable: {
     if (Name == "objc_arc_weak_reference_unavailable" && SyntaxUsed == 0 && Scope == "")
         return 0;

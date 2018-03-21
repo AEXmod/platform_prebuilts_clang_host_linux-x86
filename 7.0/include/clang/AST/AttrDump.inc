@@ -108,13 +108,14 @@
   }
   case attr::AllocAlign: {
     const auto *SA = cast<AllocAlignAttr>(A);
-    OS << " " << SA->getParamIndex();
+    OS << " " << SA->getParamIndex().getSourceIndex();
     break;
   }
   case attr::AllocSize: {
     const auto *SA = cast<AllocSizeAttr>(A);
-    OS << " " << SA->getElemSizeParam();
-    OS << " " << SA->getNumElemsParam();
+    OS << " " << SA->getElemSizeParam().getSourceIndex();
+    if (SA->getNumElemsParam().isValid())
+      OS << " " << SA->getNumElemsParam().getSourceIndex();
     break;
   }
   case attr::AlwaysInline: {
@@ -135,6 +136,9 @@
   case attr::AnyX86NoCallerSavedRegisters: {
     break;
   }
+  case attr::AnyX86NoCfCheck: {
+    break;
+  }
   case attr::ArcWeakrefUnavailable: {
     break;
   }
@@ -143,8 +147,8 @@
     const auto *SA = cast<ArgumentWithTypeTagAttr>(A);
     if (SA->getArgumentKind())
       OS << " " << SA->getArgumentKind()->getName();
-    OS << " " << SA->getArgumentIdx();
-    OS << " " << SA->getTypeTagIdx();
+    OS << " " << SA->getArgumentIdx().getSourceIndex();
+    OS << " " << SA->getTypeTagIdx().getSourceIndex();
     if (SA->getIsPointer()) OS << " IsPointer";
     break;
   }
@@ -422,7 +426,7 @@
   }
   case attr::FormatArg: {
     const auto *SA = cast<FormatArgAttr>(A);
-    OS << " " << SA->getFormatIdx();
+    OS << " " << SA->getFormatIdx().getSourceIndex();
     break;
   }
   case attr::GNUInline: {
@@ -691,7 +695,7 @@
   case attr::NonNull: {
     const auto *SA = cast<NonNullAttr>(A);
     for (const auto &Val : SA->args())
-      OS << " " << Val;
+      OS << " " << Val.getSourceIndex();
     break;
   }
   case attr::NotTailCalled: {
@@ -870,7 +874,7 @@
     if (SA->getModule())
       OS << " " << SA->getModule()->getName();
     for (const auto &Val : SA->args())
-      OS << " " << Val;
+      OS << " " << Val.getSourceIndex();
     break;
   }
   case attr::Packed: {

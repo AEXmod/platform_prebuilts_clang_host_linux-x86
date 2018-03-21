@@ -287,6 +287,25 @@ static bool isTargetx86x86_64(const TargetInfo &Target) {
   return true && (T.getArch() == llvm::Triple::x86 || T.getArch() == llvm::Triple::x86_64);
 }
 
+static bool isFunctionLike(const Decl *D) {
+  if (const auto *S = dyn_cast<Decl>(D))
+    return S->getFunctionType(false) != nullptr;
+  return false;
+}
+
+static bool checkAnyX86NoCfCheckAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+  if (!isFunctionLike(D)) {
+    S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
+      << Attr.getName() << "functions and function pointers";
+    return false;
+  }
+  return true;
+}
+
+static void matchRulesForAnyX86NoCfCheck(llvm::SmallVectorImpl<std::pair<attr::SubjectMatchRule, bool>> &MatchRules, const LangOptions &LangOpts) {
+  MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_hasType_functionType, /*IsSupported=*/true));
+}
+
 static bool checkArcWeakrefUnavailableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
@@ -505,12 +524,6 @@ static bool checkCUDAInvalidTargetAppertainsTo(Sema &S, const AttributeList &Att
     return false;
   }
   return true;
-}
-
-static bool isFunctionLike(const Decl *D) {
-  if (const auto *S = dyn_cast<Decl>(D))
-    return S->getFunctionType(false) != nullptr;
-  return false;
 }
 
 static bool checkCUDALaunchBoundsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
@@ -2414,6 +2427,7 @@ static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
   { 0, 0, 0, 0, 0, 0, 0, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_AnalyzerNoReturn
   { 1, 0, 0, 0, 0, 0, 0, 1, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForAnnotate },  // AT_Annotate
   { 0, 0, 0, 1, 0, 0, 1, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, isTargetx86x86_64, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_AnyX86NoCallerSavedRegisters
+  { 0, 0, 0, 1, 0, 0, 1, 1, checkAnyX86NoCfCheckAppertainsTo, defaultDiagnoseLangOpts, isTargetx86x86_64, defaultSpellingIndexToSemanticSpelling, matchRulesForAnyX86NoCfCheck },  // AT_AnyX86NoCfCheck
   { 0, 0, 0, 0, 0, 0, 0, 0, checkArcWeakrefUnavailableAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_ArcWeakrefUnavailable
   { 3, 0, 0, 0, 0, 0, 0, 0, checkArgumentWithTypeTagAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, ArgumentWithTypeTagAttrSpellingMap, nullptr },  // AT_ArgumentWithTypeTag
   { 0, 0, 0, 0, 0, 0, 1, 0, checkArtificialAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_Artificial

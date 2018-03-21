@@ -1945,7 +1945,8 @@ OPTION(prefix_1, "g", g_Flag, Flag, g_Group, INVALID, nullptr, 0, 0,
 OPTION(prefix_1, "header-include-file", header_include_file, Separate, INVALID, INVALID, nullptr, CC1Option | NoDriverOption, 0,
        "Filename (or -) to write header include output to", nullptr, nullptr)
 OPTION(prefix_1, "headerpad_max_install_names", headerpad__max__install__names, Joined, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_3, "help-hidden", _help_hidden, Flag, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
+OPTION(prefix_3, "help-hidden", _help_hidden, Flag, INVALID, INVALID, nullptr, 0, 0,
+       "Display help for hidden options", nullptr, nullptr)
 OPTION(prefix_2, "HELP", _SLASH_HELP, Flag, cl_Group, help, nullptr, CLOption | DriverOption | CLOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_4, "help", help, Flag, INVALID, INVALID, nullptr, CC1Option | CC1AsOption, 0,
        "Display available options", nullptr, nullptr)
@@ -2413,6 +2414,8 @@ OPTION(prefix_1, "mno-nontrapping-fptoint", mno_nontrapping_fptoint, Flag, m_was
 OPTION(prefix_1, "mno-odd-spreg", mno_odd_spreg, Flag, m_Group, INVALID, nullptr, HelpHidden, 0,
        "Disable odd single-precision floating point registers", nullptr, nullptr)
 OPTION(prefix_1, "mno-omit-leaf-frame-pointer", mno_omit_leaf_frame_pointer, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
+OPTION(prefix_1, "mno-packets", mno_packets, Flag, m_hexagon_Features_Group, INVALID, nullptr, CC1Option, 0,
+       "Disable generation of instruction packets", nullptr, nullptr)
 OPTION(prefix_1, "mno-pascal-strings", mno_pascal_strings, Flag, INVALID, fno_pascal_strings, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-pclmul", mno_pclmul, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-pie-copy-relocations", mno_pie_copy_relocations, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
@@ -2491,6 +2494,8 @@ OPTION(prefix_1, "module-file-info", module_file_info, Flag, Action_Group, INVAL
 OPTION(prefix_1, "momit-leaf-frame-pointer", momit_leaf_frame_pointer, Flag, m_Group, INVALID, nullptr, CC1Option, 0,
        "Omit frame pointer setup for leaf functions", nullptr, nullptr)
 OPTION(prefix_1, "moslib=", moslib_EQ, Joined, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
+OPTION(prefix_1, "mpackets", mpackets, Flag, m_hexagon_Features_Group, INVALID, nullptr, CC1Option, 0,
+       "Enable generation of instruction packets", nullptr, nullptr)
 OPTION(prefix_1, "mpascal-strings", mpascal_strings, Flag, INVALID, fpascal_strings, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mpclmul", mpclmul, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mpie-copy-relocations", mpie_copy_relocations, Flag, m_Group, INVALID, nullptr, CC1Option, 0,
@@ -2989,7 +2994,7 @@ OPTION(prefix_2, "TC", _SLASH_TC, Flag, cl_compile_Group, INVALID, nullptr, CLOp
 OPTION(prefix_2, "Tc", _SLASH_Tc, JoinedOrSeparate, cl_compile_Group, INVALID, nullptr, CLOption | DriverOption, 0,
        "Specify a C source file", "<filename>", nullptr)
 OPTION(prefix_1, "Tdata", Tdata, JoinedOrSeparate, T_Group, INVALID, nullptr, 0, 0,
-       "Set starting address of BSS to <addr>", "<addr>", nullptr)
+       "Set starting address of DATA to <addr>", "<addr>", nullptr)
 OPTION(prefix_1, "templight-dump", templight_dump, Flag, Action_Group, INVALID, nullptr, CC1Option | NoDriverOption, 0,
        "Dump templight information to stdout", nullptr, nullptr)
 OPTION(prefix_1, "test-coverage", test_coverage, Flag, INVALID, INVALID, nullptr, CC1Option | NoDriverOption, 0,
@@ -3014,7 +3019,7 @@ OPTION(prefix_1, "triple=", triple_EQ, Joined, INVALID, triple, nullptr, CC1Opti
 OPTION(prefix_1, "triple", triple, Separate, INVALID, INVALID, nullptr, CC1Option | CC1AsOption | NoDriverOption, 0,
        "Specify target triple (e.g. i686-apple-darwin9)", nullptr, nullptr)
 OPTION(prefix_1, "Ttext", Ttext, JoinedOrSeparate, T_Group, INVALID, nullptr, 0, 0,
-       "Set starting address of BSS to <addr>", "<addr>", nullptr)
+       "Set starting address of TEXT to <addr>", "<addr>", nullptr)
 OPTION(prefix_1, "twolevel_namespace_hints", twolevel__namespace__hints, Flag, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "twolevel_namespace", twolevel__namespace, Flag, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "T", T, JoinedOrSeparate, T_Group, INVALID, nullptr, 0, 0,

@@ -448,7 +448,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       return AttributeList::AT_VecReturn;	 // "vecreturn"
     }
     break;
-  case 10:	 // 13 strings to match.
+  case 10:	 // 14 strings to match.
     switch (Name[0]) {
     default: break;
     case 'a':	 // 2 strings to match.
@@ -520,6 +520,10 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
         return AttributeList::AT_GuardedBy;	 // "guarded_by"
       }
       break;
+    case 'n':	 // 1 string to match.
+      if (memcmp(Name.data()+1, "ocf_check", 9) != 0)
+        break;
+      return AttributeList::AT_AnyX86NoCfCheck;	 // "nocf_check"
     case 's':	 // 1 string to match.
       if (memcmp(Name.data()+1, "hort_call", 9) != 0)
         break;
@@ -1972,7 +1976,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       break;
     }
     break;
-  case 15:	 // 13 strings to match.
+  case 15:	 // 14 strings to match.
     switch (Name[0]) {
     default: break;
     case 'c':	 // 5 strings to match.
@@ -2009,7 +2013,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
         return AttributeList::AT_NoEscape;	 // "clang::noescape"
       }
       break;
-    case 'g':	 // 8 strings to match.
+    case 'g':	 // 9 strings to match.
       if (memcmp(Name.data()+1, "nu::", 4) != 0)
         break;
       switch (Name[5]) {
@@ -2050,6 +2054,10 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
         if (memcmp(Name.data()+6, "nu_inline", 9) != 0)
           break;
         return AttributeList::AT_GNUInline;	 // "gnu::gnu_inline"
+      case 'n':	 // 1 string to match.
+        if (memcmp(Name.data()+6, "ocf_check", 9) != 0)
+          break;
+        return AttributeList::AT_AnyX86NoCfCheck;	 // "gnu::nocf_check"
       case 's':	 // 1 string to match.
         if (memcmp(Name.data()+6, "hort_call", 9) != 0)
           break;

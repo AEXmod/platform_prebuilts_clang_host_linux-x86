@@ -388,6 +388,16 @@ set_target_properties(clangTidyAndroidModule PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS clangTidyAndroidModule )
 list(APPEND _IMPORT_CHECK_FILES_FOR_clangTidyAndroidModule "${_IMPORT_PREFIX}/lib/libclangTidyAndroidModule.a" )
 
+# Import target "clangTidyAbseilModule" for configuration "MinSizeRel"
+set_property(TARGET clangTidyAbseilModule APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(clangTidyAbseilModule PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_MINSIZEREL "CXX"
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/lib/libclangTidyAbseilModule.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS clangTidyAbseilModule )
+list(APPEND _IMPORT_CHECK_FILES_FOR_clangTidyAbseilModule "${_IMPORT_PREFIX}/lib/libclangTidyAbseilModule.a" )
+
 # Import target "clangTidyBoostModule" for configuration "MinSizeRel"
 set_property(TARGET clangTidyBoostModule APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(clangTidyBoostModule PROPERTIES
@@ -566,6 +576,16 @@ set_target_properties(clangTidyUtils PROPERTIES
 
 list(APPEND _IMPORT_CHECK_TARGETS clangTidyUtils )
 list(APPEND _IMPORT_CHECK_FILES_FOR_clangTidyUtils "${_IMPORT_PREFIX}/lib/libclangTidyUtils.a" )
+
+# Import target "clangTidyZirconModule" for configuration "MinSizeRel"
+set_property(TARGET clangTidyZirconModule APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(clangTidyZirconModule PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_MINSIZEREL "CXX"
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/lib/libclangTidyZirconModule.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS clangTidyZirconModule )
+list(APPEND _IMPORT_CHECK_FILES_FOR_clangTidyZirconModule "${_IMPORT_PREFIX}/lib/libclangTidyZirconModule.a" )
 
 # Import target "clangChangeNamespace" for configuration "MinSizeRel"
 set_property(TARGET clangChangeNamespace APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)

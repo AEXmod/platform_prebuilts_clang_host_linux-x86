@@ -140,7 +140,7 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.push_back(A->getSpellingListIndex());
-    Record.push_back(SA->getParamIndex());
+    Record.push_back(SA->getParamIndex().serialize());
     break;
   }
   case attr::AllocSize: {
@@ -148,8 +148,8 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.push_back(A->getSpellingListIndex());
-    Record.push_back(SA->getElemSizeParam());
-    Record.push_back(SA->getNumElemsParam());
+    Record.push_back(SA->getElemSizeParam().serialize());
+    Record.push_back(SA->getNumElemsParam().serialize());
     break;
   }
   case attr::AlwaysInline: {
@@ -188,6 +188,13 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(A->getSpellingListIndex());
     break;
   }
+  case attr::AnyX86NoCfCheck: {
+    const auto *SA = cast<AnyX86NoCfCheckAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    break;
+  }
   case attr::ArcWeakrefUnavailable: {
     const auto *SA = cast<ArcWeakrefUnavailableAttr>(A);
     Record.push_back(SA->isInherited());
@@ -201,8 +208,8 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(A->isImplicit());
     Record.push_back(A->getSpellingListIndex());
     Record.AddIdentifierRef(SA->getArgumentKind());
-    Record.push_back(SA->getArgumentIdx());
-    Record.push_back(SA->getTypeTagIdx());
+    Record.push_back(SA->getArgumentIdx().serialize());
+    Record.push_back(SA->getTypeTagIdx().serialize());
     Record.push_back(SA->getIsPointer());
     break;
   }
@@ -631,7 +638,7 @@ Record.push_back(SA->getExtensibility());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.push_back(A->getSpellingListIndex());
-    Record.push_back(SA->getFormatIdx());
+    Record.push_back(SA->getFormatIdx().serialize());
     break;
   }
   case attr::GNUInline: {
@@ -1021,7 +1028,7 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(A->getSpellingListIndex());
     Record.push_back(SA->args_size());
     for (auto &Val : SA->args())
-      Record.push_back(Val);
+      Record.push_back(Val.serialize());
     break;
   }
   case attr::NotTailCalled: {
@@ -1266,7 +1273,7 @@ Record.push_back(SA->getFamily());
     Record.AddIdentifierRef(SA->getModule());
     Record.push_back(SA->args_size());
     for (auto &Val : SA->args())
-      Record.push_back(Val);
+      Record.push_back(Val.serialize());
     break;
   }
   case attr::Packed: {

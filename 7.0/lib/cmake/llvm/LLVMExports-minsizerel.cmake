@@ -1130,14 +1130,14 @@ set_target_properties(llvm-cxxdump PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS llvm-cxxdump )
 list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-cxxdump "${_IMPORT_PREFIX}/bin/llvm-cxxdump" )
 
-# Import target "llvm-dsymutil" for configuration "MinSizeRel"
-set_property(TARGET llvm-dsymutil APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
-set_target_properties(llvm-dsymutil PROPERTIES
-  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/bin/llvm-dsymutil"
+# Import target "dsymutil" for configuration "MinSizeRel"
+set_property(TARGET dsymutil APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(dsymutil PROPERTIES
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/bin/dsymutil"
   )
 
-list(APPEND _IMPORT_CHECK_TARGETS llvm-dsymutil )
-list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-dsymutil "${_IMPORT_PREFIX}/bin/llvm-dsymutil" )
+list(APPEND _IMPORT_CHECK_TARGETS dsymutil )
+list(APPEND _IMPORT_CHECK_FILES_FOR_dsymutil "${_IMPORT_PREFIX}/bin/dsymutil" )
 
 # Import target "llvm-mc" for configuration "MinSizeRel"
 set_property(TARGET llvm-mc APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)

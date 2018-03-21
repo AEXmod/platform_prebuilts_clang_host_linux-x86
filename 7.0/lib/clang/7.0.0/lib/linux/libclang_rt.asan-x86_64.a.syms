@@ -103,7 +103,6 @@
   __interceptor_fopen;
   __interceptor_fopen64;
   __interceptor_fopencookie;
-  __interceptor_fork;
   __interceptor_fprintf;
   __interceptor_fread;
   __interceptor_free;
@@ -376,6 +375,7 @@
   __interceptor_ttyname_r;
   __interceptor_valloc;
   __interceptor_vasprintf;
+  __interceptor_vfork;
   __interceptor_vfprintf;
   __interceptor_vfscanf;
   __interceptor_vprintf;
@@ -1231,7 +1231,6 @@
   fopen;
   fopen64;
   fopencookie;
-  fork;
   fprintf;
   fread;
   free;
@@ -1500,6 +1499,7 @@
   ttyname_r;
   valloc;
   vasprintf;
+  vfork;
   vfprintf;
   vfscanf;
   vprintf;

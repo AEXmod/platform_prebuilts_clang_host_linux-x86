@@ -682,17 +682,17 @@ public:
 };
 
 class AllocAlignAttr : public InheritableAttr {
-int paramIndex;
+ParamIdx paramIndex;
 
 public:
-  static AllocAlignAttr *CreateImplicit(ASTContext &Ctx, int ParamIndex, SourceRange Loc = SourceRange()) {
+  static AllocAlignAttr *CreateImplicit(ASTContext &Ctx, ParamIdx ParamIndex, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) AllocAlignAttr(Loc, Ctx, ParamIndex, 0);
     A->setImplicit(true);
     return A;
   }
 
   AllocAlignAttr(SourceRange R, ASTContext &Ctx
-              , int ParamIndex
+              , ParamIdx ParamIndex
               , unsigned SI
              )
     : InheritableAttr(attr::AllocAlign, R, SI, false, false)
@@ -704,7 +704,7 @@ public:
   void printPretty(raw_ostream &OS,
                    const PrintingPolicy &Policy) const;
   const char *getSpelling() const;
-  int getParamIndex() const {
+  ParamIdx getParamIndex() const {
     return paramIndex;
   }
 
@@ -714,20 +714,20 @@ public:
 };
 
 class AllocSizeAttr : public InheritableAttr {
-int elemSizeParam;
+ParamIdx elemSizeParam;
 
-int numElemsParam;
+ParamIdx numElemsParam;
 
 public:
-  static AllocSizeAttr *CreateImplicit(ASTContext &Ctx, int ElemSizeParam, int NumElemsParam, SourceRange Loc = SourceRange()) {
+  static AllocSizeAttr *CreateImplicit(ASTContext &Ctx, ParamIdx ElemSizeParam, ParamIdx NumElemsParam, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) AllocSizeAttr(Loc, Ctx, ElemSizeParam, NumElemsParam, 0);
     A->setImplicit(true);
     return A;
   }
 
   AllocSizeAttr(SourceRange R, ASTContext &Ctx
-              , int ElemSizeParam
-              , int NumElemsParam
+              , ParamIdx ElemSizeParam
+              , ParamIdx NumElemsParam
               , unsigned SI
              )
     : InheritableAttr(attr::AllocSize, R, SI, false, false)
@@ -737,7 +737,7 @@ public:
   }
 
   AllocSizeAttr(SourceRange R, ASTContext &Ctx
-              , int ElemSizeParam
+              , ParamIdx ElemSizeParam
               , unsigned SI
              )
     : InheritableAttr(attr::AllocSize, R, SI, false, false)
@@ -750,11 +750,11 @@ public:
   void printPretty(raw_ostream &OS,
                    const PrintingPolicy &Policy) const;
   const char *getSpelling() const;
-  int getElemSizeParam() const {
+  ParamIdx getElemSizeParam() const {
     return elemSizeParam;
   }
 
-  int getNumElemsParam() const {
+  ParamIdx getNumElemsParam() const {
     return numElemsParam;
   }
 
@@ -917,6 +917,30 @@ public:
   static bool classof(const Attr *A) { return A->getKind() == attr::AnyX86NoCallerSavedRegisters; }
 };
 
+class AnyX86NoCfCheckAttr : public InheritableAttr {
+public:
+  static AnyX86NoCfCheckAttr *CreateImplicit(ASTContext &Ctx, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) AnyX86NoCfCheckAttr(Loc, Ctx, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  AnyX86NoCfCheckAttr(SourceRange R, ASTContext &Ctx
+              , unsigned SI
+             )
+    : InheritableAttr(attr::AnyX86NoCfCheck, R, SI, false, false)
+  {
+  }
+
+  AnyX86NoCfCheckAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::AnyX86NoCfCheck; }
+};
+
 class ArcWeakrefUnavailableAttr : public InheritableAttr {
 public:
   static ArcWeakrefUnavailableAttr *CreateImplicit(ASTContext &Ctx, SourceRange Loc = SourceRange()) {
@@ -944,9 +968,9 @@ public:
 class ArgumentWithTypeTagAttr : public InheritableAttr {
 IdentifierInfo * argumentKind;
 
-unsigned argumentIdx;
+ParamIdx argumentIdx;
 
-unsigned typeTagIdx;
+ParamIdx typeTagIdx;
 
 bool isPointer;
 
@@ -960,13 +984,13 @@ public:
     C2x_clang_pointer_with_type_tag = 5
   };
 
-  static ArgumentWithTypeTagAttr *CreateImplicit(ASTContext &Ctx, Spelling S, IdentifierInfo * ArgumentKind, unsigned ArgumentIdx, unsigned TypeTagIdx, bool IsPointer, SourceRange Loc = SourceRange()) {
+  static ArgumentWithTypeTagAttr *CreateImplicit(ASTContext &Ctx, Spelling S, IdentifierInfo * ArgumentKind, ParamIdx ArgumentIdx, ParamIdx TypeTagIdx, bool IsPointer, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) ArgumentWithTypeTagAttr(Loc, Ctx, ArgumentKind, ArgumentIdx, TypeTagIdx, IsPointer, S);
     A->setImplicit(true);
     return A;
   }
 
-  static ArgumentWithTypeTagAttr *CreateImplicit(ASTContext &Ctx, Spelling S, IdentifierInfo * ArgumentKind, unsigned ArgumentIdx, unsigned TypeTagIdx, SourceRange Loc = SourceRange()) {
+  static ArgumentWithTypeTagAttr *CreateImplicit(ASTContext &Ctx, Spelling S, IdentifierInfo * ArgumentKind, ParamIdx ArgumentIdx, ParamIdx TypeTagIdx, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) ArgumentWithTypeTagAttr(Loc, Ctx, ArgumentKind, ArgumentIdx, TypeTagIdx, S);
     A->setImplicit(true);
     return A;
@@ -974,8 +998,8 @@ public:
 
   ArgumentWithTypeTagAttr(SourceRange R, ASTContext &Ctx
               , IdentifierInfo * ArgumentKind
-              , unsigned ArgumentIdx
-              , unsigned TypeTagIdx
+              , ParamIdx ArgumentIdx
+              , ParamIdx TypeTagIdx
               , bool IsPointer
               , unsigned SI
              )
@@ -989,8 +1013,8 @@ public:
 
   ArgumentWithTypeTagAttr(SourceRange R, ASTContext &Ctx
               , IdentifierInfo * ArgumentKind
-              , unsigned ArgumentIdx
-              , unsigned TypeTagIdx
+              , ParamIdx ArgumentIdx
+              , ParamIdx TypeTagIdx
               , unsigned SI
              )
     : InheritableAttr(attr::ArgumentWithTypeTag, R, SI, false, false)
@@ -1020,11 +1044,11 @@ public:
     return argumentKind;
   }
 
-  unsigned getArgumentIdx() const {
+  ParamIdx getArgumentIdx() const {
     return argumentIdx;
   }
 
-  unsigned getTypeTagIdx() const {
+  ParamIdx getTypeTagIdx() const {
     return typeTagIdx;
   }
 
@@ -3138,17 +3162,17 @@ public:
 };
 
 class FormatArgAttr : public InheritableAttr {
-int formatIdx;
+ParamIdx formatIdx;
 
 public:
-  static FormatArgAttr *CreateImplicit(ASTContext &Ctx, int FormatIdx, SourceRange Loc = SourceRange()) {
+  static FormatArgAttr *CreateImplicit(ASTContext &Ctx, ParamIdx FormatIdx, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) FormatArgAttr(Loc, Ctx, FormatIdx, 0);
     A->setImplicit(true);
     return A;
   }
 
   FormatArgAttr(SourceRange R, ASTContext &Ctx
-              , int FormatIdx
+              , ParamIdx FormatIdx
               , unsigned SI
              )
     : InheritableAttr(attr::FormatArg, R, SI, false, false)
@@ -3160,7 +3184,7 @@ public:
   void printPretty(raw_ostream &OS,
                    const PrintingPolicy &Policy) const;
   const char *getSpelling() const;
-  int getFormatIdx() const {
+  ParamIdx getFormatIdx() const {
     return formatIdx;
   }
 
@@ -4927,21 +4951,21 @@ public:
 
 class NonNullAttr : public InheritableParamAttr {
   unsigned args_Size;
-  unsigned *args_;
+  ParamIdx *args_;
 
 public:
-  static NonNullAttr *CreateImplicit(ASTContext &Ctx, unsigned *Args, unsigned ArgsSize, SourceRange Loc = SourceRange()) {
+  static NonNullAttr *CreateImplicit(ASTContext &Ctx, ParamIdx *Args, unsigned ArgsSize, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) NonNullAttr(Loc, Ctx, Args, ArgsSize, 0);
     A->setImplicit(true);
     return A;
   }
 
   NonNullAttr(SourceRange R, ASTContext &Ctx
-              , unsigned *Args, unsigned ArgsSize
+              , ParamIdx *Args, unsigned ArgsSize
               , unsigned SI
              )
     : InheritableParamAttr(attr::NonNull, R, SI, false, true)
-              , args_Size(ArgsSize), args_(new (Ctx, 16) unsigned[args_Size])
+              , args_Size(ArgsSize), args_(new (Ctx, 16) ParamIdx[args_Size])
   {
     std::copy(Args, Args + args_Size, args_);
   }
@@ -4958,21 +4982,22 @@ public:
   void printPretty(raw_ostream &OS,
                    const PrintingPolicy &Policy) const;
   const char *getSpelling() const;
-  typedef unsigned* args_iterator;
+  typedef ParamIdx* args_iterator;
   args_iterator args_begin() const { return args_; }
   args_iterator args_end() const { return args_ + args_Size; }
   unsigned args_size() const { return args_Size; }
   llvm::iterator_range<args_iterator> args() const { return llvm::make_range(args_begin(), args_end()); }
 
 
-bool isNonNull(unsigned idx) const {
-    if (!args_size())
-      return true;
-    for (const auto &V : args())
-      if (V == idx)
+
+    bool isNonNull(unsigned IdxAST) const {
+      if (!args_size())
         return true;
-    return false;
-  } 
+      return args_end() != std::find_if(
+          args_begin(), args_end(),
+          [=](const ParamIdx &Idx) { return Idx.getASTIndex() == IdxAST; });
+    }
+  
 
   static bool classof(const Attr *A) { return A->getKind() == attr::NonNull; }
 };
@@ -6104,7 +6129,7 @@ class OwnershipAttr : public InheritableAttr {
 IdentifierInfo * module;
 
   unsigned args_Size;
-  unsigned *args_;
+  ParamIdx *args_;
 
 public:
   enum Spelling {
@@ -6119,7 +6144,7 @@ public:
     C2x_clang_ownership_takes = 8
   };
 
-  static OwnershipAttr *CreateImplicit(ASTContext &Ctx, Spelling S, IdentifierInfo * Module, unsigned *Args, unsigned ArgsSize, SourceRange Loc = SourceRange()) {
+  static OwnershipAttr *CreateImplicit(ASTContext &Ctx, Spelling S, IdentifierInfo * Module, ParamIdx *Args, unsigned ArgsSize, SourceRange Loc = SourceRange()) {
     auto *A = new (Ctx) OwnershipAttr(Loc, Ctx, Module, Args, ArgsSize, S);
     A->setImplicit(true);
     return A;
@@ -6127,12 +6152,12 @@ public:
 
   OwnershipAttr(SourceRange R, ASTContext &Ctx
               , IdentifierInfo * Module
-              , unsigned *Args, unsigned ArgsSize
+              , ParamIdx *Args, unsigned ArgsSize
               , unsigned SI
              )
     : InheritableAttr(attr::Ownership, R, SI, false, false)
               , module(Module)
-              , args_Size(ArgsSize), args_(new (Ctx, 16) unsigned[args_Size])
+              , args_Size(ArgsSize), args_(new (Ctx, 16) ParamIdx[args_Size])
   {
     std::copy(Args, Args + args_Size, args_);
   }
@@ -6178,7 +6203,7 @@ public:
     return module;
   }
 
-  typedef unsigned* args_iterator;
+  typedef ParamIdx* args_iterator;
   args_iterator args_begin() const { return args_; }
   args_iterator args_end() const { return args_ + args_Size; }
   unsigned args_size() const { return args_Size; }

@@ -2,6 +2,15 @@ Optional<attr::SubjectMatchRule> defaultIsAttributeSubjectMatchSubRuleFor(String
   return None;
 }
 
+Optional<attr::SubjectMatchRule> isAttributeSubjectMatchSubRuleFor_function(StringRef Name, bool IsUnless) {
+  if (IsUnless)
+    return llvm::StringSwitch<Optional<attr::SubjectMatchRule>>(Name).
+    Default(None);
+  return llvm::StringSwitch<Optional<attr::SubjectMatchRule>>(Name).
+  Case("is_member", attr::SubjectMatchRule_function_is_member).
+  Default(None);
+}
+
 Optional<attr::SubjectMatchRule> isAttributeSubjectMatchSubRuleFor_hasType(StringRef Name, bool IsUnless) {
   if (IsUnless)
     return llvm::StringSwitch<Optional<attr::SubjectMatchRule>>(Name).
@@ -41,15 +50,6 @@ Optional<attr::SubjectMatchRule> isAttributeSubjectMatchSubRuleFor_objc_method(S
   Default(None);
 }
 
-Optional<attr::SubjectMatchRule> isAttributeSubjectMatchSubRuleFor_function(StringRef Name, bool IsUnless) {
-  if (IsUnless)
-    return llvm::StringSwitch<Optional<attr::SubjectMatchRule>>(Name).
-    Default(None);
-  return llvm::StringSwitch<Optional<attr::SubjectMatchRule>>(Name).
-  Case("is_member", attr::SubjectMatchRule_function_is_member).
-  Default(None);
-}
-
 std::pair<Optional<attr::SubjectMatchRule>, Optional<attr::SubjectMatchRule> (*)(StringRef, bool)> isAttributeSubjectMatchRule(StringRef Name) {
   return llvm::StringSwitch<std::pair<Optional<attr::SubjectMatchRule>, Optional<attr::SubjectMatchRule> (*) (StringRef, bool)>>(Name).
   Case("block", std::make_pair(attr::SubjectMatchRule_block, defaultIsAttributeSubjectMatchSubRuleFor)).
@@ -72,6 +72,8 @@ std::pair<Optional<attr::SubjectMatchRule>, Optional<attr::SubjectMatchRule> (*)
 
 const char *validAttributeSubjectMatchSubRules(attr::SubjectMatchRule Rule) {
   switch (Rule) {
+  case attr::SubjectMatchRule_function:
+  return "'is_member'";
   case attr::SubjectMatchRule_hasType_abstract:
   return "'functionType'";
   case attr::SubjectMatchRule_record:
@@ -80,8 +82,6 @@ const char *validAttributeSubjectMatchSubRules(attr::SubjectMatchRule Rule) {
   return "'is_thread_local', 'is_global', 'is_parameter', 'unless(is_parameter)'";
   case attr::SubjectMatchRule_objc_method:
   return "'is_instance'";
-  case attr::SubjectMatchRule_function:
-  return "'is_member'";
   default: return nullptr;
   }
 }

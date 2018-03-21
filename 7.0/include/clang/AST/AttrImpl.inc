@@ -726,11 +726,11 @@ void AllocAlignAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) 
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((alloc_align(" << getParamIndex() << ")))";
+    OS << " __attribute__((alloc_align(" << getParamIndex().getSourceIndex() << ")))";
     break;
   }
   case 1 : {
-    OS << " [[gnu::alloc_align(" << getParamIndex() << ")]]";
+    OS << " [[gnu::alloc_align(" << getParamIndex().getSourceIndex() << ")]]";
     break;
   }
 }
@@ -764,14 +764,14 @@ void AllocSizeAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   case 0 : {
     OS << " __attribute__((alloc_size";
     unsigned TrailingOmittedArgs = 0;
-    if (0 == getNumElemsParam())
+    if (!getNumElemsParam().isValid())
       ++TrailingOmittedArgs;
-    OS << "(" << getElemSizeParam() << "";
+    OS << "(" << getElemSizeParam().getSourceIndex() << "";
     if (1 < 2 - TrailingOmittedArgs)
       OS << ", ";
     OS << "";
-    if (!(0 == getNumElemsParam())) {
-      OS << "" << getNumElemsParam() << "";
+    if (!(!getNumElemsParam().isValid())) {
+      OS << "" << getNumElemsParam().getSourceIndex() << "";
     }
     OS << ")))";
     break;
@@ -779,14 +779,14 @@ void AllocSizeAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   case 1 : {
     OS << " [[gnu::alloc_size";
     unsigned TrailingOmittedArgs = 0;
-    if (0 == getNumElemsParam())
+    if (!getNumElemsParam().isValid())
       ++TrailingOmittedArgs;
-    OS << "(" << getElemSizeParam() << "";
+    OS << "(" << getElemSizeParam().getSourceIndex() << "";
     if (1 < 2 - TrailingOmittedArgs)
       OS << ", ";
     OS << "";
-    if (!(0 == getNumElemsParam())) {
-      OS << "" << getNumElemsParam() << "";
+    if (!(!getNumElemsParam().isValid())) {
+      OS << "" << getNumElemsParam().getSourceIndex() << "";
     }
     OS << ")]]";
     break;
@@ -992,6 +992,42 @@ const char *AnyX86NoCallerSavedRegistersAttr::getSpelling() const {
   }
 }
 
+AnyX86NoCfCheckAttr *AnyX86NoCfCheckAttr::clone(ASTContext &C) const {
+  auto *A = new (C) AnyX86NoCfCheckAttr(getLocation(), C, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void AnyX86NoCfCheckAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __attribute__((nocf_check))";
+    break;
+  }
+  case 1 : {
+    OS << " [[gnu::nocf_check]]";
+    break;
+  }
+}
+}
+
+const char *AnyX86NoCfCheckAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "nocf_check";
+  case 1:
+    return "nocf_check";
+  }
+}
+
 ArcWeakrefUnavailableAttr *ArcWeakrefUnavailableAttr::clone(ASTContext &C) const {
   auto *A = new (C) ArcWeakrefUnavailableAttr(getLocation(), C, getSpellingListIndex());
   A->Inherited = Inherited;
@@ -1048,27 +1084,27 @@ void ArgumentWithTypeTagAttr::printPretty(raw_ostream &OS, const PrintingPolicy 
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")))";
+    OS << " __attribute__((argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx().getSourceIndex() << ", " << getTypeTagIdx().getSourceIndex() << ")))";
     break;
   }
   case 1 : {
-    OS << " [[clang::argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx().getSourceIndex() << ", " << getTypeTagIdx().getSourceIndex() << ")]]";
     break;
   }
   case 2 : {
-    OS << " [[clang::argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::argument_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx().getSourceIndex() << ", " << getTypeTagIdx().getSourceIndex() << ")]]";
     break;
   }
   case 3 : {
-    OS << " __attribute__((pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")))";
+    OS << " __attribute__((pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx().getSourceIndex() << ", " << getTypeTagIdx().getSourceIndex() << ")))";
     break;
   }
   case 4 : {
-    OS << " [[clang::pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx().getSourceIndex() << ", " << getTypeTagIdx().getSourceIndex() << ")]]";
     break;
   }
   case 5 : {
-    OS << " [[clang::pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx() << ", " << getTypeTagIdx() << ")]]";
+    OS << " [[clang::pointer_with_type_tag(" << (getArgumentKind() ? getArgumentKind()->getName() : "") << ", " << getArgumentIdx().getSourceIndex() << ", " << getTypeTagIdx().getSourceIndex() << ")]]";
     break;
   }
 }
@@ -3169,11 +3205,11 @@ void FormatArgAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __attribute__((format_arg(" << getFormatIdx() << ")))";
+    OS << " __attribute__((format_arg(" << getFormatIdx().getSourceIndex() << ")))";
     break;
   }
   case 1 : {
-    OS << " [[gnu::format_arg(" << getFormatIdx() << ")]]";
+    OS << " [[gnu::format_arg(" << getFormatIdx().getSourceIndex() << ")]]";
     break;
   }
 }
@@ -5186,7 +5222,7 @@ void NonNullAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) con
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")))";
     break;
@@ -5197,7 +5233,7 @@ void NonNullAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) con
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -6411,7 +6447,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")))";
     break;
@@ -6422,7 +6458,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -6433,7 +6469,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -6444,7 +6480,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")))";
     break;
@@ -6455,7 +6491,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -6466,7 +6502,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -6477,7 +6513,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")))";
     break;
@@ -6488,7 +6524,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -6499,7 +6535,7 @@ void OwnershipAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) c
   for (const auto &Val : args()) {
     if (isFirst) isFirst = false;
     else OS << ", ";
-    OS << Val;
+    OS << Val.getSourceIndex();
   }
   OS << ")]]";
     break;
@@ -9199,6 +9235,8 @@ const char *Attr::getSpelling() const {
     return cast<AnyX86InterruptAttr>(this)->getSpelling();
   case attr::AnyX86NoCallerSavedRegisters:
     return cast<AnyX86NoCallerSavedRegistersAttr>(this)->getSpelling();
+  case attr::AnyX86NoCfCheck:
+    return cast<AnyX86NoCfCheckAttr>(this)->getSpelling();
   case attr::ArcWeakrefUnavailable:
     return cast<ArcWeakrefUnavailableAttr>(this)->getSpelling();
   case attr::ArgumentWithTypeTag:
@@ -9659,6 +9697,8 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<AnyX86InterruptAttr>(this)->clone(C);
   case attr::AnyX86NoCallerSavedRegisters:
     return cast<AnyX86NoCallerSavedRegistersAttr>(this)->clone(C);
+  case attr::AnyX86NoCfCheck:
+    return cast<AnyX86NoCfCheckAttr>(this)->clone(C);
   case attr::ArcWeakrefUnavailable:
     return cast<ArcWeakrefUnavailableAttr>(this)->clone(C);
   case attr::ArgumentWithTypeTag:
@@ -10119,6 +10159,8 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<AnyX86InterruptAttr>(this)->printPretty(OS, Policy);
   case attr::AnyX86NoCallerSavedRegisters:
     return cast<AnyX86NoCallerSavedRegistersAttr>(this)->printPretty(OS, Policy);
+  case attr::AnyX86NoCfCheck:
+    return cast<AnyX86NoCfCheckAttr>(this)->printPretty(OS, Policy);
   case attr::ArcWeakrefUnavailable:
     return cast<ArcWeakrefUnavailableAttr>(this)->printPretty(OS, Policy);
   case attr::ArgumentWithTypeTag:

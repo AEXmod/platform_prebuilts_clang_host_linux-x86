@@ -96,6 +96,10 @@
   bool VisitAnyX86NoCallerSavedRegistersAttr(AnyX86NoCallerSavedRegistersAttr *A) {
     return true; 
   }
+  bool TraverseAnyX86NoCfCheckAttr(AnyX86NoCfCheckAttr *A);
+  bool VisitAnyX86NoCfCheckAttr(AnyX86NoCfCheckAttr *A) {
+    return true; 
+  }
   bool TraverseArcWeakrefUnavailableAttr(ArcWeakrefUnavailableAttr *A);
   bool VisitArcWeakrefUnavailableAttr(ArcWeakrefUnavailableAttr *A) {
     return true; 
@@ -1146,6 +1150,15 @@ bool VISITORCLASS<Derived>::TraverseAnyX86NoCallerSavedRegistersAttr(AnyX86NoCal
   if (!getDerived().VisitAttr(A))
     return false;
   if (!getDerived().VisitAnyX86NoCallerSavedRegistersAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseAnyX86NoCfCheckAttr(AnyX86NoCfCheckAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitAnyX86NoCfCheckAttr(A))
     return false;
   return true;
 }
@@ -3194,6 +3207,8 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseAnyX86InterruptAttr(cast<AnyX86InterruptAttr>(A));
     case attr::AnyX86NoCallerSavedRegisters:
       return getDerived().TraverseAnyX86NoCallerSavedRegistersAttr(cast<AnyX86NoCallerSavedRegistersAttr>(A));
+    case attr::AnyX86NoCfCheck:
+      return getDerived().TraverseAnyX86NoCfCheckAttr(cast<AnyX86NoCfCheckAttr>(A));
     case attr::ArcWeakrefUnavailable:
       return getDerived().TraverseArcWeakrefUnavailableAttr(cast<ArcWeakrefUnavailableAttr>(A));
     case attr::ArgumentWithTypeTag:
