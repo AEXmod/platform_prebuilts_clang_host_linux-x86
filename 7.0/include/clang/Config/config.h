@@ -33,7 +33,7 @@
 #define CLANG_OPENMP_NVPTX_DEFAULT_ARCH "sm_35"
 
 /* Multilib suffix for libdir. */
-#define CLANG_LIBDIR_SUFFIX ""
+#define CLANG_LIBDIR_SUFFIX "64"
 
 /* Relative directory for resource files */
 #define CLANG_RESOURCE_DIR ""

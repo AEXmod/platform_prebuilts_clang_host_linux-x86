@@ -32,6 +32,7 @@ NoReturn,
 NoUnwind,
 NonLazyBind,
 NonNull,
+OptForFuzzing,
 OptimizeForSize,
 OptimizeNone,
 ReadNone,
@@ -93,6 +94,7 @@ static Attribute::AttrKind getAttrKindFromName(StringRef AttrName) {
     .Case("nounwind", Attribute::NoUnwind)
     .Case("nonlazybind", Attribute::NonLazyBind)
     .Case("nonnull", Attribute::NonNull)
+    .Case("optforfuzzing", Attribute::OptForFuzzing)
     .Case("optsize", Attribute::OptimizeForSize)
     .Case("optnone", Attribute::OptimizeNone)
     .Case("readnone", Attribute::ReadNone)
@@ -310,6 +312,11 @@ struct NonLazyBindAttr : EnumAttr {
 struct NonNullAttr : EnumAttr {
   static enum Attribute::AttrKind getKind() {
     return llvm::Attribute::NonNull;
+  }
+};
+struct OptForFuzzingAttr : EnumAttr {
+  static enum Attribute::AttrKind getKind() {
+    return llvm::Attribute::OptForFuzzing;
   }
 };
 struct OptimizeForSizeAttr : EnumAttr {

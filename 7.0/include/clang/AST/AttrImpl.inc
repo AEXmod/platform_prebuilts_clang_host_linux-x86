@@ -5387,6 +5387,21 @@ const char *OMPDeclareTargetDeclAttr::getSpelling() const {
   }
 }
 
+OMPReferencedVarAttr *OMPReferencedVarAttr::clone(ASTContext &C) const {
+  auto *A = new (C) OMPReferencedVarAttr(getLocation(), C, ref, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void OMPReferencedVarAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+}
+
+const char *OMPReferencedVarAttr::getSpelling() const {
+  return "(No spelling)";
+}
+
 OMPThreadPrivateDeclAttr *OMPThreadPrivateDeclAttr::clone(ASTContext &C) const {
   auto *A = new (C) OMPThreadPrivateDeclAttr(getLocation(), C, getSpellingListIndex());
   A->Inherited = Inherited;
@@ -9465,6 +9480,8 @@ const char *Attr::getSpelling() const {
     return cast<OMPDeclareSimdDeclAttr>(this)->getSpelling();
   case attr::OMPDeclareTargetDecl:
     return cast<OMPDeclareTargetDeclAttr>(this)->getSpelling();
+  case attr::OMPReferencedVar:
+    return cast<OMPReferencedVarAttr>(this)->getSpelling();
   case attr::OMPThreadPrivateDecl:
     return cast<OMPThreadPrivateDeclAttr>(this)->getSpelling();
   case attr::ObjCBoxable:
@@ -9927,6 +9944,8 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<OMPDeclareSimdDeclAttr>(this)->clone(C);
   case attr::OMPDeclareTargetDecl:
     return cast<OMPDeclareTargetDeclAttr>(this)->clone(C);
+  case attr::OMPReferencedVar:
+    return cast<OMPReferencedVarAttr>(this)->clone(C);
   case attr::OMPThreadPrivateDecl:
     return cast<OMPThreadPrivateDeclAttr>(this)->clone(C);
   case attr::ObjCBoxable:
@@ -10389,6 +10408,8 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<OMPDeclareSimdDeclAttr>(this)->printPretty(OS, Policy);
   case attr::OMPDeclareTargetDecl:
     return cast<OMPDeclareTargetDeclAttr>(this)->printPretty(OS, Policy);
+  case attr::OMPReferencedVar:
+    return cast<OMPReferencedVarAttr>(this)->printPretty(OS, Policy);
   case attr::OMPThreadPrivateDecl:
     return cast<OMPThreadPrivateDeclAttr>(this)->printPretty(OS, Policy);
   case attr::ObjCBoxable:

@@ -749,6 +749,11 @@
     }
     break;
   }
+  case attr::OMPReferencedVar: {
+    const auto *SA = cast<OMPReferencedVarAttr>(A);
+    dumpStmt(SA->getRef());
+    break;
+  }
   case attr::OMPThreadPrivateDecl: {
     break;
   }

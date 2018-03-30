@@ -1394,6 +1394,14 @@
     New->setImplicit(isImplicit);
     break;
   }
+  case attr::OMPReferencedVar: {
+    bool isImplicit = Record.readInt();
+    unsigned Spelling = Record.readInt();
+    Expr * ref = Record.readExpr();
+    New = new (Context) OMPReferencedVarAttr(Range, Context, ref, Spelling);
+    New->setImplicit(isImplicit);
+    break;
+  }
   case attr::OMPThreadPrivateDecl: {
     bool isInherited = Record.readInt();
     bool isImplicit = Record.readInt();

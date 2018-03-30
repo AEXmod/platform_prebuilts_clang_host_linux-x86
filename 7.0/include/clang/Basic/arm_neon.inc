@@ -372,6 +372,8 @@ BUILTIN(__builtin_neon_vmull_v, "V16ScV8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vmulq_v, "V16ScV16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vmulx_v, "V8ScV8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vmulxd_f64, "ddd", "n")
+BUILTIN(__builtin_neon_vmulxh_lane_f16, "hhV4hIi", "n")
+BUILTIN(__builtin_neon_vmulxh_laneq_f16, "hhV8hIi", "n")
 BUILTIN(__builtin_neon_vmulxq_v, "V16ScV16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vmulxs_f32, "fff", "n")
 BUILTIN(__builtin_neon_vnegd_s64, "WiWi", "n")
@@ -1076,6 +1078,8 @@ case NEON::BI__builtin_neon_vfmah_lane_f16: i = 3; u = 3; break;
 case NEON::BI__builtin_neon_vfmad_laneq_f64: i = 3; u = 1; break;
 case NEON::BI__builtin_neon_vfmas_laneq_f32: i = 3; u = 3; break;
 case NEON::BI__builtin_neon_vfmah_laneq_f16: i = 3; u = 7; break;
+case NEON::BI__builtin_neon_vmulxh_lane_f16: i = 2; u = 3; break;
+case NEON::BI__builtin_neon_vmulxh_laneq_f16: i = 2; u = 7; break;
 case NEON::BI__builtin_neon_vcvts_n_f32_u32: i = 1; l = 1; u = 31; break;
 case NEON::BI__builtin_neon_vcvts_n_f32_s32: i = 1; l = 1; u = 31; break;
 case NEON::BI__builtin_neon_vcvtd_n_f64_u64: i = 1; l = 1; u = 63; break;

@@ -678,6 +678,10 @@ Attr *instantiateTemplateAttribute(const Attr *At, ASTContext &C, Sema &S,
       const auto *A = cast<OMPDeclareTargetDeclAttr>(At);
       return A->clone(C);
     }
+    case attr::OMPReferencedVar: {
+      const auto *A = cast<OMPReferencedVarAttr>(At);
+      return A->clone(C);
+    }
     case attr::OMPThreadPrivateDecl: {
       const auto *A = cast<OMPThreadPrivateDeclAttr>(At);
       return A->clone(C);
@@ -1522,6 +1526,9 @@ Attr *instantiateTemplateAttributeForDecl(const Attr *At,
       return nullptr;
     }
     case attr::OMPDeclareTargetDecl: {
+      return nullptr;
+    }
+    case attr::OMPReferencedVar: {
       return nullptr;
     }
     case attr::OMPThreadPrivateDecl: {

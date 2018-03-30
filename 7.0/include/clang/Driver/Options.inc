@@ -1923,7 +1923,7 @@ OPTION(prefix_2, "Gw-", _SLASH_Gw_, Flag, cl_Group, fno_data_sections, nullptr, 
 OPTION(prefix_2, "Gw", _SLASH_Gw, Flag, cl_Group, fdata_sections, nullptr, CLOption | DriverOption | CLOption, 0,
        "Put each data item in its own section", nullptr, nullptr)
 OPTION(prefix_2, "GX-", _SLASH_GX_, Flag, cl_Group, INVALID, nullptr, CLOption | DriverOption | CLOption, 0,
-       "Enable exception handling", nullptr, nullptr)
+       "Disable exception handling", nullptr, nullptr)
 OPTION(prefix_1, "gxcoff", gxcoff, Joined, g_Group, INVALID, nullptr, Unsupported, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_2, "GX", _SLASH_GX, Flag, cl_Group, INVALID, nullptr, CLOption | DriverOption | CLOption, 0,
        "Enable exception handling", nullptr, nullptr)

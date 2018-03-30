@@ -556,6 +556,10 @@
   bool VisitOMPDeclareTargetDeclAttr(OMPDeclareTargetDeclAttr *A) {
     return true; 
   }
+  bool TraverseOMPReferencedVarAttr(OMPReferencedVarAttr *A);
+  bool VisitOMPReferencedVarAttr(OMPReferencedVarAttr *A) {
+    return true; 
+  }
   bool TraverseOMPThreadPrivateDeclAttr(OMPThreadPrivateDeclAttr *A);
   bool VisitOMPThreadPrivateDeclAttr(OMPThreadPrivateDeclAttr *A) {
     return true; 
@@ -2295,6 +2299,17 @@ bool VISITORCLASS<Derived>::TraverseOMPDeclareTargetDeclAttr(OMPDeclareTargetDec
 }
 
 template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseOMPReferencedVarAttr(OMPReferencedVarAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitOMPReferencedVarAttr(A))
+    return false;
+  if (!getDerived().TraverseStmt(A->getRef()))
+    return false;
+  return true;
+}
+
+template <typename Derived>
 bool VISITORCLASS<Derived>::TraverseOMPThreadPrivateDeclAttr(OMPThreadPrivateDeclAttr *A) {
   if (!getDerived().VisitAttr(A))
     return false;
@@ -3437,6 +3452,8 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseOMPDeclareSimdDeclAttr(cast<OMPDeclareSimdDeclAttr>(A));
     case attr::OMPDeclareTargetDecl:
       return getDerived().TraverseOMPDeclareTargetDeclAttr(cast<OMPDeclareTargetDeclAttr>(A));
+    case attr::OMPReferencedVar:
+      return getDerived().TraverseOMPReferencedVarAttr(cast<OMPReferencedVarAttr>(A));
     case attr::OMPThreadPrivateDecl:
       return getDerived().TraverseOMPThreadPrivateDeclAttr(cast<OMPThreadPrivateDeclAttr>(A));
     case attr::ObjCBoxable:

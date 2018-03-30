@@ -26,7 +26,6 @@
 #include "llvm/Analysis/TargetTransformInfo.h"
 #include "llvm/Analysis/TargetTransformInfoImpl.h"
 #include "llvm/CodeGen/ISDOpcodes.h"
-#include "llvm/CodeGen/MachineValueType.h"
 #include "llvm/CodeGen/TargetLowering.h"
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 #include "llvm/CodeGen/ValueTypes.h"
@@ -47,6 +46,7 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/ErrorHandling.h"
+#include "llvm/Support/MachineValueType.h"
 #include "llvm/Support/MathExtras.h"
 #include <algorithm>
 #include <cassert>
@@ -111,6 +111,22 @@ private:
     return static_cast<const T *>(this)->getTLI();
   }
 
+  static ISD::MemIndexedMode getISDIndexedMode(TTI::MemIndexedMode M) {
+    switch (M) {
+      case TTI::MIM_Unindexed:
+        return ISD::UNINDEXED;
+      case TTI::MIM_PreInc:
+        return ISD::PRE_INC;
+      case TTI::MIM_PreDec:
+        return ISD::PRE_DEC;
+      case TTI::MIM_PostInc:
+        return ISD::POST_INC;
+      case TTI::MIM_PostDec:
+        return ISD::POST_DEC;
+    }
+    llvm_unreachable("Unexpected MemIndexedMode");
+  }
+
 protected:
   explicit BasicTTIImplBase(const TargetMachine *TM, const DataLayout &DL)
       : BaseT(DL) {}
@@ -157,6 +173,18 @@ public:
     return getTLI()->isLegalAddressingMode(DL, AM, Ty, AddrSpace, I);
   }
 
+  bool isIndexedLoadLegal(TTI::MemIndexedMode M, Type *Ty,
+                          const DataLayout &DL) const {
+    EVT VT = getTLI()->getValueType(DL, Ty);
+    return getTLI()->isIndexedLoadLegal(getISDIndexedMode(M), VT);
+  }
+
+  bool isIndexedStoreLegal(TTI::MemIndexedMode M, Type *Ty,
+                           const DataLayout &DL) const {
+    EVT VT = getTLI()->getValueType(DL, Ty);
+    return getTLI()->isIndexedStoreLegal(getISDIndexedMode(M), VT);
+  }
+
   bool isLSRCostLess(TTI::LSRCost C1, TTI::LSRCost C2) {
     return TargetTransformInfoImplBase::isLSRCostLess(C1, C2);
   }
@@ -178,6 +206,8 @@ public:
   bool isProfitableToHoist(Instruction *I) {
     return getTLI()->isProfitableToHoist(I);
   }
+
+  bool useAA() const { return getST()->useAA(); }
 
   bool isTypeLegal(Type *Ty) {
     EVT VT = getTLI()->getValueType(DL, Ty);

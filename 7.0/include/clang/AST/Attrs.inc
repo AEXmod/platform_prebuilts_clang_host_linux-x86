@@ -5357,6 +5357,38 @@ public:
   static bool classof(const Attr *A) { return A->getKind() == attr::OMPDeclareTargetDecl; }
 };
 
+class OMPReferencedVarAttr : public Attr {
+Expr * ref;
+
+public:
+  static OMPReferencedVarAttr *CreateImplicit(ASTContext &Ctx, Expr * Ref, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) OMPReferencedVarAttr(Loc, Ctx, Ref, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  OMPReferencedVarAttr(SourceRange R, ASTContext &Ctx
+              , Expr * Ref
+              , unsigned SI
+             )
+    : Attr(attr::OMPReferencedVar, R, SI, false)
+              , ref(Ref)
+  {
+  }
+
+  OMPReferencedVarAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+  Expr * getRef() const {
+    return ref;
+  }
+
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::OMPReferencedVar; }
+};
+
 class OMPThreadPrivateDeclAttr : public InheritableAttr {
 public:
   static OMPThreadPrivateDeclAttr *CreateImplicit(ASTContext &Ctx, SourceRange Loc = SourceRange()) {
@@ -7708,7 +7740,7 @@ public:
     template<class Compare>
     ParsedTargetAttr parse(Compare cmp) const {
       ParsedTargetAttr Attrs = parse();
-      std::sort(std::begin(Attrs.Features), std::end(Attrs.Features), cmp);
+      llvm::sort(std::begin(Attrs.Features), std::end(Attrs.Features), cmp);
       return Attrs;
     }
 

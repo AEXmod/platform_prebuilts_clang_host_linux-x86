@@ -1085,6 +1085,13 @@ Record.push_back(SA->getBranchState());
 Record.push_back(SA->getMapType());
     break;
   }
+  case attr::OMPReferencedVar: {
+    const auto *SA = cast<OMPReferencedVarAttr>(A);
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    Record.AddStmt(SA->getRef());
+    break;
+  }
   case attr::OMPThreadPrivateDecl: {
     const auto *SA = cast<OMPThreadPrivateDeclAttr>(A);
     Record.push_back(SA->isInherited());

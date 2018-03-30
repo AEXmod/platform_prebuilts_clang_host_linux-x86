@@ -15,13 +15,7 @@
 #ifndef LLVM_C_DISASSEMBLER_H
 #define LLVM_C_DISASSEMBLER_H
 
-#include "llvm/Support/DataTypes.h"
-#include "llvm/Support/DisassemblerTypedefs.h"
-#ifdef __cplusplus
-#include <cstddef>
-#else
-#include <stddef.h>
-#endif
+#include "llvm-c/DisassemblerTypes.h"
 
 /**
  * @defgroup LLVMCDisassembler Disassembler
@@ -29,109 +23,6 @@
  *
  * @{
  */
-
-/**
- * An opaque reference to a disassembler context.
- */
-typedef void *LLVMDisasmContextRef;
-
-
-/**
- * The initial support in LLVM MC for the most general form of a relocatable
- * expression is "AddSymbol - SubtractSymbol + Offset".  For some Darwin targets
- * this full form is encoded in the relocation information so that AddSymbol and
- * SubtractSymbol can be link edited independent of each other.  Many other
- * platforms only allow a relocatable expression of the form AddSymbol + Offset
- * to be encoded.
- *
- * The LLVMOpInfoCallback() for the TagType value of 1 uses the struct
- * LLVMOpInfo1.  The value of the relocatable expression for the operand,
- * including any PC adjustment, is passed in to the call back in the Value
- * field.  The symbolic information about the operand is returned using all
- * the fields of the structure with the Offset of the relocatable expression
- * returned in the Value field.  It is possible that some symbols in the
- * relocatable expression were assembly temporary symbols, for example
- * "Ldata - LpicBase + constant", and only the Values of the symbols without
- * symbol names are present in the relocation information.  The VariantKind
- * type is one of the Target specific #defines below and is used to print
- * operands like "_foo@GOT", ":lower16:_foo", etc.
- */
-struct LLVMOpInfoSymbol1 {
-  uint64_t Present;  /* 1 if this symbol is present */
-  const char *Name;  /* symbol name if not NULL */
-  uint64_t Value;    /* symbol value if name is NULL */
-};
-
-struct LLVMOpInfo1 {
-  struct LLVMOpInfoSymbol1 AddSymbol;
-  struct LLVMOpInfoSymbol1 SubtractSymbol;
-  uint64_t Value;
-  uint64_t VariantKind;
-};
-
-/**
- * The operand VariantKinds for symbolic disassembly.
- */
-#define LLVMDisassembler_VariantKind_None 0 /* all targets */
-
-/**
- * The ARM target VariantKinds.
- */
-#define LLVMDisassembler_VariantKind_ARM_HI16 1 /* :upper16: */
-#define LLVMDisassembler_VariantKind_ARM_LO16 2 /* :lower16: */
-
-/**
- * The ARM64 target VariantKinds.
- */
-#define LLVMDisassembler_VariantKind_ARM64_PAGE       1 /* @page */
-#define LLVMDisassembler_VariantKind_ARM64_PAGEOFF    2 /* @pageoff */
-#define LLVMDisassembler_VariantKind_ARM64_GOTPAGE    3 /* @gotpage */
-#define LLVMDisassembler_VariantKind_ARM64_GOTPAGEOFF 4 /* @gotpageoff */
-#define LLVMDisassembler_VariantKind_ARM64_TLVP       5 /* @tvlppage */
-#define LLVMDisassembler_VariantKind_ARM64_TLVOFF     6 /* @tvlppageoff */
-
-/**
- * The reference types on input and output.
- */
-/* No input reference type or no output reference type. */
-#define LLVMDisassembler_ReferenceType_InOut_None 0
-
-/* The input reference is from a branch instruction. */
-#define LLVMDisassembler_ReferenceType_In_Branch 1
-/* The input reference is from a PC relative load instruction. */
-#define LLVMDisassembler_ReferenceType_In_PCrel_Load 2
-
-/* The input reference is from an ARM64::ADRP instruction. */
-#define LLVMDisassembler_ReferenceType_In_ARM64_ADRP 0x100000001
-/* The input reference is from an ARM64::ADDXri instruction. */
-#define LLVMDisassembler_ReferenceType_In_ARM64_ADDXri 0x100000002
-/* The input reference is from an ARM64::LDRXui instruction. */
-#define LLVMDisassembler_ReferenceType_In_ARM64_LDRXui 0x100000003
-/* The input reference is from an ARM64::LDRXl instruction. */
-#define LLVMDisassembler_ReferenceType_In_ARM64_LDRXl 0x100000004
-/* The input reference is from an ARM64::ADR instruction. */
-#define LLVMDisassembler_ReferenceType_In_ARM64_ADR 0x100000005
-
-/* The output reference is to as symbol stub. */
-#define LLVMDisassembler_ReferenceType_Out_SymbolStub 1
-/* The output reference is to a symbol address in a literal pool. */
-#define LLVMDisassembler_ReferenceType_Out_LitPool_SymAddr 2
-/* The output reference is to a cstring address in a literal pool. */
-#define LLVMDisassembler_ReferenceType_Out_LitPool_CstrAddr 3
-
-/* The output reference is to a Objective-C CoreFoundation string. */
-#define LLVMDisassembler_ReferenceType_Out_Objc_CFString_Ref 4
-/* The output reference is to a Objective-C message. */
-#define LLVMDisassembler_ReferenceType_Out_Objc_Message 5
-/* The output reference is to a Objective-C message ref. */
-#define LLVMDisassembler_ReferenceType_Out_Objc_Message_Ref 6
-/* The output reference is to a Objective-C selector ref. */
-#define LLVMDisassembler_ReferenceType_Out_Objc_Selector_Ref 7
-/* The output reference is to a Objective-C class ref. */
-#define LLVMDisassembler_ReferenceType_Out_Objc_Class_Ref 8
-
-/* The output reference is to a C++ symbol name. */
-#define LLVMDisassembler_ReferenceType_DeMangled_Name 9
 
 #ifdef __cplusplus
 extern "C" {
