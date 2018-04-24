@@ -104,7 +104,7 @@ set_target_properties(clangSema PROPERTIES
 add_library(clangCodeGen STATIC IMPORTED)
 
 set_target_properties(clangCodeGen PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAnalysis;clangAST;clangAnalysis;clangBasic;clangFrontend;clangLex;LLVMAnalysis;LLVMBitReader;LLVMBitWriter;LLVMCore;LLVMCoroutines;LLVMCoverage;LLVMipo;LLVMIRReader;LLVMInstCombine;LLVMInstrumentation;LLVMLTO;LLVMLinker;LLVMMC;LLVMObjCARCOpts;LLVMObject;LLVMPasses;LLVMProfileData;LLVMScalarOpts;LLVMSupport;LLVMTarget;LLVMTransformUtils"
+  INTERFACE_LINK_LIBRARIES "clangAnalysis;clangAST;clangBasic;clangFrontend;clangLex;LLVMAnalysis;LLVMBitReader;LLVMBitWriter;LLVMCore;LLVMCoroutines;LLVMCoverage;LLVMipo;LLVMIRReader;LLVMInstCombine;LLVMInstrumentation;LLVMLTO;LLVMLinker;LLVMMC;LLVMObjCARCOpts;LLVMObject;LLVMPasses;LLVMProfileData;LLVMScalarOpts;LLVMSupport;LLVMTarget;LLVMTransformUtils"
 )
 
 # Create imported target clangAnalysis
@@ -260,7 +260,7 @@ add_executable(clang-refactor IMPORTED)
 add_library(clangApplyReplacements STATIC IMPORTED)
 
 set_target_properties(clangApplyReplacements PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangBasic;clangRewrite;clangToolingCore;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangBasic;clangRewrite;clangToolingCore;clangToolingRefactor;LLVMSupport"
 )
 
 # Create imported target clangReorderFields
@@ -329,7 +329,7 @@ set_target_properties(clangTidyCppCoreGuidelinesModule PROPERTIES
 add_library(clangTidyFuchsiaModule STATIC IMPORTED)
 
 set_target_properties(clangTidyFuchsiaModule PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyUtils;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyGoogleModule;clangTidyUtils;LLVMSupport"
 )
 
 # Create imported target clangTidyGoogleModule
@@ -364,7 +364,7 @@ set_target_properties(clangTidyMiscModule PROPERTIES
 add_library(clangTidyModernizeModule STATIC IMPORTED)
 
 set_target_properties(clangTidyModernizeModule PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyReadabilityModule;clangTidyUtils;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyReadabilityModule;clangTidyUtils;clangTooling;LLVMSupport"
 )
 
 # Create imported target clangTidyMPIModule

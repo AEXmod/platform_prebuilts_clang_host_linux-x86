@@ -45,6 +45,7 @@ SanitizeAddress,
 SanitizeHWAddress,
 SanitizeMemory,
 SanitizeThread,
+ShadowCallStack,
 Speculatable,
 StackAlignment,
 StackProtect,
@@ -107,6 +108,7 @@ static Attribute::AttrKind getAttrKindFromName(StringRef AttrName) {
     .Case("sanitize_hwaddress", Attribute::SanitizeHWAddress)
     .Case("sanitize_memory", Attribute::SanitizeMemory)
     .Case("sanitize_thread", Attribute::SanitizeThread)
+    .Case("shadowcallstack", Attribute::ShadowCallStack)
     .Case("speculatable", Attribute::Speculatable)
     .Case("alignstack", Attribute::StackAlignment)
     .Case("ssp", Attribute::StackProtect)
@@ -379,6 +381,11 @@ struct SanitizeThreadAttr : EnumAttr {
     return llvm::Attribute::SanitizeThread;
   }
 };
+struct ShadowCallStackAttr : EnumAttr {
+  static enum Attribute::AttrKind getKind() {
+    return llvm::Attribute::ShadowCallStack;
+  }
+};
 struct SpeculatableAttr : EnumAttr {
   static enum Attribute::AttrKind getKind() {
     return llvm::Attribute::Speculatable;
@@ -481,12 +488,14 @@ static inline bool hasCompatibleFnAttrs(const Function &Caller,
   Ret &= isEqual<SanitizeMemoryAttr>(Caller, Callee);
   Ret &= isEqual<SanitizeHWAddressAttr>(Caller, Callee);
   Ret &= isEqual<SafeStackAttr>(Caller, Callee);
+  Ret &= isEqual<ShadowCallStackAttr>(Caller, Callee);
 
   return Ret;
 }
 
 static inline void mergeFnAttrs(Function &Caller,
                                 const Function &Callee) {
+  setOR<NoImplicitFloatAttr>(Caller, Callee);
   setOR<NoJumpTablesAttr>(Caller, Callee);
   setOR<ProfileSampleAccurateAttr>(Caller, Callee);
   adjustCallerSSPLevel(Caller, Callee);
@@ -496,7 +505,6 @@ static inline void mergeFnAttrs(Function &Caller,
   setAND<NoInfsFPMathAttr>(Caller, Callee);
   setAND<NoNansFPMathAttr>(Caller, Callee);
   setAND<UnsafeFPMathAttr>(Caller, Callee);
-  setOR<NoImplicitFloatAttr>(Caller, Callee);
 }
 
 #endif

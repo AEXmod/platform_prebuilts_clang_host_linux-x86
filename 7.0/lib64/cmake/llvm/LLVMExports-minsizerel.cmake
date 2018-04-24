@@ -868,15 +868,6 @@ set_target_properties(llvm-modextract PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS llvm-modextract )
 list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-modextract "${_IMPORT_PREFIX}/bin/llvm-modextract" )
 
-# Import target "llvm-mcmarkup" for configuration "MinSizeRel"
-set_property(TARGET llvm-mcmarkup APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
-set_target_properties(llvm-mcmarkup PROPERTIES
-  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/bin/llvm-mcmarkup"
-  )
-
-list(APPEND _IMPORT_CHECK_TARGETS llvm-mcmarkup )
-list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-mcmarkup "${_IMPORT_PREFIX}/bin/llvm-mcmarkup" )
-
 # Import target "obj2yaml" for configuration "MinSizeRel"
 set_property(TARGET obj2yaml APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(obj2yaml PROPERTIES
@@ -894,6 +885,15 @@ set_target_properties(llvm-opt-report PROPERTIES
 
 list(APPEND _IMPORT_CHECK_TARGETS llvm-opt-report )
 list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-opt-report "${_IMPORT_PREFIX}/bin/llvm-opt-report" )
+
+# Import target "llvm-exegesis" for configuration "MinSizeRel"
+set_property(TARGET llvm-exegesis APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(llvm-exegesis PROPERTIES
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/bin/llvm-exegesis"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS llvm-exegesis )
+list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-exegesis "${_IMPORT_PREFIX}/bin/llvm-exegesis" )
 
 # Import target "sanstats" for configuration "MinSizeRel"
 set_property(TARGET sanstats APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
