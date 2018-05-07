@@ -238,7 +238,6 @@ public:
     TAIL_CALL = 2,
     LOG_ARGS_ENTER = 3,
     CUSTOM_EVENT = 4,
-    TYPED_EVENT = 5,
   };
 
   // The table will contain these structs that point to the sled, the function
@@ -645,7 +644,8 @@ private:
 
   GCMetadataPrinter *GetOrCreateGCPrinter(GCStrategy &C);
   /// Emit GlobalAlias or GlobalIFunc.
-  void emitGlobalIndirectSymbol(Module &M, const GlobalIndirectSymbol &GIS);
+  void emitGlobalIndirectSymbol(Module &M,
+                                const GlobalIndirectSymbol& GIS);
   void setupCodePaddingContext(const MachineBasicBlock &MBB,
                                MCCodePaddingContext &Context) const;
 };

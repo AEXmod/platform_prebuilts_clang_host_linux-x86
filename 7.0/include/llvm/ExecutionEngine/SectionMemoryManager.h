@@ -182,8 +182,6 @@ private:
   std::error_code applyMemoryGroupPermissions(MemoryGroup &MemGroup,
                                               unsigned Permissions);
 
-  void anchor() override;
-
   MemoryGroup CodeMem;
   MemoryGroup RWDataMem;
   MemoryGroup RODataMem;

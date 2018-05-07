@@ -200,6 +200,8 @@ OPTION(prefix_1, "aux-triple", aux_triple, Separate, INVALID, INVALID, nullptr, 
        "Auxiliary target triple.", nullptr, nullptr)
 OPTION(prefix_1, "A", A, JoinedOrSeparate, gfortran_Group, INVALID, nullptr, RenderJoined, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "a", a, Joined, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
+OPTION(prefix_1, "backend-option", backend_option, Separate, INVALID, INVALID, nullptr, CC1Option | NoDriverOption, 0,
+       "Additional arguments to forward to LLVM backend (during code gen)", nullptr, nullptr)
 OPTION(prefix_2, "bigobj", _SLASH_bigobj, Flag, cl_ignored_Group, INVALID, nullptr, CLOption | DriverOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "bind_at_load", bind__at__load, Flag, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_3, "bootclasspath=", _bootclasspath_EQ, Joined, INVALID, fbootclasspath_EQ, nullptr, 0, 0, nullptr, nullptr, nullptr)
@@ -270,7 +272,7 @@ OPTION(prefix_1, "cl-opt-disable", cl_opt_disable, Flag, opencl_Group, INVALID, 
 OPTION(prefix_1, "cl-single-precision-constant", cl_single_precision_constant, Flag, opencl_Group, INVALID, nullptr, CC1Option, 0,
        "OpenCL only. Treat double precision floating-point constant as single precision constant.", nullptr, nullptr)
 OPTION(prefix_1, "cl-std=", cl_std_EQ, Joined, opencl_Group, INVALID, nullptr, CC1Option, 0,
-       "OpenCL language standard to compile for.", nullptr, "cl,CL,cl1.1,CL1.1,cl1.2,CL1.2,cl2.0,CL2.0,c++")
+       "OpenCL language standard to compile for.", nullptr, "cl,CL,cl1.1,CL1.1,cl1.2,CL1.2,cl2.0,CL2.0")
 OPTION(prefix_1, "cl-strict-aliasing", cl_strict_aliasing, Flag, opencl_Group, INVALID, nullptr, CC1Option, 0,
        "OpenCL only. This option is added for compatibility with OpenCL 1.0.", nullptr, nullptr)
 OPTION(prefix_1, "cl-uniform-work-group-size", cl_uniform_work_group_size, Flag, opencl_Group, INVALID, nullptr, CC1Option, 0,
@@ -333,8 +335,6 @@ OPTION(prefix_3, "cuda-gpu-arch=", cuda_gpu_arch_EQ, Joined, INVALID, INVALID, n
        "CUDA GPU architecture (e.g. sm_35).  May be specified more than once.", nullptr, nullptr)
 OPTION(prefix_3, "cuda-host-only", cuda_host_only, Flag, INVALID, INVALID, nullptr, 0, 0,
        "Compile CUDA code for host only.  Has no effect on non-CUDA compilations.", nullptr, nullptr)
-OPTION(prefix_3, "cuda-include-ptx=", cuda_include_ptx_EQ, Joined, INVALID, INVALID, nullptr, DriverOption, 0,
-       "Include PTX for the follwing GPU architecture (e.g. sm_35) or 'all'. May be specified more than once.", nullptr, nullptr)
 OPTION(prefix_3, "cuda-noopt-device-debug", cuda_noopt_device_debug, Flag, INVALID, INVALID, nullptr, 0, 0,
        "Enable device-side debug info generation. Disables ptxas optimizations.", nullptr, nullptr)
 OPTION(prefix_3, "cuda-path-ignore-env", cuda_path_ignore_env, Flag, i_Group, INVALID, nullptr, 0, 0,
@@ -1257,8 +1257,6 @@ OPTION(prefix_1, "fno-real-8-real-4", real_8_real_4_fno, Flag, gfortran_Group, I
 OPTION(prefix_1, "fno-realloc-lhs", realloc_lhs_fno, Flag, gfortran_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-reciprocal-math", fno_reciprocal_math, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-recursive", recursive_fno, Flag, gfortran_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "fno-register-global-dtors-with-atexit", fno_register_global_dtors_with_atexit, Flag, f_Group, INVALID, nullptr, 0, 0,
-       "Don't use atexit or __cxa_atexit to register global destructors", nullptr, nullptr)
 OPTION(prefix_1, "fno-regs-graph", regs_graph_fno, Flag, clang_ignored_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-relaxed-template-template-args", fno_relaxed_template_template_args, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-rename-registers", rename_registers_fno, Flag, clang_ignored_gcc_optimization_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
@@ -1403,7 +1401,6 @@ OPTION(prefix_1, "fno-whole-program", whole_program_fno, Flag, clang_ignored_gcc
 OPTION(prefix_1, "fno-working-directory", fno_working_directory, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-wrapv", fno_wrapv, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-xray-always-emit-customevents", fnoxray_always_emit_customevents, Flag, f_Group, INVALID, nullptr, CC1Option, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "fno-xray-always-emit-typedevents", fnoxray_always_emit_typedevents, Flag, f_Group, INVALID, nullptr, CC1Option, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-xray-instrument", fnoxray_instrument, Flag, f_Group, INVALID, nullptr, CC1Option, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-zero-initialized-in-bss", fno_zero_initialized_in_bss, Flag, f_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "fno-zvector", fno_zvector, Flag, f_Group, INVALID, nullptr, CC1Option, 0, nullptr, nullptr, nullptr)
@@ -1566,8 +1563,6 @@ OPTION(prefix_1, "frecord-marker=", frecord_marker_EQ, Joined, gfortran_Group, I
 OPTION(prefix_1, "frecursive", recursive_f, Flag, gfortran_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "freg-struct-return", freg_struct_return, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
        "Override the default ABI to return small structs in registers", nullptr, nullptr)
-OPTION(prefix_1, "fregister-global-dtors-with-atexit", fregister_global_dtors_with_atexit, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
-       "Use atexit or __cxa_atexit to register global destructors", nullptr, nullptr)
 OPTION(prefix_1, "fregs-graph", regs_graph_f, Flag, clang_ignored_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "frelaxed-template-template-args", frelaxed_template_template_args, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
        "Enable C++17 relaxed template template argument matching", nullptr, nullptr)
@@ -1820,8 +1815,6 @@ OPTION(prefix_1, "fwritable-strings", fwritable_strings, Flag, f_Group, INVALID,
        "Store string literals as writable data", nullptr, nullptr)
 OPTION(prefix_1, "fxray-always-emit-customevents", fxray_always_emit_customevents, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
        "Determine whether to always emit __xray_customevent(...) calls even if the function it appears in is not always instrumented.", nullptr, nullptr)
-OPTION(prefix_1, "fxray-always-emit-typedevents", fxray_always_emit_typedevents, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
-       "Determine whether to always emit __xray_typedevent(...) calls even if the function it appears in is not always instrumented.", nullptr, nullptr)
 OPTION(prefix_1, "fxray-always-instrument=", fxray_always_instrument, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0,
        "DEPRECATED: Filename defining the whitelist for imbuing the 'always instrument' XRay attribute.", nullptr, nullptr)
 OPTION(prefix_1, "fxray-attr-list=", fxray_attr_list, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0,
@@ -1829,14 +1822,10 @@ OPTION(prefix_1, "fxray-attr-list=", fxray_attr_list, JoinedOrSeparate, f_Group,
 OPTION(prefix_1, "fxray-instruction-threshold=", fxray_instruction_threshold_EQ, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0,
        "Sets the minimum function size to instrument with XRay", nullptr, nullptr)
 OPTION(prefix_1, "fxray-instruction-threshold", fxray_instruction_threshold_, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "fxray-instrumentation-bundle=", fxray_instrumentation_bundle, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0,
-       "Select which XRay instrumentation points to emit. Options: all, none, function, custom. Default is 'all'.", nullptr, nullptr)
 OPTION(prefix_1, "fxray-instrument", fxray_instrument, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
        "Generate XRay instrumentation sleds on function entry and exit", nullptr, nullptr)
 OPTION(prefix_1, "fxray-link-deps", fxray_link_deps, Flag, f_Group, INVALID, nullptr, CC1Option, 0,
        "Tells clang to add the link dependencies for XRay.", nullptr, nullptr)
-OPTION(prefix_1, "fxray-modes=", fxray_modes, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0,
-       "List of modes to link in by default into XRay instrumented binaries.", nullptr, nullptr)
 OPTION(prefix_1, "fxray-never-instrument=", fxray_never_instrument, JoinedOrSeparate, f_Group, INVALID, nullptr, CC1Option, 0,
        "DEPRECATED: Filename defining the whitelist for imbuing the 'never instrument' XRay attribute.", nullptr, nullptr)
 OPTION(prefix_2, "Fx", _SLASH_Fx, Flag, cl_Group, INVALID, nullptr, CLOption | DriverOption | CLOption, 0, nullptr, nullptr, nullptr)
@@ -2122,7 +2111,6 @@ OPTION(prefix_1, "mbmi2", mbmi2, Flag, m_x86_Features_Group, INVALID, nullptr, C
 OPTION(prefix_1, "mbmi", mbmi, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mbranch-likely", mbranch_likely, Flag, m_Group, INVALID, nullptr, HelpHidden, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mcheck-zero-division", mcheck_zero_division, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "mcldemote", mcldemote, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mclflushopt", mclflushopt, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mclwb", mclwb, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mclzero", mclzero, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
@@ -2351,7 +2339,6 @@ OPTION(prefix_1, "mno-bmi2", mno_bmi2, Flag, m_x86_Features_Group, INVALID, null
 OPTION(prefix_1, "mno-bmi", mno_bmi, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-branch-likely", mno_branch_likely, Flag, m_Group, INVALID, nullptr, HelpHidden, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-check-zero-division", mno_check_zero_division, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "mno-cldemote", mno_cldemote, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-clflushopt", mno_clflushopt, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-clwb", mno_clwb, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-clzero", mno_clzero, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
@@ -2481,7 +2468,6 @@ OPTION(prefix_1, "mno-vpclmulqdq", mno_vpclmulqdq, Flag, m_x86_Features_Group, I
 OPTION(prefix_1, "mno-vsx", mno_vsx, Flag, m_ppc_Features_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-vx", mno_vx, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-warn-nonportable-cfstrings", mno_warn_nonportable_cfstrings, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "mno-wbnoinvd", mno_wbnoinvd, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-x87", mno_x87, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-xgot", mno_xgot, Flag, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mno-xnack", mno_xnack, Flag, m_amdgpu_Features_Group, INVALID, nullptr, 0, 0,
@@ -2561,7 +2547,6 @@ OPTION(prefix_1, "mrtm", mrtm, Flag, m_x86_Features_Group, INVALID, nullptr, Cor
 OPTION(prefix_1, "msahf", msahf, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "msave-temp-labels", msave_temp_labels, Flag, INVALID, INVALID, nullptr, CC1Option | CC1AsOption | NoDriverOption, 0,
        "Save temporary labels in the symbol table. Note this may change .s semantics and shouldn't generally be used on compiler-generated code.", nullptr, nullptr)
-OPTION(prefix_1, "msecure-plt", msecure_plt, Flag, m_ppc_Features_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "msgx", msgx, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "msha", msha, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mshstk", mshstk, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
@@ -2634,7 +2619,6 @@ OPTION(prefix_1, "mwarn-nonportable-cfstrings", mwarn_nonportable_cfstrings, Fla
 OPTION(prefix_1, "mwatchos-simulator-version-min=", mwatchos_simulator_version_min_EQ, Joined, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mwatchos-version-min=", mwatchos_version_min_EQ, Joined, m_Group, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mwatchsimulator-version-min=", mwatchsimulator_version_min_EQ, Joined, INVALID, mwatchos_simulator_version_min_EQ, nullptr, 0, 0, nullptr, nullptr, nullptr)
-OPTION(prefix_1, "mwbnoinvd", mwbnoinvd, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mwindows", mwindows, Joined, m_Group, INVALID, nullptr, DriverOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mx32", mx32, Flag, m_Group, INVALID, nullptr, DriverOption | CoreOption, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_1, "mx87", mx87, Flag, m_x86_Features_Group, INVALID, nullptr, CoreOption, 0, nullptr, nullptr, nullptr)
@@ -2660,8 +2644,6 @@ OPTION(prefix_1, "no-code-completion-ns-level-decls", no_code_completion_ns_leve
 OPTION(prefix_1, "no-cpp-precomp", no_cpp_precomp, Flag, clang_ignored_f_Group, INVALID, nullptr, Ignored, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_3, "no-cuda-gpu-arch=", no_cuda_gpu_arch_EQ, Joined, INVALID, INVALID, nullptr, DriverOption, 0,
        "Remove GPU architecture (e.g. sm_35) from the list of GPUs to compile for. 'all' resets the list to its default value.", nullptr, nullptr)
-OPTION(prefix_3, "no-cuda-include-ptx=", no_cuda_include_ptx_EQ, Joined, INVALID, INVALID, nullptr, DriverOption, 0,
-       "Do not include PTX for the follwing GPU architecture (e.g. sm_35) or 'all'. May be specified more than once.", nullptr, nullptr)
 OPTION(prefix_3, "no-cuda-noopt-device-debug", no_cuda_noopt_device_debug, Flag, INVALID, INVALID, nullptr, 0, 0, nullptr, nullptr, nullptr)
 OPTION(prefix_3, "no-cuda-version-check", no_cuda_version_check, Flag, INVALID, INVALID, nullptr, 0, 0,
        "Don't error out if the detected version of the CUDA install is too low for the requested CUDA gpu architecture.", nullptr, nullptr)
@@ -2913,7 +2895,7 @@ OPTION(prefix_4, "save-stats=", save_stats_EQ, Joined, INVALID, INVALID, nullptr
        "Save llvm statistics.", nullptr, nullptr)
 OPTION(prefix_4, "save-stats", save_stats, Flag, INVALID, save_stats_EQ, "cwd\0", DriverOption, 0,
        "Save llvm statistics.", nullptr, nullptr)
-OPTION(prefix_4, "save-temps=", save_temps_EQ, Joined, INVALID, INVALID, nullptr, CC1Option | DriverOption, 0,
+OPTION(prefix_4, "save-temps=", save_temps_EQ, Joined, INVALID, INVALID, nullptr, DriverOption, 0,
        "Save intermediate compilation results.", nullptr, nullptr)
 OPTION(prefix_4, "save-temps", save_temps, Flag, INVALID, save_temps_EQ, "cwd\0", DriverOption, 0,
        "Save intermediate compilation results", nullptr, nullptr)

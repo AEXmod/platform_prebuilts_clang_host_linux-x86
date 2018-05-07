@@ -467,13 +467,10 @@ class IdentifierTable {
   IdentifierInfoLookup* ExternalLookup;
 
 public:
-  /// \brief Create the identifier table.
-  explicit IdentifierTable(IdentifierInfoLookup *ExternalLookup = nullptr);
-
   /// \brief Create the identifier table, populating it with info about the
   /// language keywords for the language specified by \p LangOpts.
-  explicit IdentifierTable(const LangOptions &LangOpts,
-                           IdentifierInfoLookup *ExternalLookup = nullptr);
+  IdentifierTable(const LangOptions &LangOpts,
+                  IdentifierInfoLookup* externalLookup = nullptr);
 
   /// \brief Set the external identifier lookup mechanism.
   void setExternalIdentifierLookup(IdentifierInfoLookup *IILookup) {
@@ -561,8 +558,6 @@ public:
   /// hashing is doing.
   void PrintStats() const;
 
-  /// \brief Populate the identifier table with info about the language keywords
-  /// for the language specified by \p LangOpts.
   void AddKeywords(const LangOptions &LangOpts);
 };
 

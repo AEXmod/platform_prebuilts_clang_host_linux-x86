@@ -260,7 +260,7 @@ add_executable(clang-refactor IMPORTED)
 add_library(clangApplyReplacements STATIC IMPORTED)
 
 set_target_properties(clangApplyReplacements PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangBasic;clangRewrite;clangToolingCore;clangToolingRefactor;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangBasic;clangRewrite;clangToolingCore;LLVMSupport"
 )
 
 # Create imported target clangReorderFields
@@ -329,7 +329,7 @@ set_target_properties(clangTidyCppCoreGuidelinesModule PROPERTIES
 add_library(clangTidyFuchsiaModule STATIC IMPORTED)
 
 set_target_properties(clangTidyFuchsiaModule PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyGoogleModule;clangTidyUtils;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyUtils;LLVMSupport"
 )
 
 # Create imported target clangTidyGoogleModule
@@ -364,7 +364,7 @@ set_target_properties(clangTidyMiscModule PROPERTIES
 add_library(clangTidyModernizeModule STATIC IMPORTED)
 
 set_target_properties(clangTidyModernizeModule PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyReadabilityModule;clangTidyUtils;clangTooling;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangASTMatchers;clangBasic;clangLex;clangTidy;clangTidyReadabilityModule;clangTidyUtils;LLVMSupport"
 )
 
 # Create imported target clangTidyMPIModule

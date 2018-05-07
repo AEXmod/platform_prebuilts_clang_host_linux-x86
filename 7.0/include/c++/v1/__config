@@ -36,11 +36,7 @@
 #define _LIBCPP_VERSION 7000
 
 #ifndef _LIBCPP_ABI_VERSION
-#  ifdef __Fuchsia__
-#    define _LIBCPP_ABI_VERSION 2
-#  else
-#    define _LIBCPP_ABI_VERSION 1
-#  endif
+#define _LIBCPP_ABI_VERSION 1
 #endif
 
 #if defined(__ELF__)
