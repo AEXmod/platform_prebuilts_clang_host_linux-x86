@@ -524,6 +524,10 @@
   bool VisitNoSplitStackAttr(NoSplitStackAttr *A) {
     return true; 
   }
+  bool TraverseNoStackProtectorAttr(NoStackProtectorAttr *A);
+  bool VisitNoStackProtectorAttr(NoStackProtectorAttr *A) {
+    return true; 
+  }
   bool TraverseNoThreadSafetyAnalysisAttr(NoThreadSafetyAnalysisAttr *A);
   bool VisitNoThreadSafetyAnalysisAttr(NoThreadSafetyAnalysisAttr *A) {
     return true; 
@@ -2185,6 +2189,15 @@ bool VISITORCLASS<Derived>::TraverseNoSplitStackAttr(NoSplitStackAttr *A) {
 }
 
 template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseNoStackProtectorAttr(NoStackProtectorAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitNoStackProtectorAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
 bool VISITORCLASS<Derived>::TraverseNoThreadSafetyAnalysisAttr(NoThreadSafetyAnalysisAttr *A) {
   if (!getDerived().VisitAttr(A))
     return false;
@@ -3436,6 +3449,8 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseNoSanitizeAttr(cast<NoSanitizeAttr>(A));
     case attr::NoSplitStack:
       return getDerived().TraverseNoSplitStackAttr(cast<NoSplitStackAttr>(A));
+    case attr::NoStackProtector:
+      return getDerived().TraverseNoStackProtectorAttr(cast<NoStackProtectorAttr>(A));
     case attr::NoThreadSafetyAnalysis:
       return getDerived().TraverseNoThreadSafetyAnalysisAttr(cast<NoThreadSafetyAnalysisAttr>(A));
     case attr::NoThrow:

@@ -1007,6 +1007,13 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(A->getSpellingListIndex());
     break;
   }
+  case attr::NoStackProtector: {
+    const auto *SA = cast<NoStackProtectorAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    break;
+  }
   case attr::NoThreadSafetyAnalysis: {
     const auto *SA = cast<NoThreadSafetyAnalysisAttr>(A);
     Record.push_back(SA->isInherited());

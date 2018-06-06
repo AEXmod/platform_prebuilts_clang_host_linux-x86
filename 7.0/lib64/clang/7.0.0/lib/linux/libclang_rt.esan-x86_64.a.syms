@@ -24,6 +24,8 @@
   __interceptor___lxstat;
   __interceptor___lxstat64;
   __interceptor___overflow;
+  __interceptor___pthread_mutex_lock;
+  __interceptor___pthread_mutex_unlock;
   __interceptor___snprintf_chk;
   __interceptor___sprintf_chk;
   __interceptor___strndup;
@@ -420,6 +422,9 @@
   __lxstat;
   __lxstat64;
   __overflow;
+  __pthread_mutex_lock;
+  __pthread_mutex_unlock;
+  __sanitizer_acquire_crash_state;
   __sanitizer_get_module_and_offset_for_pc;
   __sanitizer_install_malloc_and_free_hooks;
   __sanitizer_report_error_summary;

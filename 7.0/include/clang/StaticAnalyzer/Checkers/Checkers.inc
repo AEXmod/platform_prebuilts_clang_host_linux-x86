@@ -172,6 +172,9 @@ CHECKER("core.VLASize", VLASizeChecker, VLASizeChecker.cpp, "Check for declarati
 CHECKER("osx.cocoa.VariadicMethodTypes", VariadicMethodTypeChecker, BasicObjCFoundationChecks.cpp, "Check for passing non-Objective-C types to variadic collection initialization methods that expect only Objective-C types", -1, false)
 CHECKER("unix.Vfork", VforkChecker, VforkChecker.cpp, "Check for proper usage of vfork", -1, false)
 CHECKER("optin.cplusplus.VirtualCall", VirtualCallChecker, VirtualCallChecker.cpp, "Check virtual function calls during construction or destruction", -1, false)
+CHECKER("security.insecureAPI.bcmp", bcmp, CheckSecuritySyntaxOnly.cpp, "Warn on uses of the 'bcmp' function", -1, false)
+CHECKER("security.insecureAPI.bcopy", bcopy, CheckSecuritySyntaxOnly.cpp, "Warn on uses of the 'bcopy' function", -1, false)
+CHECKER("security.insecureAPI.bzero", bzero, CheckSecuritySyntaxOnly.cpp, "Warn on uses of the 'bzero' function", -1, false)
 CHECKER("security.insecureAPI.getpw", getpw, CheckSecuritySyntaxOnly.cpp, "Warn on uses of the 'getpw' function", -1, false)
 CHECKER("security.insecureAPI.gets", gets, CheckSecuritySyntaxOnly.cpp, "Warn on uses of the 'gets' function", -1, false)
 CHECKER("security.insecureAPI.mkstemp", mkstemp, CheckSecuritySyntaxOnly.cpp, "Warn when 'mkstemp' is passed fewer than 6 X's in the format string", -1, false)
@@ -331,7 +334,7 @@ static const short CheckerArray144[] = { 81, -1 };
 static const short CheckerArray145[] = { 80, -1 };
 static const short SubPackageArray146[] = { 148, 147, -1 };
 static const short CheckerArray147[] = { 45, -1 };
-static const short SubPackageArray148[] = { 151, 150, 153, 152, 154, 155, 156, 149, -1 };
+static const short SubPackageArray148[] = { 150, 151, 152, 154, 153, 156, 155, 157, 158, 159, 149, -1 };
 static const short CheckerArray149[] = { 110, -1 };
 static const short CheckerArray150[] = { 125, -1 };
 static const short CheckerArray151[] = { 126, -1 };
@@ -340,20 +343,23 @@ static const short CheckerArray153[] = { 128, -1 };
 static const short CheckerArray154[] = { 129, -1 };
 static const short CheckerArray155[] = { 130, -1 };
 static const short CheckerArray156[] = { 131, -1 };
-static const short SubPackageArray157[] = { 164, 158, 159, 160, 161, 163, 162, -1 };
-static const short CheckerArray158[] = { 117, -1 };
-static const short CheckerArray159[] = { 57, -1 };
-static const short CheckerArray160[] = { 59, -1 };
-static const short CheckerArray161[] = { 60, -1 };
-static const short CheckerArray162[] = { 104, -1 };
-static const short CheckerArray163[] = { 123, -1 };
-static const short SubPackageArray164[] = { 166, 165, -1 };
-static const short CheckerArray165[] = { 17, -1 };
-static const short CheckerArray166[] = { 15, -1 };
-static const short SubPackageArray167[] = { 169, 170, 168, -1 };
-static const short CheckerArray168[] = { 31, -1 };
-static const short CheckerArray169[] = { 116, -1 };
-static const short CheckerArray170[] = { 120, -1 };
+static const short CheckerArray157[] = { 132, -1 };
+static const short CheckerArray158[] = { 133, -1 };
+static const short CheckerArray159[] = { 134, -1 };
+static const short SubPackageArray160[] = { 167, 161, 162, 163, 164, 166, 165, -1 };
+static const short CheckerArray161[] = { 117, -1 };
+static const short CheckerArray162[] = { 57, -1 };
+static const short CheckerArray163[] = { 59, -1 };
+static const short CheckerArray164[] = { 60, -1 };
+static const short CheckerArray165[] = { 104, -1 };
+static const short CheckerArray166[] = { 123, -1 };
+static const short SubPackageArray167[] = { 169, 168, -1 };
+static const short CheckerArray168[] = { 17, -1 };
+static const short CheckerArray169[] = { 15, -1 };
+static const short SubPackageArray170[] = { 172, 173, 171, -1 };
+static const short CheckerArray171[] = { 31, -1 };
+static const short CheckerArray172[] = { 116, -1 };
+static const short CheckerArray173[] = { 120, -1 };
 #endif // GET_MEMBER_ARRAYS
 
 
@@ -508,26 +514,29 @@ static const short CheckerArray170[] = { 120, -1 };
   { "security.FloatLoopCounter",                                      CheckerArray147, 0, false },
   { "security.insecureAPI",                                           0, SubPackageArray148, false },
   { "security.insecureAPI.UncheckedReturn",                           CheckerArray149, 0, false },
-  { "security.insecureAPI.getpw",                                     CheckerArray150, 0, false },
-  { "security.insecureAPI.gets",                                      CheckerArray151, 0, false },
-  { "security.insecureAPI.mkstemp",                                   CheckerArray152, 0, false },
-  { "security.insecureAPI.mktemp",                                    CheckerArray153, 0, false },
-  { "security.insecureAPI.rand",                                      CheckerArray154, 0, false },
-  { "security.insecureAPI.strcpy",                                    CheckerArray155, 0, false },
-  { "security.insecureAPI.vfork",                                     CheckerArray156, 0, false },
-  { "unix",                                                           0, SubPackageArray157, false },
-  { "unix.API",                                                       CheckerArray158, 0, false },
-  { "unix.Malloc",                                                    CheckerArray159, 0, false },
-  { "unix.MallocSizeof",                                              CheckerArray160, 0, false },
-  { "unix.MismatchedDeallocator",                                     CheckerArray161, 0, false },
-  { "unix.StdCLibraryFunctions",                                      CheckerArray162, 0, false },
-  { "unix.Vfork",                                                     CheckerArray163, 0, false },
-  { "unix.cstring",                                                   0, SubPackageArray164, true },
-  { "unix.cstring.BadSizeArg",                                        CheckerArray165, 0, false },
-  { "unix.cstring.NullArg",                                           CheckerArray166, 0, false },
-  { "valist",                                                         0, SubPackageArray167, false },
-  { "valist.CopyToSelf",                                              CheckerArray168, 0, false },
-  { "valist.Uninitialized",                                           CheckerArray169, 0, false },
-  { "valist.Unterminated",                                            CheckerArray170, 0, false },
+  { "security.insecureAPI.bcmp",                                      CheckerArray150, 0, false },
+  { "security.insecureAPI.bcopy",                                     CheckerArray151, 0, false },
+  { "security.insecureAPI.bzero",                                     CheckerArray152, 0, false },
+  { "security.insecureAPI.getpw",                                     CheckerArray153, 0, false },
+  { "security.insecureAPI.gets",                                      CheckerArray154, 0, false },
+  { "security.insecureAPI.mkstemp",                                   CheckerArray155, 0, false },
+  { "security.insecureAPI.mktemp",                                    CheckerArray156, 0, false },
+  { "security.insecureAPI.rand",                                      CheckerArray157, 0, false },
+  { "security.insecureAPI.strcpy",                                    CheckerArray158, 0, false },
+  { "security.insecureAPI.vfork",                                     CheckerArray159, 0, false },
+  { "unix",                                                           0, SubPackageArray160, false },
+  { "unix.API",                                                       CheckerArray161, 0, false },
+  { "unix.Malloc",                                                    CheckerArray162, 0, false },
+  { "unix.MallocSizeof",                                              CheckerArray163, 0, false },
+  { "unix.MismatchedDeallocator",                                     CheckerArray164, 0, false },
+  { "unix.StdCLibraryFunctions",                                      CheckerArray165, 0, false },
+  { "unix.Vfork",                                                     CheckerArray166, 0, false },
+  { "unix.cstring",                                                   0, SubPackageArray167, true },
+  { "unix.cstring.BadSizeArg",                                        CheckerArray168, 0, false },
+  { "unix.cstring.NullArg",                                           CheckerArray169, 0, false },
+  { "valist",                                                         0, SubPackageArray170, false },
+  { "valist.CopyToSelf",                                              CheckerArray171, 0, false },
+  { "valist.Uninitialized",                                           CheckerArray172, 0, false },
+  { "valist.Unterminated",                                            CheckerArray173, 0, false },
 #endif // GET_CHECKNAME_TABLE
 

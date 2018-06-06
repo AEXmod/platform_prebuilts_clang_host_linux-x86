@@ -978,6 +978,15 @@
         return 1;
     break;
   }
+  case AT_NoStackProtector: {
+    if (Name == "no_stack_protector" && SyntaxUsed == 0 && Scope == "")
+        return 0;
+    if (Name == "no_stack_protector" && SyntaxUsed == 1 && Scope == "clang")
+        return 1;
+    if (Name == "no_stack_protector" && SyntaxUsed == 2 && Scope == "clang")
+        return 2;
+    break;
+  }
   case AT_NoThreadSafetyAnalysis: {
     if (Name == "no_thread_safety_analysis" && SyntaxUsed == 0 && Scope == "")
         return 0;

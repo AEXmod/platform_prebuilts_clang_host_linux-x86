@@ -234,6 +234,8 @@ BUILTIN(__builtin_neon_vcvts_s32_f32, "if", "n")
 BUILTIN(__builtin_neon_vcvts_u32_f32, "Uif", "n")
 BUILTIN(__builtin_neon_vcvtx_f32_v, "V2fV16Sci", "n")
 BUILTIN(__builtin_neon_vcvtxd_f32_f64, "fd", "n")
+BUILTIN(__builtin_neon_vdot_v, "V8ScV8ScV8ScV8Sci", "n")
+BUILTIN(__builtin_neon_vdotq_v, "V16ScV16ScV16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vdupb_lane_i8, "ScV8ScIi", "n")
 BUILTIN(__builtin_neon_vdupb_laneq_i8, "ScV16ScIi", "n")
 BUILTIN(__builtin_neon_vdupd_lane_f64, "dV1dIi", "n")
@@ -569,6 +571,7 @@ BUILTIN(__builtin_neon_vrndm_v, "V8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vrndmq_v, "V16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vrndn_v, "V8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vrndnq_v, "V16ScV16Sci", "n")
+BUILTIN(__builtin_neon_vrndns_f32, "ff", "n")
 BUILTIN(__builtin_neon_vrndp_v, "V8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vrndpq_v, "V16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vrndq_v, "V16ScV16Sci", "n")
@@ -829,6 +832,8 @@ case NEON::BI__builtin_neon_vcvtq_u16_v: mask = 0x2000000000000ULL; break;
 case NEON::BI__builtin_neon_vcvtq_u32_v: mask = 0x4000000000000ULL; break;
 case NEON::BI__builtin_neon_vcvtq_u64_v: mask = 0x8000000000000ULL; break;
 case NEON::BI__builtin_neon_vcvtx_f32_v: mask = 0x40000000000ULL; break;
+case NEON::BI__builtin_neon_vdot_v: mask = 0x40004ULL; break;
+case NEON::BI__builtin_neon_vdotq_v: mask = 0x4000400000000ULL; break;
 case NEON::BI__builtin_neon_vext_v: mask = 0xf077fULL; break;
 case NEON::BI__builtin_neon_vextq_v: mask = 0xf077f00000000ULL; break;
 case NEON::BI__builtin_neon_vfma_lane_v: mask = 0x700ULL; break;

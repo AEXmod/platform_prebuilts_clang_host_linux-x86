@@ -3906,19 +3906,19 @@ void MSInheritanceAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Polic
     llvm_unreachable("Unknown attribute spelling!");
     break;
   case 0 : {
-    OS << " __single_inheritance(" << getBestCase() << ")";
+    OS << " __single_inheritance";
     break;
   }
   case 1 : {
-    OS << " __multiple_inheritance(" << getBestCase() << ")";
+    OS << " __multiple_inheritance";
     break;
   }
   case 2 : {
-    OS << " __virtual_inheritance(" << getBestCase() << ")";
+    OS << " __virtual_inheritance";
     break;
   }
   case 3 : {
-    OS << " __unspecified_inheritance(" << getBestCase() << ")";
+    OS << " __unspecified_inheritance";
     break;
   }
 }
@@ -5116,6 +5116,48 @@ const char *NoSplitStackAttr::getSpelling() const {
     return "no_split_stack";
   case 1:
     return "no_split_stack";
+  }
+}
+
+NoStackProtectorAttr *NoStackProtectorAttr::clone(ASTContext &C) const {
+  auto *A = new (C) NoStackProtectorAttr(getLocation(), C, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void NoStackProtectorAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __attribute__((no_stack_protector))";
+    break;
+  }
+  case 1 : {
+    OS << " [[clang::no_stack_protector]]";
+    break;
+  }
+  case 2 : {
+    OS << " [[clang::no_stack_protector]]";
+    break;
+  }
+}
+}
+
+const char *NoStackProtectorAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "no_stack_protector";
+  case 1:
+    return "no_stack_protector";
+  case 2:
+    return "no_stack_protector";
   }
 }
 
@@ -9464,6 +9506,8 @@ const char *Attr::getSpelling() const {
     return cast<NoSanitizeAttr>(this)->getSpelling();
   case attr::NoSplitStack:
     return cast<NoSplitStackAttr>(this)->getSpelling();
+  case attr::NoStackProtector:
+    return cast<NoStackProtectorAttr>(this)->getSpelling();
   case attr::NoThreadSafetyAnalysis:
     return cast<NoThreadSafetyAnalysisAttr>(this)->getSpelling();
   case attr::NoThrow:
@@ -9928,6 +9972,8 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<NoSanitizeAttr>(this)->clone(C);
   case attr::NoSplitStack:
     return cast<NoSplitStackAttr>(this)->clone(C);
+  case attr::NoStackProtector:
+    return cast<NoStackProtectorAttr>(this)->clone(C);
   case attr::NoThreadSafetyAnalysis:
     return cast<NoThreadSafetyAnalysisAttr>(this)->clone(C);
   case attr::NoThrow:
@@ -10392,6 +10438,8 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<NoSanitizeAttr>(this)->printPretty(OS, Policy);
   case attr::NoSplitStack:
     return cast<NoSplitStackAttr>(this)->printPretty(OS, Policy);
+  case attr::NoStackProtector:
+    return cast<NoStackProtectorAttr>(this)->printPretty(OS, Policy);
   case attr::NoThreadSafetyAnalysis:
     return cast<NoThreadSafetyAnalysisAttr>(this)->printPretty(OS, Policy);
   case attr::NoThrow:

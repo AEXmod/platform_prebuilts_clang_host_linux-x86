@@ -1289,6 +1289,15 @@
     New->setImplicit(isImplicit);
     break;
   }
+  case attr::NoStackProtector: {
+    bool isInherited = Record.readInt();
+    bool isImplicit = Record.readInt();
+    unsigned Spelling = Record.readInt();
+    New = new (Context) NoStackProtectorAttr(Range, Context, Spelling);
+    cast<InheritableAttr>(New)->setInherited(isInherited);
+    New->setImplicit(isImplicit);
+    break;
+  }
   case attr::NoThreadSafetyAnalysis: {
     bool isInherited = Record.readInt();
     bool isImplicit = Record.readInt();

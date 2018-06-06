@@ -195,6 +195,16 @@ set_target_properties(clangToolingCore PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS clangToolingCore )
 list(APPEND _IMPORT_CHECK_FILES_FOR_clangToolingCore "${_IMPORT_PREFIX}/lib64/libclangToolingCore.a" )
 
+# Import target "clangToolingInclusions" for configuration "MinSizeRel"
+set_property(TARGET clangToolingInclusions APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(clangToolingInclusions PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_MINSIZEREL "CXX"
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/lib64/libclangToolingInclusions.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS clangToolingInclusions )
+list(APPEND _IMPORT_CHECK_FILES_FOR_clangToolingInclusions "${_IMPORT_PREFIX}/lib64/libclangToolingInclusions.a" )
+
 # Import target "clangToolingRefactor" for configuration "MinSizeRel"
 set_property(TARGET clangToolingRefactor APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(clangToolingRefactor PROPERTIES
@@ -339,6 +349,15 @@ set_target_properties(clangApplyReplacements PROPERTIES
 
 list(APPEND _IMPORT_CHECK_TARGETS clangApplyReplacements )
 list(APPEND _IMPORT_CHECK_FILES_FOR_clangApplyReplacements "${_IMPORT_PREFIX}/lib64/libclangApplyReplacements.a" )
+
+# Import target "clang-apply-replacements" for configuration "MinSizeRel"
+set_property(TARGET clang-apply-replacements APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
+set_target_properties(clang-apply-replacements PROPERTIES
+  IMPORTED_LOCATION_MINSIZEREL "${_IMPORT_PREFIX}/bin/clang-apply-replacements"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS clang-apply-replacements )
+list(APPEND _IMPORT_CHECK_FILES_FOR_clang-apply-replacements "${_IMPORT_PREFIX}/bin/clang-apply-replacements" )
 
 # Import target "clangReorderFields" for configuration "MinSizeRel"
 set_property(TARGET clangReorderFields APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)

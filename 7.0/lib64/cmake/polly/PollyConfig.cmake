@@ -1,7 +1,7 @@
 # This file allows users to call find_package(Polly) and pick up our targets.
 
 find_package(LLVM REQUIRED CONFIG
-             HINTS "/home/android/dtc/cmake/lib64/cmake/llvm")
+             HINTS "/home/dennyspb/dtc/cmake/lib64/cmake/llvm")
 
 set(Polly_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(Polly_BUNDLED_ISL ON)
@@ -9,8 +9,8 @@ set(Polly_BUNDLED_JSONCPP ON)
 set(Polly_ENABLE_GPGPU_CODEGEN OFF)
 
 set(Polly_DEFINITIONS ${LLVM_DEFINITIONS})
-set(Polly_INCLUDE_DIRS /home/android/dtc/out/7.0/include;/home/android/dtc/out/7.0/include/polly ${LLVM_INCLUDE_DIRS})
-set(Polly_LIBRARY_DIRS /home/android/dtc/out/7.0/lib64)
+set(Polly_INCLUDE_DIRS /home/dennyspb/dtc/out/7.0/include;/home/dennyspb/dtc/out/7.0/include/polly ${LLVM_INCLUDE_DIRS})
+set(Polly_LIBRARY_DIRS /home/dennyspb/dtc/out/7.0/lib64)
 set(Polly_EXPORTED_TARGETS Polly;PollyISL;LLVMPolly)
 set(Polly_LIBRARIES ${LLVM_LIBRARIES} ${Polly_EXPORTED_TARGETS})
 

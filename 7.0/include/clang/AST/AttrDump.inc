@@ -686,6 +686,9 @@
   case attr::NoSplitStack: {
     break;
   }
+  case attr::NoStackProtector: {
+    break;
+  }
   case attr::NoThreadSafetyAnalysis: {
     break;
   }

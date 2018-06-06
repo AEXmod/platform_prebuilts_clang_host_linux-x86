@@ -2440,6 +2440,13 @@ public:
                    const PrintingPolicy &Policy) const;
   const char *getSpelling() const;
 
+private:
+  bool PropagatedToBaseTemplate = false;
+
+public:
+  void setPropagatedToBaseTemplate() { PropagatedToBaseTemplate = true; }
+  bool wasPropagatedToBaseTemplate() { return PropagatedToBaseTemplate; }
+  
 
   static bool classof(const Attr *A) { return A->getKind() == attr::DLLImport; }
 };
@@ -3929,6 +3936,12 @@ public:
     return A;
   }
 
+  static MSInheritanceAttr *CreateImplicit(ASTContext &Ctx, Spelling S, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) MSInheritanceAttr(Loc, Ctx, S);
+    A->setImplicit(true);
+    return A;
+  }
+
   MSInheritanceAttr(SourceRange R, ASTContext &Ctx
               , bool BestCase
               , unsigned SI
@@ -4899,6 +4912,30 @@ public:
 
 
   static bool classof(const Attr *A) { return A->getKind() == attr::NoSplitStack; }
+};
+
+class NoStackProtectorAttr : public InheritableAttr {
+public:
+  static NoStackProtectorAttr *CreateImplicit(ASTContext &Ctx, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) NoStackProtectorAttr(Loc, Ctx, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  NoStackProtectorAttr(SourceRange R, ASTContext &Ctx
+              , unsigned SI
+             )
+    : InheritableAttr(attr::NoStackProtector, R, SI, false, false)
+  {
+  }
+
+  NoStackProtectorAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::NoStackProtector; }
 };
 
 class NoThreadSafetyAnalysisAttr : public InheritableAttr {

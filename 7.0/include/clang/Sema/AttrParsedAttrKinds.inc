@@ -953,7 +953,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       return AttributeList::AT_TransparentUnion;	 // "transparent_union"
     }
     break;
-  case 18:	 // 13 strings to match.
+  case 18:	 // 14 strings to match.
     switch (Name[0]) {
     default: break;
     case 'a':	 // 2 strings to match.
@@ -985,19 +985,30 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       if (memcmp(Name.data()+1, "boutletcollection", 17) != 0)
         break;
       return AttributeList::AT_IBOutletCollection;	 // "iboutletcollection"
-    case 'n':	 // 2 strings to match.
-      if (memcmp(Name.data()+1, "o_sanitize_", 11) != 0)
+    case 'n':	 // 3 strings to match.
+      if (memcmp(Name.data()+1, "o_s", 3) != 0)
         break;
-      switch (Name[12]) {
+      switch (Name[4]) {
       default: break;
-      case 'm':	 // 1 string to match.
-        if (memcmp(Name.data()+13, "emory", 5) != 0)
+      case 'a':	 // 2 strings to match.
+        if (memcmp(Name.data()+5, "nitize_", 7) != 0)
           break;
-        return AttributeList::AT_NoSanitizeSpecific;	 // "no_sanitize_memory"
+        switch (Name[12]) {
+        default: break;
+        case 'm':	 // 1 string to match.
+          if (memcmp(Name.data()+13, "emory", 5) != 0)
+            break;
+          return AttributeList::AT_NoSanitizeSpecific;	 // "no_sanitize_memory"
+        case 't':	 // 1 string to match.
+          if (memcmp(Name.data()+13, "hread", 5) != 0)
+            break;
+          return AttributeList::AT_NoSanitizeSpecific;	 // "no_sanitize_thread"
+        }
+        break;
       case 't':	 // 1 string to match.
-        if (memcmp(Name.data()+13, "hread", 5) != 0)
+        if (memcmp(Name.data()+5, "ack_protector", 13) != 0)
           break;
-        return AttributeList::AT_NoSanitizeSpecific;	 // "no_sanitize_thread"
+        return AttributeList::AT_NoStackProtector;	 // "no_stack_protector"
       }
       break;
     case 'o':	 // 2 strings to match.
@@ -2532,7 +2543,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       return AttributeList::AT_NoSanitizeSpecific;	 // "gnu::no_sanitize_address"
     }
     break;
-  case 25:	 // 9 strings to match.
+  case 25:	 // 10 strings to match.
     if (memcmp(Name.data()+0, "clang::", 7) != 0)
       break;
     switch (Name[7]) {
@@ -2553,10 +2564,21 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       if (memcmp(Name.data()+8, "boutletcollection", 17) != 0)
         break;
       return AttributeList::AT_IBOutletCollection;	 // "clang::iboutletcollection"
-    case 'n':	 // 1 string to match.
-      if (memcmp(Name.data()+8, "o_sanitize_memory", 17) != 0)
+    case 'n':	 // 2 strings to match.
+      if (memcmp(Name.data()+8, "o_s", 3) != 0)
         break;
-      return AttributeList::AT_NoSanitizeSpecific;	 // "clang::no_sanitize_memory"
+      switch (Name[11]) {
+      default: break;
+      case 'a':	 // 1 string to match.
+        if (memcmp(Name.data()+12, "nitize_memory", 13) != 0)
+          break;
+        return AttributeList::AT_NoSanitizeSpecific;	 // "clang::no_sanitize_memory"
+      case 't':	 // 1 string to match.
+        if (memcmp(Name.data()+12, "ack_protector", 13) != 0)
+          break;
+        return AttributeList::AT_NoStackProtector;	 // "clang::no_stack_protector"
+      }
+      break;
     case 'o':	 // 1 string to match.
       if (memcmp(Name.data()+8, "bjc_method_family", 17) != 0)
         break;
@@ -3223,7 +3245,7 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       return AttributeList::AT_Ownership;	 // "clang::ownership_returns"
     }
     break;
-  case 25:	 // 6 strings to match.
+  case 25:	 // 7 strings to match.
     if (memcmp(Name.data()+0, "clang::", 7) != 0)
       break;
     switch (Name[7]) {
@@ -3240,10 +3262,21 @@ static AttributeList::Kind getAttrKind(StringRef Name, AttributeList::Syntax Syn
       if (memcmp(Name.data()+8, "boutletcollection", 17) != 0)
         break;
       return AttributeList::AT_IBOutletCollection;	 // "clang::iboutletcollection"
-    case 'n':	 // 1 string to match.
-      if (memcmp(Name.data()+8, "o_sanitize_memory", 17) != 0)
+    case 'n':	 // 2 strings to match.
+      if (memcmp(Name.data()+8, "o_s", 3) != 0)
         break;
-      return AttributeList::AT_NoSanitizeSpecific;	 // "clang::no_sanitize_memory"
+      switch (Name[11]) {
+      default: break;
+      case 'a':	 // 1 string to match.
+        if (memcmp(Name.data()+12, "nitize_memory", 13) != 0)
+          break;
+        return AttributeList::AT_NoSanitizeSpecific;	 // "clang::no_sanitize_memory"
+      case 't':	 // 1 string to match.
+        if (memcmp(Name.data()+12, "ack_protector", 13) != 0)
+          break;
+        return AttributeList::AT_NoStackProtector;	 // "clang::no_stack_protector"
+      }
+      break;
     case 'o':	 // 1 string to match.
       if (memcmp(Name.data()+8, "bjc_method_family", 17) != 0)
         break;

@@ -646,6 +646,10 @@ Attr *instantiateTemplateAttribute(const Attr *At, ASTContext &C, Sema &S,
       const auto *A = cast<NoSplitStackAttr>(At);
       return A->clone(C);
     }
+    case attr::NoStackProtector: {
+      const auto *A = cast<NoStackProtectorAttr>(At);
+      return A->clone(C);
+    }
     case attr::NoThreadSafetyAnalysis: {
       const auto *A = cast<NoThreadSafetyAnalysisAttr>(At);
       return A->clone(C);
@@ -1502,6 +1506,9 @@ Attr *instantiateTemplateAttributeForDecl(const Attr *At,
       return nullptr;
     }
     case attr::NoSplitStack: {
+      return nullptr;
+    }
+    case attr::NoStackProtector: {
       return nullptr;
     }
     case attr::NoThreadSafetyAnalysis: {
