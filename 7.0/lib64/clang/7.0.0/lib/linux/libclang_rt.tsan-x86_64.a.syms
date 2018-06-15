@@ -113,6 +113,7 @@
   __interceptor_fclose;
   __interceptor_fdopen;
   __interceptor_fflush;
+  __interceptor_fgets;
   __interceptor_fgetxattr;
   __interceptor_flistxattr;
   __interceptor_fmemopen;
@@ -121,6 +122,7 @@
   __interceptor_fopencookie;
   __interceptor_fork;
   __interceptor_fprintf;
+  __interceptor_fputs;
   __interceptor_fread;
   __interceptor_free;
   __interceptor_freopen;
@@ -1310,6 +1312,7 @@
   fclose;
   fdopen;
   fflush;
+  fgets;
   fgetxattr;
   flistxattr;
   fmemopen;
@@ -1318,6 +1321,7 @@
   fopencookie;
   fork;
   fprintf;
+  fputs;
   fread;
   free;
   freopen;

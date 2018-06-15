@@ -18,6 +18,7 @@ DIAG(err_fe_expected_compiler_job, CLASS_ERROR, (unsigned)diag::Severity::Error,
 DIAG(err_fe_inline_asm, CLASS_ERROR, (unsigned)diag::Severity::Error, "%0", 0, SFINAE_SubstitutionFailure, false, true, 12)
 DIAG(err_fe_invalid_alignment, CLASS_ERROR, (unsigned)diag::Severity::Error, "invalid value '%1' in '%0'; alignment must be a power of 2", 0, SFINAE_SubstitutionFailure, false, true, 0)
 DIAG(err_fe_invalid_code_complete_file, CLASS_ERROR, (unsigned)diag::Severity::Fatal, "cannot locate code-completion file %0", 0, SFINAE_SubstitutionFailure, false, true, 0)
+DIAG(err_fe_invalid_exception_model, CLASS_ERROR, (unsigned)diag::Severity::Error, "invalid exception model '%0' for target '%1'", 0, SFINAE_SubstitutionFailure, false, true, 0)
 DIAG(err_fe_invalid_plugin_name, CLASS_ERROR, (unsigned)diag::Severity::Error, "unable to find plugin '%0'", 0, SFINAE_SubstitutionFailure, false, true, 0)
 DIAG(err_fe_invalid_wchar_type, CLASS_ERROR, (unsigned)diag::Severity::Error, "invalid wchar_t type '%0'; must be one of 'char', 'short', 'int'", 0, SFINAE_SubstitutionFailure, false, true, 0)
 DIAG(err_fe_no_pch_in_dir, CLASS_ERROR, (unsigned)diag::Severity::Error, "no suitable precompiled header file found in directory '%0'", 0, SFINAE_SubstitutionFailure, false, true, 0)

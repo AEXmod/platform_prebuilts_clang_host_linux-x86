@@ -145,6 +145,7 @@
   __interceptor_fork;
   __interceptor_forkpty;
   __interceptor_fprintf;
+  __interceptor_fputs;
   __interceptor_fread;
   __interceptor_fread_unlocked;
   __interceptor_free;
@@ -324,6 +325,7 @@
   __interceptor_pthread_setname_np;
   __interceptor_ptrace;
   __interceptor_putenv;
+  __interceptor_puts;
   __interceptor_pvalloc;
   __interceptor_pwrite;
   __interceptor_pwrite64;
@@ -1368,6 +1370,7 @@
   fork;
   forkpty;
   fprintf;
+  fputs;
   fread;
   fread_unlocked;
   free;
@@ -1545,6 +1548,7 @@
   pthread_setname_np;
   ptrace;
   putenv;
+  puts;
   pvalloc;
   pwrite;
   pwrite64;

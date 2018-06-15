@@ -86,6 +86,7 @@
   __interceptor_fgetgrent_r;
   __interceptor_fgetpwent;
   __interceptor_fgetpwent_r;
+  __interceptor_fgets;
   __interceptor_fgetxattr;
   __interceptor_flistxattr;
   __interceptor_fmemopen;
@@ -93,6 +94,7 @@
   __interceptor_fopen64;
   __interceptor_fopencookie;
   __interceptor_fprintf;
+  __interceptor_fputs;
   __interceptor_fread;
   __interceptor_free;
   __interceptor_freopen;
@@ -1146,6 +1148,7 @@
   fgetgrent_r;
   fgetpwent;
   fgetpwent_r;
+  fgets;
   fgetxattr;
   flistxattr;
   fmemopen;
@@ -1153,6 +1156,7 @@
   fopen64;
   fopencookie;
   fprintf;
+  fputs;
   fread;
   free;
   freopen;
