@@ -36709,20 +36709,6 @@ __ai float32x2_t vrndn_f32(float32x2_t __p0) {
 #endif
 
 #ifdef __LITTLE_ENDIAN__
-__ai float32_t vrndns_f32(float32_t __p0) {
-  float32_t __ret;
-  __ret = (float32_t) __builtin_neon_vrndns_f32(__p0);
-  return __ret;
-}
-#else
-__ai float32_t vrndns_f32(float32_t __p0) {
-  float32_t __ret;
-  __ret = (float32_t) __builtin_neon_vrndns_f32(__p0);
-  return __ret;
-}
-#endif
-
-#ifdef __LITTLE_ENDIAN__
 __ai float32x4_t vrndpq_f32(float32x4_t __p0) {
   float32x4_t __ret;
   __ret = (float32x4_t) __builtin_neon_vrndpq_v((int8x16_t)__p0, 41);

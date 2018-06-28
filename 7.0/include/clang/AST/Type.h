@@ -30,6 +30,7 @@
 #include "clang/Basic/Specifiers.h"
 #include "clang/Basic/Visibility.h"
 #include "llvm/ADT/APInt.h"
+#include "llvm/ADT/APSInt.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/FoldingSet.h"
 #include "llvm/ADT/None.h"
@@ -2107,6 +2108,26 @@ public:
   /// Determines whether this is an integer type that is unsigned or an
   /// enumeration types whose underlying type is a unsigned integer type.
   bool isUnsignedIntegerOrEnumerationType() const;
+
+  /// Return true if this is a fixed point type according to
+  /// ISO/IEC JTC1 SC22 WG14 N1169.
+  bool isFixedPointType() const;
+
+  /// Return true if this is a saturated fixed point type according to
+  /// ISO/IEC JTC1 SC22 WG14 N1169. This type can be signed or unsigned.
+  bool isSaturatedFixedPointType() const;
+
+  /// Return true if this is a saturated fixed point type according to
+  /// ISO/IEC JTC1 SC22 WG14 N1169. This type can be signed or unsigned.
+  bool isUnsaturatedFixedPointType() const;
+
+  /// Return true if this is a fixed point type that is signed according
+  /// to ISO/IEC JTC1 SC22 WG14 N1169. This type can also be saturated.
+  bool isSignedFixedPointType() const;
+
+  /// Return true if this is a fixed point type that is unsigned according
+  /// to ISO/IEC JTC1 SC22 WG14 N1169. This type can also be saturated.
+  bool isUnsignedFixedPointType() const;
 
   /// Return true if this is not a variable sized type,
   /// according to the rules of C99 6.7.5p3.  It is not legal to call this on
@@ -6293,6 +6314,44 @@ inline bool Type::isIntegerType() const {
   return false;
 }
 
+inline bool Type::isFixedPointType() const {
+  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType)) {
+    return BT->getKind() >= BuiltinType::ShortAccum &&
+           BT->getKind() <= BuiltinType::SatULongFract;
+  }
+  return false;
+}
+
+inline bool Type::isSaturatedFixedPointType() const {
+  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType)) {
+    return BT->getKind() >= BuiltinType::SatShortAccum &&
+           BT->getKind() <= BuiltinType::SatULongFract;
+  }
+  return false;
+}
+
+inline bool Type::isUnsaturatedFixedPointType() const {
+  return isFixedPointType() && !isSaturatedFixedPointType();
+}
+
+inline bool Type::isSignedFixedPointType() const {
+  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType)) {
+    return ((BT->getKind() >= BuiltinType::ShortAccum &&
+             BT->getKind() <= BuiltinType::LongAccum) ||
+            (BT->getKind() >= BuiltinType::ShortFract &&
+             BT->getKind() <= BuiltinType::LongFract) ||
+            (BT->getKind() >= BuiltinType::SatShortAccum &&
+             BT->getKind() <= BuiltinType::SatLongAccum) ||
+            (BT->getKind() >= BuiltinType::SatShortFract &&
+             BT->getKind() <= BuiltinType::SatLongFract));
+  }
+  return false;
+}
+
+inline bool Type::isUnsignedFixedPointType() const {
+  return isFixedPointType() && !isSignedFixedPointType();
+}
+
 inline bool Type::isScalarType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
     return BT->getKind() > BuiltinType::Void &&
@@ -6487,6 +6546,12 @@ QualType DecayedType::getPointeeType() const {
   (void)AttributedType::stripOuterNullability(Decayed);
   return cast<PointerType>(Decayed)->getPointeeType();
 }
+
+// Get the decimal string representation of a fixed point type, represented
+// as a scaled integer.
+void FixedPointValueToString(SmallVectorImpl<char> &Str,
+                             const llvm::APSInt &Val,
+                             unsigned Scale, unsigned Radix);
 
 } // namespace clang
 

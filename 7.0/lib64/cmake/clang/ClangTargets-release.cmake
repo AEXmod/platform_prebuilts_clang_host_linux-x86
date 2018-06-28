@@ -313,6 +313,16 @@ set_target_properties(clangHandleCXX PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS clangHandleCXX )
 list(APPEND _IMPORT_CHECK_FILES_FOR_clangHandleCXX "${_IMPORT_PREFIX}/lib64/libclangHandleCXX.a" )
 
+# Import target "clangHandleLLVM" for configuration "Release"
+set_property(TARGET clangHandleLLVM APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(clangHandleLLVM PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib64/libclangHandleLLVM.a"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS clangHandleLLVM )
+list(APPEND _IMPORT_CHECK_FILES_FOR_clangHandleLLVM "${_IMPORT_PREFIX}/lib64/libclangHandleLLVM.a" )
+
 # Import target "clang-import-test" for configuration "Release"
 set_property(TARGET clang-import-test APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(clang-import-test PROPERTIES

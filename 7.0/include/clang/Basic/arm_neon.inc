@@ -571,7 +571,6 @@ BUILTIN(__builtin_neon_vrndm_v, "V8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vrndmq_v, "V16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vrndn_v, "V8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vrndnq_v, "V16ScV16Sci", "n")
-BUILTIN(__builtin_neon_vrndns_f32, "ff", "n")
 BUILTIN(__builtin_neon_vrndp_v, "V8ScV8Sci", "n")
 BUILTIN(__builtin_neon_vrndpq_v, "V16ScV16Sci", "n")
 BUILTIN(__builtin_neon_vrndq_v, "V16ScV16Sci", "n")
@@ -1173,16 +1172,16 @@ case NEON::BI__builtin_neon_vst3_lane_v: i = 4; u = RFT(TV, false, false); break
 case NEON::BI__builtin_neon_vst3q_lane_v: i = 4; u = RFT(TV, false, false); break;
 case NEON::BI__builtin_neon_vst4_lane_v: i = 5; u = RFT(TV, false, false); break;
 case NEON::BI__builtin_neon_vst4q_lane_v: i = 5; u = RFT(TV, false, false); break;
-case NEON::BI__builtin_neon_vcvtq_n_f16_v: i = 1; l = 1; u = 63; break;
-case NEON::BI__builtin_neon_vcvt_n_f16_v: i = 1; l = 1; u = 63; break;
+case NEON::BI__builtin_neon_vcvtq_n_f16_v: i = 1; l = 1; u = 15; break;
+case NEON::BI__builtin_neon_vcvt_n_f16_v: i = 1; l = 1; u = 15; break;
 case NEON::BI__builtin_neon_vcvtq_n_f32_v: i = 1; l = 1; u = 31; break;
 case NEON::BI__builtin_neon_vcvt_n_f32_v: i = 1; l = 1; u = 31; break;
-case NEON::BI__builtin_neon_vcvtq_n_s16_v: i = 1; l = 1; u = 63; break;
-case NEON::BI__builtin_neon_vcvt_n_s16_v: i = 1; l = 1; u = 63; break;
+case NEON::BI__builtin_neon_vcvtq_n_s16_v: i = 1; l = 1; u = 15; break;
+case NEON::BI__builtin_neon_vcvt_n_s16_v: i = 1; l = 1; u = 15; break;
 case NEON::BI__builtin_neon_vcvtq_n_s32_v: i = 1; l = 1; u = 31; break;
 case NEON::BI__builtin_neon_vcvt_n_s32_v: i = 1; l = 1; u = 31; break;
-case NEON::BI__builtin_neon_vcvtq_n_u16_v: i = 1; l = 1; u = 63; break;
-case NEON::BI__builtin_neon_vcvt_n_u16_v: i = 1; l = 1; u = 63; break;
+case NEON::BI__builtin_neon_vcvtq_n_u16_v: i = 1; l = 1; u = 15; break;
+case NEON::BI__builtin_neon_vcvt_n_u16_v: i = 1; l = 1; u = 15; break;
 case NEON::BI__builtin_neon_vcvtq_n_u32_v: i = 1; l = 1; u = 31; break;
 case NEON::BI__builtin_neon_vcvt_n_u32_v: i = 1; l = 1; u = 31; break;
 case NEON::BI__builtin_neon_vext_v: i = 2; u = RFT(TV, false, false); break;

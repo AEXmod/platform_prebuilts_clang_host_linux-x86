@@ -83,6 +83,7 @@ void __incfsdword(unsigned long);
 void __incfsword(unsigned long);
 unsigned long __indword(unsigned short);
 void __indwordstring(unsigned short, unsigned long *, unsigned long);
+void __int2c(void);
 void __invlpg(void *);
 unsigned short __inword(unsigned short);
 void __inwordstring(unsigned short, unsigned short *, unsigned long);
@@ -140,6 +141,7 @@ void __svm_stgi(void);
 void __svm_vmload(size_t);
 void __svm_vmrun(size_t);
 void __svm_vmsave(size_t);
+void __ud2(void);
 unsigned __int64 __ull_rshift(unsigned __int64, int);
 void __vmx_off(void);
 void __vmx_vmptrst(unsigned __int64 *);
@@ -170,12 +172,6 @@ void __cdecl _enable(void);
 long _InterlockedAddLargeStatistic(__int64 volatile *_Addend, long _Value);
 unsigned char _interlockedbittestandreset(long volatile *, long);
 unsigned char _interlockedbittestandset(long volatile *, long);
-long _InterlockedCompareExchange_HLEAcquire(long volatile *, long, long);
-long _InterlockedCompareExchange_HLERelease(long volatile *, long, long);
-__int64 _InterlockedcompareExchange64_HLEAcquire(__int64 volatile *, __int64,
-                                                 __int64);
-__int64 _InterlockedCompareExchange64_HLERelease(__int64 volatile *, __int64,
-                                                 __int64);
 void *_InterlockedCompareExchangePointer_HLEAcquire(void *volatile *, void *,
                                                     void *);
 void *_InterlockedCompareExchangePointer_HLERelease(void *volatile *, void *,
@@ -252,10 +248,6 @@ void __writegsbyte(unsigned long, unsigned char);
 void __writegsdword(unsigned long, unsigned long);
 void __writegsqword(unsigned long, unsigned __int64);
 void __writegsword(unsigned long, unsigned short);
-static __inline__
-unsigned char _BitScanForward64(unsigned long *_Index, unsigned __int64 _Mask);
-static __inline__
-unsigned char _BitScanReverse64(unsigned long *_Index, unsigned __int64 _Mask);
 unsigned char _bittest64(__int64 const *, __int64);
 unsigned char _bittestandcomplement64(__int64 *, __int64);
 unsigned char _bittestandreset64(__int64 *, __int64);
@@ -278,10 +270,6 @@ unsigned char _InterlockedCompareExchange128_np(__int64 volatile *_Destination,
                                                 __int64 *_ComparandResult);
 short _InterlockedCompareExchange16_np(short volatile *_Destination,
                                        short _Exchange, short _Comparand);
-__int64 _InterlockedCompareExchange64_HLEAcquire(__int64 volatile *, __int64,
-                                                 __int64);
-__int64 _InterlockedCompareExchange64_HLERelease(__int64 volatile *, __int64,
-                                                 __int64);
 __int64 _InterlockedCompareExchange64_np(__int64 volatile *_Destination,
                                          __int64 _Exchange, __int64 _Comparand);
 void *_InterlockedCompareExchangePointer_np(void *volatile *_Destination,
@@ -312,6 +300,11 @@ unsigned __int64 _umul128(unsigned __int64,
 #endif /* __x86_64__ */
 
 #if defined(__x86_64__) || defined(__arm__)
+
+static __inline__
+unsigned char _BitScanForward64(unsigned long *_Index, unsigned __int64 _Mask);
+static __inline__
+unsigned char _BitScanReverse64(unsigned long *_Index, unsigned __int64 _Mask);
 
 static __inline__
 __int64 _InterlockedDecrement64(__int64 volatile *_Addend);
@@ -804,33 +797,40 @@ _InterlockedCompareExchange64_rel(__int64 volatile *_Destination,
 #if defined(__i386__) || defined(__x86_64__)
 static __inline__ void __DEFAULT_FN_ATTRS
 __movsb(unsigned char *__dst, unsigned char const *__src, size_t __n) {
-  __asm__("rep movsb" : : "D"(__dst), "S"(__src), "c"(__n));
+  __asm__ __volatile__("rep movsb" : "+D"(__dst), "+S"(__src), "+c"(__n)
+                       : : "memory");
 }
 static __inline__ void __DEFAULT_FN_ATTRS
 __movsd(unsigned long *__dst, unsigned long const *__src, size_t __n) {
-  __asm__("rep movsl" : : "D"(__dst), "S"(__src), "c"(__n));
+  __asm__ __volatile__("rep movsl" : "+D"(__dst), "+S"(__src), "+c"(__n)
+                       : : "memory");
 }
 static __inline__ void __DEFAULT_FN_ATTRS
 __movsw(unsigned short *__dst, unsigned short const *__src, size_t __n) {
-  __asm__("rep movsw" : : "D"(__dst), "S"(__src), "c"(__n));
+  __asm__ __volatile__("rep movsw" : "+D"(__dst), "+S"(__src), "+c"(__n)
+                       : : "memory");
 }
 static __inline__ void __DEFAULT_FN_ATTRS
 __stosd(unsigned long *__dst, unsigned long __x, size_t __n) {
-  __asm__("rep stosl" : : "D"(__dst), "a"(__x), "c"(__n));
+  __asm__ __volatile__("rep stosl" : "+D"(__dst), "+c"(__n) : "a"(__x)
+                       : "memory");
 }
 static __inline__ void __DEFAULT_FN_ATTRS
 __stosw(unsigned short *__dst, unsigned short __x, size_t __n) {
-  __asm__("rep stosw" : : "D"(__dst), "a"(__x), "c"(__n));
+  __asm__ __volatile__("rep stosw" : "+D"(__dst), "+c"(__n) : "a"(__x)
+                       : "memory");
 }
 #endif
 #ifdef __x86_64__
 static __inline__ void __DEFAULT_FN_ATTRS
 __movsq(unsigned long long *__dst, unsigned long long const *__src, size_t __n) {
-  __asm__("rep movsq" : : "D"(__dst), "S"(__src), "c"(__n));
+  __asm__ __volatile__("rep movsq" : "+D"(__dst), "+S"(__src), "+c"(__n)
+                       : : "memory");
 }
 static __inline__ void __DEFAULT_FN_ATTRS
 __stosq(unsigned __int64 *__dst, unsigned __int64 __x, size_t __n) {
-  __asm__("rep stosq" : : "D"(__dst), "a"(__x), "c"(__n));
+  __asm__ __volatile__("rep stosq" : "+D"(__dst), "+c"(__n) : "a"(__x)
+                       : "memory");
 }
 #endif
 

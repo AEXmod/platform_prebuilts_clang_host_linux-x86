@@ -293,6 +293,8 @@ LANGOPT(XRayAlwaysEmitTypedEvents, 1, 0,
         "controls whether to always emit intrinsic calls to "
         "__xray_typedevent(...) builtin.")
 
+LANGOPT(ForceEmitVTables, 1, 0, "whether to emit all vtables")
+
 BENIGN_LANGOPT(AllowEditorPlaceholders, 1, 0,
                "allow editor placeholders in source")
 
@@ -303,6 +305,8 @@ ENUM_LANGOPT(ClangABICompat, ClangABI, 4, ClangABI::Latest,
 COMPATIBLE_VALUE_LANGOPT(FunctionAlignment, 5, 0, "Default alignment for functions")
 
 LANGOPT(FixedPoint, 1, 0, "fixed point types")
+LANGOPT(SameFBits, 1, 0,
+        "unsigned and signed fixed point type having the same number of fractional bits")
 
 #undef LANGOPT
 #undef COMPATIBLE_LANGOPT
