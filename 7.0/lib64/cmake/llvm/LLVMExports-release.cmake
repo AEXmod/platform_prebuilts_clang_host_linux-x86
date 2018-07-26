@@ -1094,6 +1094,15 @@ set_target_properties(opt PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS opt )
 list(APPEND _IMPORT_CHECK_FILES_FOR_opt "${_IMPORT_PREFIX}/bin/opt" )
 
+# Import target "llvm-undname" for configuration "Release"
+set_property(TARGET llvm-undname APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(llvm-undname PROPERTIES
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/llvm-undname"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS llvm-undname )
+list(APPEND _IMPORT_CHECK_FILES_FOR_llvm-undname "${_IMPORT_PREFIX}/bin/llvm-undname" )
+
 # Import target "llvm-diff" for configuration "Release"
 set_property(TARGET llvm-diff APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(llvm-diff PROPERTIES

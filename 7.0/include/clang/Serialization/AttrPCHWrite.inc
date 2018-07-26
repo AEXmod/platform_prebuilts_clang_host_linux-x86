@@ -339,6 +339,26 @@ Record.push_back(SA->getType());
     Record.push_back(A->getSpellingListIndex());
     break;
   }
+  case attr::CPUDispatch: {
+    const auto *SA = cast<CPUDispatchAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    Record.push_back(SA->cpus_size());
+    for (auto &Val : SA->cpus())
+      Record.AddIdentifierRef(Val);
+    break;
+  }
+  case attr::CPUSpecific: {
+    const auto *SA = cast<CPUSpecificAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    Record.push_back(SA->cpus_size());
+    for (auto &Val : SA->cpus())
+      Record.AddIdentifierRef(Val);
+    break;
+  }
   case attr::CUDAConstant: {
     const auto *SA = cast<CUDAConstantAttr>(A);
     Record.push_back(SA->isInherited());
@@ -435,6 +455,14 @@ Record.push_back(SA->getType());
     Record.push_back(A->isImplicit());
     Record.push_back(A->getSpellingListIndex());
     Record.AddDeclRef(SA->getFunctionDecl());
+    break;
+  }
+  case attr::CodeSeg: {
+    const auto *SA = cast<CodeSegAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    Record.AddString(SA->getName());
     break;
   }
   case attr::Cold: {
@@ -842,6 +870,14 @@ Record.push_back(SA->getState());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.push_back(A->getSpellingListIndex());
+    break;
+  }
+  case attr::MinVectorWidth: {
+    const auto *SA = cast<MinVectorWidthAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(A->getSpellingListIndex());
+    Record.push_back(SA->getVectorWidth());
     break;
   }
   case attr::Mips16: {

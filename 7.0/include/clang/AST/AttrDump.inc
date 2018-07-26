@@ -228,6 +228,18 @@
   case attr::CFUnknownTransfer: {
     break;
   }
+  case attr::CPUDispatch: {
+    const auto *SA = cast<CPUDispatchAttr>(A);
+    for (const auto &Val : SA->cpus())
+      OS << " " << Val;
+    break;
+  }
+  case attr::CPUSpecific: {
+    const auto *SA = cast<CPUSpecificAttr>(A);
+    for (const auto &Val : SA->cpus())
+      OS << " " << Val;
+    break;
+  }
   case attr::CUDAConstant: {
     break;
   }
@@ -288,6 +300,11 @@
     const auto *SA = cast<CleanupAttr>(A);
     OS << " ";
     dumpBareDeclRef(SA->getFunctionDecl());
+    break;
+  }
+  case attr::CodeSeg: {
+    const auto *SA = cast<CodeSegAttr>(A);
+    OS << " \"" << SA->getName() << "\"";
     break;
   }
   case attr::Cold: {
@@ -577,6 +594,11 @@
     break;
   }
   case attr::MinSize: {
+    break;
+  }
+  case attr::MinVectorWidth: {
+    const auto *SA = cast<MinVectorWidthAttr>(A);
+    OS << " " << SA->getVectorWidth();
     break;
   }
   case attr::Mips16: {

@@ -6,11 +6,11 @@
 |*                                                                            *|
 \*===----------------------------------------------------------------------===*/
 
-static bool defaultAppertainsTo(Sema &, const AttributeList &,const Decl *) {
+static bool defaultAppertainsTo(Sema &, const ParsedAttr &,const Decl *) {
   return true;
 }
 
-static bool defaultDiagnoseLangOpts(Sema &, const AttributeList &) {
+static bool defaultDiagnoseLangOpts(Sema &, const ParsedAttr &) {
   return true;
 }
 
@@ -18,11 +18,11 @@ static bool defaultTargetRequirements(const TargetInfo &) {
   return true;
 }
 
-static unsigned defaultSpellingIndexToSemanticSpelling(const AttributeList &Attr) {
+static unsigned defaultSpellingIndexToSemanticSpelling(const ParsedAttr &Attr) {
   return UINT_MAX;
 }
 
-static bool checkAMDGPUFlatWorkGroupSizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAMDGPUFlatWorkGroupSizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "kernel functions";
@@ -35,7 +35,7 @@ static void matchRulesForAMDGPUFlatWorkGroupSize(llvm::SmallVectorImpl<std::pair
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkAMDGPUNumSGPRAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAMDGPUNumSGPRAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "kernel functions";
@@ -48,7 +48,7 @@ static void matchRulesForAMDGPUNumSGPR(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkAMDGPUNumVGPRAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAMDGPUNumVGPRAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "kernel functions";
@@ -61,7 +61,7 @@ static void matchRulesForAMDGPUNumVGPR(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkAMDGPUWavesPerEUAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAMDGPUWavesPerEUAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "kernel functions";
@@ -79,7 +79,7 @@ static bool isTargetarmthumbarmebthumbebavrx86x86_64msp430mipsmipsel(const Targe
   return true && (T.getArch() == llvm::Triple::arm || T.getArch() == llvm::Triple::thumb || T.getArch() == llvm::Triple::armeb || T.getArch() == llvm::Triple::thumbeb || T.getArch() == llvm::Triple::avr || T.getArch() == llvm::Triple::x86 || T.getArch() == llvm::Triple::x86_64 || T.getArch() == llvm::Triple::msp430 || T.getArch() == llvm::Triple::mips || T.getArch() == llvm::Triple::mipsel);
 }
 
-static bool checkAVRSignalAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAVRSignalAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -103,7 +103,7 @@ static bool isStruct(const Decl *D) {
   return false;
 }
 
-static bool checkAbiTagAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAbiTagAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isStruct(D) && !isa<VarDecl>(D) && !isa<FunctionDecl>(D) && !isa<NamespaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, variables, functions, and namespaces";
@@ -119,7 +119,7 @@ static void matchRulesForAbiTag(llvm::SmallVectorImpl<std::pair<attr::SubjectMat
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_namespace, /*IsSupported=*/LangOpts.CPlusPlus));
 }
 
-static bool checkAcquireCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAcquireCapabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -128,7 +128,7 @@ static bool checkAcquireCapabilityAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static unsigned AcquireCapabilityAttrSpellingMap(const AttributeList &Attr) {
+static unsigned AcquireCapabilityAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_acquire_capability = 0,
     CXX11_clang_acquire_capability = 1,
@@ -156,7 +156,7 @@ static bool isSharedVar(const Decl *D) {
   return false;
 }
 
-static bool checkAcquiredAfterAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAcquiredAfterAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FieldDecl>(D) && !isSharedVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-static data members and global variables";
@@ -165,7 +165,7 @@ static bool checkAcquiredAfterAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static bool checkAcquiredBeforeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAcquiredBeforeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FieldDecl>(D) && !isSharedVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-static data members and global variables";
@@ -180,7 +180,7 @@ static bool isGlobalVar(const Decl *D) {
   return false;
 }
 
-static bool checkAliasAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAliasAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and global variables";
@@ -189,7 +189,7 @@ static bool checkAliasAppertainsTo(Sema &S, const AttributeList &Attr, const Dec
   return true;
 }
 
-static bool checkAlignValueAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAlignValueAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D) && !isa<TypedefNameDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables and typedefs";
@@ -203,7 +203,7 @@ static void matchRulesForAlignValue(llvm::SmallVectorImpl<std::pair<attr::Subjec
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_type_alias, /*IsSupported=*/true));
 }
 
-static unsigned AlignedAttrSpellingMap(const AttributeList &Attr) {
+static unsigned AlignedAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_aligned = 0,
     CXX11_gnu_aligned = 1,
@@ -232,7 +232,7 @@ static bool isHasFunctionProto(const Decl *D) {
   return false;
 }
 
-static bool checkAllocAlignAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAllocAlignAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isHasFunctionProto(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-K&R-style functions";
@@ -241,7 +241,7 @@ static bool checkAllocAlignAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkAllocSizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAllocSizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -254,7 +254,7 @@ static void matchRulesForAllocSize(llvm::SmallVectorImpl<std::pair<attr::Subject
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkAlwaysInlineAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAlwaysInlineAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -263,7 +263,7 @@ static bool checkAlwaysInlineAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static unsigned AlwaysInlineAttrSpellingMap(const AttributeList &Attr) {
+static unsigned AlwaysInlineAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_always_inline = 0,
     CXX11_gnu_always_inline = 1,
@@ -293,7 +293,7 @@ static bool isFunctionLike(const Decl *D) {
   return false;
 }
 
-static bool checkAnyX86NoCfCheckAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAnyX86NoCfCheckAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isFunctionLike(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and function pointers";
@@ -306,7 +306,7 @@ static void matchRulesForAnyX86NoCfCheck(llvm::SmallVectorImpl<std::pair<attr::S
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_hasType_functionType, /*IsSupported=*/true));
 }
 
-static bool checkArcWeakrefUnavailableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkArcWeakrefUnavailableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces";
@@ -315,7 +315,7 @@ static bool checkArcWeakrefUnavailableAppertainsTo(Sema &S, const AttributeList 
   return true;
 }
 
-static bool checkArgumentWithTypeTagAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkArgumentWithTypeTagAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isHasFunctionProto(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-K&R-style functions";
@@ -324,7 +324,7 @@ static bool checkArgumentWithTypeTagAppertainsTo(Sema &S, const AttributeList &A
   return true;
 }
 
-static unsigned ArgumentWithTypeTagAttrSpellingMap(const AttributeList &Attr) {
+static unsigned ArgumentWithTypeTagAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_argument_with_type_tag = 0,
     CXX11_clang_argument_with_type_tag = 1,
@@ -352,7 +352,7 @@ static bool isInlineFunction(const Decl *D) {
   return false;
 }
 
-static bool checkArtificialAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkArtificialAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isInlineFunction(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "inline functions";
@@ -361,7 +361,7 @@ static bool checkArtificialAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkAssertCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAssertCapabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -370,7 +370,7 @@ static bool checkAssertCapabilityAppertainsTo(Sema &S, const AttributeList &Attr
   return true;
 }
 
-static unsigned AssertCapabilityAttrSpellingMap(const AttributeList &Attr) {
+static unsigned AssertCapabilityAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_assert_capability = 0,
     CXX11_clang_assert_capability = 1,
@@ -388,7 +388,7 @@ static unsigned AssertCapabilityAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkAssertExclusiveLockAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAssertExclusiveLockAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -397,7 +397,7 @@ static bool checkAssertExclusiveLockAppertainsTo(Sema &S, const AttributeList &A
   return true;
 }
 
-static bool checkAssertSharedLockAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAssertSharedLockAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -406,7 +406,7 @@ static bool checkAssertSharedLockAppertainsTo(Sema &S, const AttributeList &Attr
   return true;
 }
 
-static bool checkAssumeAlignedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAssumeAlignedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods and functions";
@@ -420,7 +420,7 @@ static void matchRulesForAssumeAligned(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkAvailabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkAvailabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<NamedDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "named declarations";
@@ -446,7 +446,7 @@ static void matchRulesForAvailability(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable, /*IsSupported=*/true));
 }
 
-static bool checkCFAuditedTransferAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCFAuditedTransferAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -455,7 +455,7 @@ static bool checkCFAuditedTransferAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static bool checkCFConsumedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCFConsumedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -464,7 +464,7 @@ static bool checkCFConsumedAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkCFUnknownTransferAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCFUnknownTransferAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -473,7 +473,33 @@ static bool checkCFUnknownTransferAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static bool checkCUDAConstantAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCPUDispatchAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
+  if (!isa<FunctionDecl>(D)) {
+    S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
+      << Attr.getName() << "functions";
+    return false;
+  }
+  return true;
+}
+
+static void matchRulesForCPUDispatch(llvm::SmallVectorImpl<std::pair<attr::SubjectMatchRule, bool>> &MatchRules, const LangOptions &LangOpts) {
+  MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
+}
+
+static bool checkCPUSpecificAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
+  if (!isa<FunctionDecl>(D)) {
+    S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
+      << Attr.getName() << "functions";
+    return false;
+  }
+  return true;
+}
+
+static void matchRulesForCPUSpecific(llvm::SmallVectorImpl<std::pair<attr::SubjectMatchRule, bool>> &MatchRules, const LangOptions &LangOpts) {
+  MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
+}
+
+static bool checkCUDAConstantAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -482,7 +508,7 @@ static bool checkCUDAConstantAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static bool checkCUDALangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkCUDALangOpts(Sema &S, const ParsedAttr &Attr) {
   if (S.LangOpts.CUDA)
     return true;
 
@@ -490,7 +516,7 @@ static bool checkCUDALangOpts(Sema &S, const AttributeList &Attr) {
   return false;
 }
 
-static bool checkCUDADeviceAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCUDADeviceAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and variables";
@@ -499,7 +525,7 @@ static bool checkCUDADeviceAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkCUDAGlobalAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCUDAGlobalAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -508,7 +534,7 @@ static bool checkCUDAGlobalAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkCUDAHostAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCUDAHostAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -517,7 +543,7 @@ static bool checkCUDAHostAppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static bool checkCUDAInvalidTargetAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCUDAInvalidTargetAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -526,7 +552,7 @@ static bool checkCUDAInvalidTargetAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static bool checkCUDALaunchBoundsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCUDALaunchBoundsAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isFunctionLike(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods, functions, and function pointers";
@@ -535,7 +561,7 @@ static bool checkCUDALaunchBoundsAppertainsTo(Sema &S, const AttributeList &Attr
   return true;
 }
 
-static bool checkCUDASharedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCUDASharedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -544,7 +570,7 @@ static bool checkCUDASharedAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkCXX11NoReturnAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCXX11NoReturnAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -557,7 +583,7 @@ static void matchRulesForCXX11NoReturn(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkCallableWhenAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCallableWhenAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -570,7 +596,7 @@ static void matchRulesForCallableWhen(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function_is_member, /*IsSupported=*/LangOpts.CPlusPlus));
 }
 
-static bool checkCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCapabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D) && !isa<TypedefNameDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, classes, and typedefs";
@@ -579,7 +605,7 @@ static bool checkCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static unsigned CapabilityAttrSpellingMap(const AttributeList &Attr) {
+static unsigned CapabilityAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_capability = 0,
     CXX11_clang_capability = 1,
@@ -597,7 +623,7 @@ static unsigned CapabilityAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkCarriesDependencyAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCarriesDependencyAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D) && !isa<ObjCMethodDecl>(D) && !isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters, Objective-C methods, and functions";
@@ -618,7 +644,7 @@ static bool isLocalVar(const Decl *D) {
   return false;
 }
 
-static bool checkCleanupAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCleanupAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isLocalVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "local variables";
@@ -627,7 +653,16 @@ static bool checkCleanupAppertainsTo(Sema &S, const AttributeList &Attr, const D
   return true;
 }
 
-static bool checkColdAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCodeSegAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
+  if (!isa<FunctionDecl>(D) && !isa<CXXRecordDecl>(D)) {
+    S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
+      << Attr.getName() << "functions and classes";
+    return false;
+  }
+  return true;
+}
+
+static bool checkColdAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -636,7 +671,7 @@ static bool checkColdAppertainsTo(Sema &S, const AttributeList &Attr, const Decl
   return true;
 }
 
-static bool checkCommonAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkCommonAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -645,7 +680,7 @@ static bool checkCommonAppertainsTo(Sema &S, const AttributeList &Attr, const De
   return true;
 }
 
-static bool checkConstructorAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkConstructorAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -654,7 +689,7 @@ static bool checkConstructorAppertainsTo(Sema &S, const AttributeList &Attr, con
   return true;
 }
 
-static bool checkConsumableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkConsumableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -667,7 +702,7 @@ static void matchRulesForConsumable(llvm::SmallVectorImpl<std::pair<attr::Subjec
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_record, /*IsSupported=*/true));
 }
 
-static bool checkConsumableAutoCastAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkConsumableAutoCastAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -676,7 +711,7 @@ static bool checkConsumableAutoCastAppertainsTo(Sema &S, const AttributeList &At
   return true;
 }
 
-static bool checkConsumableSetOnReadAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkConsumableSetOnReadAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -685,7 +720,7 @@ static bool checkConsumableSetOnReadAppertainsTo(Sema &S, const AttributeList &A
   return true;
 }
 
-static bool checkConvergentAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkConvergentAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -698,7 +733,7 @@ static void matchRulesForConvergent(llvm::SmallVectorImpl<std::pair<attr::Subjec
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkDLLExportAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkDLLExportAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D) && !isa<CXXRecordDecl>(D) && !isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, variables, classes, and Objective-C interfaces";
@@ -719,7 +754,7 @@ static void matchRulesForDLLExport(llvm::SmallVectorImpl<std::pair<attr::Subject
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_interface, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkDLLImportAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkDLLImportAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<VarDecl>(D) && !isa<CXXRecordDecl>(D) && !isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, variables, classes, and Objective-C interfaces";
@@ -735,7 +770,7 @@ static void matchRulesForDLLImport(llvm::SmallVectorImpl<std::pair<attr::Subject
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_interface, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkDestructorAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkDestructorAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -744,7 +779,7 @@ static bool checkDestructorAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkDiagnoseIfAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkDiagnoseIfAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D) && !isa<ObjCPropertyDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, Objective-C methods, and Objective-C properties";
@@ -753,7 +788,7 @@ static bool checkDiagnoseIfAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkDisableTailCallsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkDisableTailCallsAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and Objective-C methods";
@@ -767,7 +802,7 @@ static void matchRulesForDisableTailCalls(llvm::SmallVectorImpl<std::pair<attr::
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_method, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkEmptyBasesAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkEmptyBasesAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -781,7 +816,7 @@ static bool isTargetx86x86_64armthumbaarch64Microsoft(const TargetInfo &Target) 
   return true && (T.getArch() == llvm::Triple::x86 || T.getArch() == llvm::Triple::x86_64 || T.getArch() == llvm::Triple::arm || T.getArch() == llvm::Triple::thumb || T.getArch() == llvm::Triple::aarch64) && (Target.getCXXABI().getKind() == TargetCXXABI::Microsoft);
 }
 
-static bool checkEnableIfAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkEnableIfAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -794,7 +829,7 @@ static void matchRulesForEnableIf(llvm::SmallVectorImpl<std::pair<attr::SubjectM
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkEnumExtensibilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkEnumExtensibilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<EnumDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "enums";
@@ -807,7 +842,7 @@ static void matchRulesForEnumExtensibility(llvm::SmallVectorImpl<std::pair<attr:
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_enum, /*IsSupported=*/true));
 }
 
-static bool checkExclusiveTrylockFunctionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkExclusiveTrylockFunctionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -816,7 +851,7 @@ static bool checkExclusiveTrylockFunctionAppertainsTo(Sema &S, const AttributeLi
   return true;
 }
 
-static bool checkExtVectorTypeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkExtVectorTypeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<TypedefNameDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "typedefs";
@@ -825,7 +860,7 @@ static bool checkExtVectorTypeAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static bool checkExternalSourceSymbolAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkExternalSourceSymbolAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<NamedDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "named declarations";
@@ -851,7 +886,7 @@ static void matchRulesForExternalSourceSymbol(llvm::SmallVectorImpl<std::pair<at
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable, /*IsSupported=*/true));
 }
 
-static bool checkFlagEnumAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkFlagEnumAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<EnumDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "enums";
@@ -864,7 +899,7 @@ static void matchRulesForFlagEnum(llvm::SmallVectorImpl<std::pair<attr::SubjectM
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_enum, /*IsSupported=*/true));
 }
 
-static bool checkFlattenAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkFlattenAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -877,7 +912,7 @@ static void matchRulesForFlatten(llvm::SmallVectorImpl<std::pair<attr::SubjectMa
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkFormatAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkFormatAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isa<BlockDecl>(D) && !isHasFunctionProto(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods, blocks, and non-K&R-style functions";
@@ -886,7 +921,7 @@ static bool checkFormatAppertainsTo(Sema &S, const AttributeList &Attr, const De
   return true;
 }
 
-static bool checkFormatArgAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkFormatArgAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isHasFunctionProto(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods and non-K&R-style functions";
@@ -895,7 +930,7 @@ static bool checkFormatArgAppertainsTo(Sema &S, const AttributeList &Attr, const
   return true;
 }
 
-static bool checkGNUInlineAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkGNUInlineAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -904,7 +939,7 @@ static bool checkGNUInlineAppertainsTo(Sema &S, const AttributeList &Attr, const
   return true;
 }
 
-static bool checkGuardedByAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkGuardedByAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FieldDecl>(D) && !isSharedVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-static data members and global variables";
@@ -913,7 +948,7 @@ static bool checkGuardedByAppertainsTo(Sema &S, const AttributeList &Attr, const
   return true;
 }
 
-static bool checkGuardedVarAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkGuardedVarAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FieldDecl>(D) && !isSharedVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-static data members and global variables";
@@ -922,7 +957,7 @@ static bool checkGuardedVarAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkHotAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkHotAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -937,7 +972,7 @@ static bool isObjCInstanceMethod(const Decl *D) {
   return false;
 }
 
-static bool checkIBActionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkIBActionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isObjCInstanceMethod(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C instance methods";
@@ -946,7 +981,7 @@ static bool checkIBActionAppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static bool checkIFuncAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkIFuncAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -964,7 +999,7 @@ static void matchRulesForIFunc(llvm::SmallVectorImpl<std::pair<attr::SubjectMatc
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkInitPriorityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkInitPriorityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -973,7 +1008,7 @@ static bool checkInitPriorityAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static bool checkInternalLinkageAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkInternalLinkageAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D) && !isa<FunctionDecl>(D) && !isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables, functions, and classes";
@@ -988,7 +1023,7 @@ static void matchRulesForInternalLinkage(llvm::SmallVectorImpl<std::pair<attr::S
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_record, /*IsSupported=*/true));
 }
 
-static bool checkLTOVisibilityPublicAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkLTOVisibilityPublicAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -1001,7 +1036,7 @@ static void matchRulesForLTOVisibilityPublic(llvm::SmallVectorImpl<std::pair<att
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_record, /*IsSupported=*/true));
 }
 
-static bool checkLayoutVersionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkLayoutVersionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -1010,7 +1045,7 @@ static bool checkLayoutVersionAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static bool checkLockReturnedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkLockReturnedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1019,7 +1054,7 @@ static bool checkLockReturnedAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static bool checkLockableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkLockableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -1028,7 +1063,7 @@ static bool checkLockableAppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static bool checkLocksExcludedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkLocksExcludedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1037,7 +1072,7 @@ static bool checkLocksExcludedAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static unsigned LoopHintAttrSpellingMap(const AttributeList &Attr) {
+static unsigned LoopHintAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     Pragma_clang_loop = 0,
     Pragma_unroll = 1,
@@ -1053,7 +1088,7 @@ static unsigned LoopHintAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkMicrosoftExtLangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkMicrosoftExtLangOpts(Sema &S, const ParsedAttr &Attr) {
   if (S.LangOpts.MicrosoftExt)
     return true;
 
@@ -1061,7 +1096,7 @@ static bool checkMicrosoftExtLangOpts(Sema &S, const AttributeList &Attr) {
   return false;
 }
 
-static unsigned MSInheritanceAttrSpellingMap(const AttributeList &Attr) {
+static unsigned MSInheritanceAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     Keyword_single_inheritance = 0,
     Keyword_multiple_inheritance = 1,
@@ -1079,7 +1114,7 @@ static unsigned MSInheritanceAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkMSNoVTableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkMSNoVTableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -1088,7 +1123,7 @@ static bool checkMSNoVTableAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkMSStructAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkMSStructAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -1097,7 +1132,7 @@ static bool checkMSStructAppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static bool checkMicroMipsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkMicroMipsAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1115,7 +1150,7 @@ static void matchRulesForMicroMips(llvm::SmallVectorImpl<std::pair<attr::Subject
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkMinSizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkMinSizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and Objective-C methods";
@@ -1124,7 +1159,7 @@ static bool checkMinSizeAppertainsTo(Sema &S, const AttributeList &Attr, const D
   return true;
 }
 
-static bool checkMips16AppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkMinVectorWidthAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1133,7 +1168,20 @@ static bool checkMips16AppertainsTo(Sema &S, const AttributeList &Attr, const De
   return true;
 }
 
-static bool checkMipsLongCallAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static void matchRulesForMinVectorWidth(llvm::SmallVectorImpl<std::pair<attr::SubjectMatchRule, bool>> &MatchRules, const LangOptions &LangOpts) {
+  MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
+}
+
+static bool checkMips16AppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
+  if (!isa<FunctionDecl>(D)) {
+    S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
+      << Attr.getName() << "functions";
+    return false;
+  }
+  return true;
+}
+
+static bool checkMipsLongCallAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1147,7 +1195,7 @@ static bool isTargetmipsmipselmips64mips64el(const TargetInfo &Target) {
   return true && (T.getArch() == llvm::Triple::mips || T.getArch() == llvm::Triple::mipsel || T.getArch() == llvm::Triple::mips64 || T.getArch() == llvm::Triple::mips64el);
 }
 
-static unsigned MipsLongCallAttrSpellingMap(const AttributeList &Attr) {
+static unsigned MipsLongCallAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_long_call = 0,
     CXX11_gnu_long_call = 1,
@@ -1169,7 +1217,7 @@ static void matchRulesForMipsLongCall(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkMipsShortCallAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkMipsShortCallAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1178,7 +1226,7 @@ static bool checkMipsShortCallAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static unsigned MipsShortCallAttrSpellingMap(const AttributeList &Attr) {
+static unsigned MipsShortCallAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_short_call = 0,
     CXX11_gnu_short_call = 1,
@@ -1200,7 +1248,7 @@ static void matchRulesForMipsShortCall(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkModeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkModeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D) && !isa<EnumDecl>(D) && !isa<TypedefNameDecl>(D) && !isa<FieldDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables, enums, typedefs, and non-static data members";
@@ -1209,7 +1257,7 @@ static bool checkModeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl
   return true;
 }
 
-static bool checkNSConsumedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNSConsumedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -1218,7 +1266,7 @@ static bool checkNSConsumedAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkNSConsumesSelfAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNSConsumesSelfAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods";
@@ -1227,7 +1275,7 @@ static bool checkNSConsumesSelfAppertainsTo(Sema &S, const AttributeList &Attr, 
   return true;
 }
 
-static bool checkNakedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNakedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1236,7 +1284,7 @@ static bool checkNakedAppertainsTo(Sema &S, const AttributeList &Attr, const Dec
   return true;
 }
 
-static bool checkNoAliasAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoAliasAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1245,7 +1293,7 @@ static bool checkNoAliasAppertainsTo(Sema &S, const AttributeList &Attr, const D
   return true;
 }
 
-static bool checkNoCommonAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoCommonAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -1260,7 +1308,7 @@ static bool isNonParmVar(const Decl *D) {
   return false;
 }
 
-static bool checkNoDebugAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoDebugAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isFunctionLike(D) && !isa<ObjCMethodDecl>(D) && !isNonParmVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, function pointers, Objective-C methods, and variables";
@@ -1275,7 +1323,7 @@ static void matchRulesForNoDebug(llvm::SmallVectorImpl<std::pair<attr::SubjectMa
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_not_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkNoDuplicateAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoDuplicateAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1288,7 +1336,7 @@ static void matchRulesForNoDuplicate(llvm::SmallVectorImpl<std::pair<attr::Subje
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkNoEscapeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoEscapeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -1301,7 +1349,7 @@ static void matchRulesForNoEscape(llvm::SmallVectorImpl<std::pair<attr::SubjectM
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkNoInlineAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoInlineAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1310,7 +1358,7 @@ static bool checkNoInlineAppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static bool checkNoInstrumentFunctionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoInstrumentFunctionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1319,7 +1367,7 @@ static bool checkNoInstrumentFunctionAppertainsTo(Sema &S, const AttributeList &
   return true;
 }
 
-static bool checkNoMicroMipsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoMicroMipsAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1332,7 +1380,7 @@ static void matchRulesForNoMicroMips(llvm::SmallVectorImpl<std::pair<attr::Subje
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkNoMips16AppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoMips16AppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1341,7 +1389,7 @@ static bool checkNoMips16AppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static bool checkNoSanitizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoSanitizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D) && !isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, Objective-C methods, and global variables";
@@ -1356,7 +1404,7 @@ static void matchRulesForNoSanitize(llvm::SmallVectorImpl<std::pair<attr::Subjec
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_global, /*IsSupported=*/true));
 }
 
-static bool checkNoSanitizeSpecificAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoSanitizeSpecificAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and global variables";
@@ -1370,7 +1418,7 @@ static void matchRulesForNoSanitizeSpecific(llvm::SmallVectorImpl<std::pair<attr
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_global, /*IsSupported=*/true));
 }
 
-static bool checkNoSplitStackAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoSplitStackAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1383,7 +1431,7 @@ static void matchRulesForNoSplitStack(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkNoStackProtectorAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoStackProtectorAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1396,7 +1444,7 @@ static void matchRulesForNoStackProtector(llvm::SmallVectorImpl<std::pair<attr::
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkNoThreadSafetyAnalysisAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoThreadSafetyAnalysisAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1405,7 +1453,7 @@ static bool checkNoThreadSafetyAnalysisAppertainsTo(Sema &S, const AttributeList
   return true;
 }
 
-static bool checkNoThrowAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNoThrowAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1418,7 +1466,7 @@ static void matchRulesForNoThrow(llvm::SmallVectorImpl<std::pair<attr::SubjectMa
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkNonNullAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNonNullAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isHasFunctionProto(D) && !isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, methods, and parameters";
@@ -1427,7 +1475,7 @@ static bool checkNonNullAppertainsTo(Sema &S, const AttributeList &Attr, const D
   return true;
 }
 
-static bool checkNotTailCalledAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkNotTailCalledAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1440,7 +1488,7 @@ static void matchRulesForNotTailCalled(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkObjCBoxableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCBoxableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -1453,7 +1501,7 @@ static void matchRulesForObjCBoxable(llvm::SmallVectorImpl<std::pair<attr::Subje
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_record, /*IsSupported=*/true));
 }
 
-static bool checkObjCBridgeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCBridgeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D) && !isa<TypedefNameDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, classes, and typedefs";
@@ -1462,7 +1510,7 @@ static bool checkObjCBridgeAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkObjCBridgeMutableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCBridgeMutableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -1471,7 +1519,7 @@ static bool checkObjCBridgeMutableAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static bool checkObjCBridgeRelatedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCBridgeRelatedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -1489,7 +1537,7 @@ static bool isObjCInterfaceDeclInitMethod(const Decl *D) {
   return false;
 }
 
-static bool checkObjCDesignatedInitializerAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCDesignatedInitializerAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isObjCInterfaceDeclInitMethod(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "init methods of interface or class extension declarations";
@@ -1498,7 +1546,7 @@ static bool checkObjCDesignatedInitializerAppertainsTo(Sema &S, const AttributeL
   return true;
 }
 
-static bool checkObjCExceptionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCExceptionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces";
@@ -1507,7 +1555,7 @@ static bool checkObjCExceptionAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static bool checkObjCExplicitProtocolImplAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCExplicitProtocolImplAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCProtocolDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C protocols";
@@ -1516,7 +1564,7 @@ static bool checkObjCExplicitProtocolImplAppertainsTo(Sema &S, const AttributeLi
   return true;
 }
 
-static bool checkObjCMethodFamilyAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCMethodFamilyAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods";
@@ -1529,7 +1577,7 @@ static void matchRulesForObjCMethodFamily(llvm::SmallVectorImpl<std::pair<attr::
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_method, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkObjCPreciseLifetimeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCPreciseLifetimeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -1538,7 +1586,7 @@ static bool checkObjCPreciseLifetimeAppertainsTo(Sema &S, const AttributeList &A
   return true;
 }
 
-static bool checkObjCRequiresPropertyDefsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCRequiresPropertyDefsAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces";
@@ -1547,7 +1595,7 @@ static bool checkObjCRequiresPropertyDefsAppertainsTo(Sema &S, const AttributeLi
   return true;
 }
 
-static bool checkObjCRequiresSuperAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCRequiresSuperAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods";
@@ -1560,7 +1608,7 @@ static void matchRulesForObjCRequiresSuper(llvm::SmallVectorImpl<std::pair<attr:
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_method, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkObjCReturnsInnerPointerAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCReturnsInnerPointerAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isa<ObjCPropertyDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods and Objective-C properties";
@@ -1569,7 +1617,7 @@ static bool checkObjCReturnsInnerPointerAppertainsTo(Sema &S, const AttributeLis
   return true;
 }
 
-static bool checkObjCRootClassAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCRootClassAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces";
@@ -1578,7 +1626,7 @@ static bool checkObjCRootClassAppertainsTo(Sema &S, const AttributeList &Attr, c
   return true;
 }
 
-static bool checkObjCRuntimeNameAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCRuntimeNameAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D) && !isa<ObjCProtocolDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces and Objective-C protocols";
@@ -1592,7 +1640,7 @@ static void matchRulesForObjCRuntimeName(llvm::SmallVectorImpl<std::pair<attr::S
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_protocol, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkObjCRuntimeVisibleAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCRuntimeVisibleAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces";
@@ -1605,7 +1653,7 @@ static void matchRulesForObjCRuntimeVisible(llvm::SmallVectorImpl<std::pair<attr
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_interface, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkObjCSubclassingRestrictedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkObjCSubclassingRestrictedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCInterfaceDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C interfaces";
@@ -1618,7 +1666,7 @@ static void matchRulesForObjCSubclassingRestricted(llvm::SmallVectorImpl<std::pa
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_interface, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkOpenCLAccessAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOpenCLAccessAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D) && !isa<TypedefNameDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters and typedefs";
@@ -1627,7 +1675,7 @@ static bool checkOpenCLAccessAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static unsigned OpenCLAccessAttrSpellingMap(const AttributeList &Attr) {
+static unsigned OpenCLAccessAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     Keyword_read_only = 0,
     Keyword_write_only = 2,
@@ -1646,7 +1694,7 @@ static unsigned OpenCLAccessAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkOpenCLIntelReqdSubGroupSizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOpenCLIntelReqdSubGroupSizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1659,7 +1707,7 @@ static void matchRulesForOpenCLIntelReqdSubGroupSize(llvm::SmallVectorImpl<std::
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkOpenCLKernelAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOpenCLKernelAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1668,7 +1716,7 @@ static bool checkOpenCLKernelAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static bool checkOpenCLNoSVMAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOpenCLNoSVMAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -1677,7 +1725,7 @@ static bool checkOpenCLNoSVMAppertainsTo(Sema &S, const AttributeList &Attr, con
   return true;
 }
 
-static bool checkOpenCLLangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkOpenCLLangOpts(Sema &S, const ParsedAttr &Attr) {
   if (S.LangOpts.OpenCL)
     return true;
 
@@ -1689,7 +1737,7 @@ static void matchRulesForOpenCLNoSVM(llvm::SmallVectorImpl<std::pair<attr::Subje
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable, /*IsSupported=*/true));
 }
 
-static bool checkOptimizeNoneAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOptimizeNoneAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and Objective-C methods";
@@ -1703,7 +1751,7 @@ static void matchRulesForOptimizeNone(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_method, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkOverloadableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOverloadableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1716,7 +1764,7 @@ static void matchRulesForOverloadable(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkOwnershipAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkOwnershipAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isHasFunctionProto(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-K&R-style functions";
@@ -1725,7 +1773,7 @@ static bool checkOwnershipAppertainsTo(Sema &S, const AttributeList &Attr, const
   return true;
 }
 
-static unsigned OwnershipAttrSpellingMap(const AttributeList &Attr) {
+static unsigned OwnershipAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_ownership_holds = 0,
     CXX11_clang_ownership_holds = 1,
@@ -1753,7 +1801,7 @@ static unsigned OwnershipAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkParamTypestateAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkParamTypestateAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -1766,7 +1814,7 @@ static void matchRulesForParamTypestate(llvm::SmallVectorImpl<std::pair<attr::Su
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkPassObjectSizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPassObjectSizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -1779,7 +1827,7 @@ static void matchRulesForPassObjectSize(llvm::SmallVectorImpl<std::pair<attr::Su
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkPragmaClangBSSSectionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPragmaClangBSSSectionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "global variables";
@@ -1788,7 +1836,7 @@ static bool checkPragmaClangBSSSectionAppertainsTo(Sema &S, const AttributeList 
   return true;
 }
 
-static bool checkPragmaClangDataSectionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPragmaClangDataSectionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "global variables";
@@ -1797,7 +1845,7 @@ static bool checkPragmaClangDataSectionAppertainsTo(Sema &S, const AttributeList
   return true;
 }
 
-static bool checkPragmaClangRodataSectionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPragmaClangRodataSectionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "global variables";
@@ -1806,7 +1854,7 @@ static bool checkPragmaClangRodataSectionAppertainsTo(Sema &S, const AttributeLi
   return true;
 }
 
-static bool checkPragmaClangTextSectionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPragmaClangTextSectionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1815,7 +1863,7 @@ static bool checkPragmaClangTextSectionAppertainsTo(Sema &S, const AttributeList
   return true;
 }
 
-static bool checkPtGuardedByAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPtGuardedByAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FieldDecl>(D) && !isSharedVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-static data members and global variables";
@@ -1824,7 +1872,7 @@ static bool checkPtGuardedByAppertainsTo(Sema &S, const AttributeList &Attr, con
   return true;
 }
 
-static bool checkPtGuardedVarAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkPtGuardedVarAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FieldDecl>(D) && !isSharedVar(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "non-static data members and global variables";
@@ -1833,7 +1881,7 @@ static bool checkPtGuardedVarAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static bool checkReleaseCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkReleaseCapabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1842,7 +1890,7 @@ static bool checkReleaseCapabilityAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static unsigned ReleaseCapabilityAttrSpellingMap(const AttributeList &Attr) {
+static unsigned ReleaseCapabilityAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_release_capability = 0,
     CXX11_clang_release_capability = 1,
@@ -1868,7 +1916,7 @@ static unsigned ReleaseCapabilityAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkRenderScriptKernelAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkRenderScriptKernelAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1877,7 +1925,7 @@ static bool checkRenderScriptKernelAppertainsTo(Sema &S, const AttributeList &At
   return true;
 }
 
-static bool checkRenderScriptLangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkRenderScriptLangOpts(Sema &S, const ParsedAttr &Attr) {
   if (S.LangOpts.RenderScript)
     return true;
 
@@ -1889,7 +1937,7 @@ static void matchRulesForRenderScriptKernel(llvm::SmallVectorImpl<std::pair<attr
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkReqdWorkGroupSizeAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkReqdWorkGroupSizeAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1898,7 +1946,7 @@ static bool checkReqdWorkGroupSizeAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static bool checkRequireConstantInitAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkRequireConstantInitAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isGlobalVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "global variables";
@@ -1907,7 +1955,7 @@ static bool checkRequireConstantInitAppertainsTo(Sema &S, const AttributeList &A
   return true;
 }
 
-static bool checkCPlusPlusLangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkCPlusPlusLangOpts(Sema &S, const ParsedAttr &Attr) {
   if (S.LangOpts.CPlusPlus)
     return true;
 
@@ -1919,7 +1967,7 @@ static void matchRulesForRequireConstantInit(llvm::SmallVectorImpl<std::pair<att
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_global, /*IsSupported=*/true));
 }
 
-static bool checkRequiresCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkRequiresCapabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1928,7 +1976,7 @@ static bool checkRequiresCapabilityAppertainsTo(Sema &S, const AttributeList &At
   return true;
 }
 
-static unsigned RequiresCapabilityAttrSpellingMap(const AttributeList &Attr) {
+static unsigned RequiresCapabilityAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_requires_capability = 0,
     CXX11_clang_requires_capability = 1,
@@ -1954,7 +2002,7 @@ static unsigned RequiresCapabilityAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkRestrictAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkRestrictAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -1963,7 +2011,7 @@ static bool checkRestrictAppertainsTo(Sema &S, const AttributeList &Attr, const 
   return true;
 }
 
-static unsigned RestrictAttrSpellingMap(const AttributeList &Attr) {
+static unsigned RestrictAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     Declspec_restrict = 0,
     GNU_malloc = 1,
@@ -1979,7 +2027,7 @@ static unsigned RestrictAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkReturnTypestateAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkReturnTypestateAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and parameters";
@@ -1993,7 +2041,7 @@ static void matchRulesForReturnTypestate(llvm::SmallVectorImpl<std::pair<attr::S
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkReturnsNonNullAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkReturnsNonNullAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods and functions";
@@ -2007,7 +2055,7 @@ static void matchRulesForReturnsNonNull(llvm::SmallVectorImpl<std::pair<attr::Su
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkReturnsTwiceAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkReturnsTwiceAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2016,7 +2064,7 @@ static bool checkReturnsTwiceAppertainsTo(Sema &S, const AttributeList &Attr, co
   return true;
 }
 
-static bool checkScopedLockableAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkScopedLockableAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -2025,7 +2073,7 @@ static bool checkScopedLockableAppertainsTo(Sema &S, const AttributeList &Attr, 
   return true;
 }
 
-static bool checkSectionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkSectionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isGlobalVar(D) && !isa<ObjCMethodDecl>(D) && !isa<ObjCPropertyDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions, global variables, Objective-C methods, and Objective-C properties";
@@ -2034,7 +2082,7 @@ static bool checkSectionAppertainsTo(Sema &S, const AttributeList &Attr, const D
   return true;
 }
 
-static unsigned SectionAttrSpellingMap(const AttributeList &Attr) {
+static unsigned SectionAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_section = 0,
     CXX11_gnu_section = 1,
@@ -2057,7 +2105,7 @@ static void matchRulesForSection(llvm::SmallVectorImpl<std::pair<attr::SubjectMa
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_property, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkSetTypestateAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkSetTypestateAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2070,7 +2118,7 @@ static void matchRulesForSetTypestate(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function_is_member, /*IsSupported=*/LangOpts.CPlusPlus));
 }
 
-static bool checkSharedTrylockFunctionAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkSharedTrylockFunctionAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2079,7 +2127,7 @@ static bool checkSharedTrylockFunctionAppertainsTo(Sema &S, const AttributeList 
   return true;
 }
 
-static bool checkSwiftContextAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkSwiftContextAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -2092,7 +2140,7 @@ static void matchRulesForSwiftContext(llvm::SmallVectorImpl<std::pair<attr::Subj
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkSwiftErrorResultAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkSwiftErrorResultAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -2105,7 +2153,7 @@ static void matchRulesForSwiftErrorResult(llvm::SmallVectorImpl<std::pair<attr::
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_parameter, /*IsSupported=*/true));
 }
 
-static bool checkSwiftIndirectResultAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkSwiftIndirectResultAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ParmVarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "parameters";
@@ -2124,7 +2172,7 @@ static bool isTLSVar(const Decl *D) {
   return false;
 }
 
-static bool checkTLSModelAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkTLSModelAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isTLSVar(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "thread-local variables";
@@ -2137,7 +2185,7 @@ static void matchRulesForTLSModel(llvm::SmallVectorImpl<std::pair<attr::SubjectM
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_variable_is_thread_local, /*IsSupported=*/true));
 }
 
-static bool checkTargetAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkTargetAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2150,7 +2198,7 @@ static void matchRulesForTarget(llvm::SmallVectorImpl<std::pair<attr::SubjectMat
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function, /*IsSupported=*/true));
 }
 
-static bool checkTestTypestateAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkTestTypestateAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2163,7 +2211,7 @@ static void matchRulesForTestTypestate(llvm::SmallVectorImpl<std::pair<attr::Sub
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_function_is_member, /*IsSupported=*/LangOpts.CPlusPlus));
 }
 
-static bool checkThreadAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkThreadAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables";
@@ -2172,7 +2220,7 @@ static bool checkThreadAppertainsTo(Sema &S, const AttributeList &Attr, const De
   return true;
 }
 
-static bool checkNotCPlusPlusLangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkNotCPlusPlusLangOpts(Sema &S, const ParsedAttr &Attr) {
   if (!S.LangOpts.CPlusPlus)
     return true;
 
@@ -2180,7 +2228,7 @@ static bool checkNotCPlusPlusLangOpts(Sema &S, const AttributeList &Attr) {
   return false;
 }
 
-static bool checkTrivialABIAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkTrivialABIAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -2193,7 +2241,7 @@ static void matchRulesForTrivialABI(llvm::SmallVectorImpl<std::pair<attr::Subjec
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_record, /*IsSupported=*/true));
 }
 
-static bool checkTryAcquireCapabilityAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkTryAcquireCapabilityAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2202,7 +2250,7 @@ static bool checkTryAcquireCapabilityAppertainsTo(Sema &S, const AttributeList &
   return true;
 }
 
-static unsigned TryAcquireCapabilityAttrSpellingMap(const AttributeList &Attr) {
+static unsigned TryAcquireCapabilityAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_try_acquire_capability = 0,
     CXX11_clang_try_acquire_capability = 1,
@@ -2220,7 +2268,7 @@ static unsigned TryAcquireCapabilityAttrSpellingMap(const AttributeList &Attr) {
   }
 }
 
-static bool checkUnusedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkUnusedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D) && !isa<ObjCIvarDecl>(D) && !isa<TypeDecl>(D) && !isa<EnumDecl>(D) && !isa<EnumConstantDecl>(D) && !isa<LabelDecl>(D) && !isa<FieldDecl>(D) && !isa<ObjCMethodDecl>(D) && !isFunctionLike(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables, non-static data members, types, enums, enumerators, labels, non-static data members, Objective-C methods, functions, and function pointers";
@@ -2229,7 +2277,7 @@ static bool checkUnusedAppertainsTo(Sema &S, const AttributeList &Attr, const De
   return true;
 }
 
-static unsigned UnusedAttrSpellingMap(const AttributeList &Attr) {
+static unsigned UnusedAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     CXX11_maybe_unused = 0,
     GNU_unused = 1,
@@ -2253,7 +2301,7 @@ static bool isNonLocalVar(const Decl *D) {
   return false;
 }
 
-static bool checkUsedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkUsedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isNonLocalVar(D) && !isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables with non-local storage, functions, and Objective-C methods";
@@ -2262,7 +2310,7 @@ static bool checkUsedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl
   return true;
 }
 
-static bool checkUuidAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkUuidAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D) && !isa<EnumDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, classes, and enums";
@@ -2271,7 +2319,7 @@ static bool checkUuidAppertainsTo(Sema &S, const AttributeList &Attr, const Decl
   return true;
 }
 
-static bool checkMicrosoftExtBorlandLangOpts(Sema &S, const AttributeList &Attr) {
+static bool checkMicrosoftExtBorlandLangOpts(Sema &S, const ParsedAttr &Attr) {
   if (S.LangOpts.MicrosoftExt || S.LangOpts.Borland)
     return true;
 
@@ -2279,7 +2327,7 @@ static bool checkMicrosoftExtBorlandLangOpts(Sema &S, const AttributeList &Attr)
   return false;
 }
 
-static bool checkVecReturnAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkVecReturnAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "classes";
@@ -2288,7 +2336,7 @@ static bool checkVecReturnAppertainsTo(Sema &S, const AttributeList &Attr, const
   return true;
 }
 
-static bool checkVecTypeHintAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkVecTypeHintAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2297,7 +2345,7 @@ static bool checkVecTypeHintAppertainsTo(Sema &S, const AttributeList &Attr, con
   return true;
 }
 
-static bool checkWarnUnusedAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkWarnUnusedAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<RecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "structs, unions, and classes";
@@ -2306,7 +2354,7 @@ static bool checkWarnUnusedAppertainsTo(Sema &S, const AttributeList &Attr, cons
   return true;
 }
 
-static bool checkWarnUnusedResultAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkWarnUnusedResultAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<ObjCMethodDecl>(D) && !isa<EnumDecl>(D) && !isa<RecordDecl>(D) && !isFunctionLike(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "Objective-C methods, enums, structs, unions, classes, functions, and function pointers";
@@ -2315,7 +2363,7 @@ static bool checkWarnUnusedResultAppertainsTo(Sema &S, const AttributeList &Attr
   return true;
 }
 
-static unsigned WarnUnusedResultAttrSpellingMap(const AttributeList &Attr) {
+static unsigned WarnUnusedResultAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     CXX11_nodiscard = 0,
     C2x_nodiscard = 1,
@@ -2342,7 +2390,7 @@ static void matchRulesForWarnUnusedResult(llvm::SmallVectorImpl<std::pair<attr::
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_hasType_functionType, /*IsSupported=*/true));
 }
 
-static bool checkWeakAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkWeakAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D) && !isa<FunctionDecl>(D) && !isa<CXXRecordDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables, functions, and classes";
@@ -2351,7 +2399,7 @@ static bool checkWeakAppertainsTo(Sema &S, const AttributeList &Attr, const Decl
   return true;
 }
 
-static bool checkWeakRefAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkWeakRefAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<VarDecl>(D) && !isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "variables and functions";
@@ -2360,7 +2408,7 @@ static bool checkWeakRefAppertainsTo(Sema &S, const AttributeList &Attr, const D
   return true;
 }
 
-static bool checkWorkGroupSizeHintAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkWorkGroupSizeHintAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::err_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions";
@@ -2369,7 +2417,7 @@ static bool checkWorkGroupSizeHintAppertainsTo(Sema &S, const AttributeList &Att
   return true;
 }
 
-static bool checkXRayInstrumentAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkXRayInstrumentAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and Objective-C methods";
@@ -2378,7 +2426,7 @@ static bool checkXRayInstrumentAppertainsTo(Sema &S, const AttributeList &Attr, 
   return true;
 }
 
-static unsigned XRayInstrumentAttrSpellingMap(const AttributeList &Attr) {
+static unsigned XRayInstrumentAttrSpellingMap(const ParsedAttr &Attr) {
   enum Spelling {
     GNU_xray_always_instrument = 0,
     CXX11_clang_xray_always_instrument = 1,
@@ -2405,7 +2453,7 @@ static void matchRulesForXRayInstrument(llvm::SmallVectorImpl<std::pair<attr::Su
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_method, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static bool checkXRayLogArgsAppertainsTo(Sema &S, const AttributeList &Attr, const Decl *D) {
+static bool checkXRayLogArgsAppertainsTo(Sema &S, const ParsedAttr &Attr, const Decl *D) {
   if (!isa<FunctionDecl>(D) && !isa<ObjCMethodDecl>(D)) {
     S.Diag(Attr.getLoc(), diag::warn_attribute_wrong_decl_type_str)
       << Attr.getName() << "functions and Objective-C methods";
@@ -2419,7 +2467,7 @@ static void matchRulesForXRayLogArgs(llvm::SmallVectorImpl<std::pair<attr::Subje
   MatchRules.push_back(std::make_pair(attr::SubjectMatchRule_objc_method, /*IsSupported=*/LangOpts.ObjC1));
 }
 
-static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
+static const ParsedAttrInfo AttrInfoMap[ParsedAttr::UnknownAttribute + 1] = {
   { 2, 0, 0, 0, 0, 0, 0, 1, checkAMDGPUFlatWorkGroupSizeAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForAMDGPUFlatWorkGroupSize },  // AT_AMDGPUFlatWorkGroupSize
   { 1, 0, 0, 0, 0, 0, 0, 1, checkAMDGPUNumSGPRAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForAMDGPUNumSGPR },  // AT_AMDGPUNumSGPR
   { 1, 0, 0, 0, 0, 0, 0, 1, checkAMDGPUNumVGPRAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForAMDGPUNumVGPR },  // AT_AMDGPUNumVGPR
@@ -2456,6 +2504,8 @@ static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
   { 0, 0, 0, 0, 0, 0, 0, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CFReturnsNotRetained
   { 0, 0, 0, 0, 0, 0, 0, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CFReturnsRetained
   { 0, 0, 0, 0, 0, 0, 0, 0, checkCFUnknownTransferAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CFUnknownTransfer
+  { 0, 15, 0, 0, 0, 0, 0, 1, checkCPUDispatchAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForCPUDispatch },  // AT_CPUDispatch
+  { 0, 15, 0, 0, 0, 0, 0, 1, checkCPUSpecificAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForCPUSpecific },  // AT_CPUSpecific
   { 0, 0, 0, 0, 0, 0, 0, 0, checkCUDAConstantAppertainsTo, checkCUDALangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CUDAConstant
   { 0, 0, 0, 0, 0, 0, 0, 0, checkCUDADeviceAppertainsTo, checkCUDALangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CUDADevice
   { 0, 0, 0, 0, 0, 0, 0, 0, checkCUDAGlobalAppertainsTo, checkCUDALangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CUDAGlobal
@@ -2468,6 +2518,7 @@ static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
   { 1, 0, 0, 0, 0, 0, 0, 0, checkCapabilityAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, CapabilityAttrSpellingMap, nullptr },  // AT_Capability
   { 0, 0, 0, 0, 0, 0, 0, 1, checkCarriesDependencyAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForCarriesDependency },  // AT_CarriesDependency
   { 1, 0, 0, 0, 0, 0, 1, 0, checkCleanupAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_Cleanup
+  { 1, 0, 0, 0, 0, 0, 0, 0, checkCodeSegAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_CodeSeg
   { 0, 0, 0, 0, 0, 0, 1, 0, checkColdAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_Cold
   { 0, 0, 0, 0, 0, 0, 1, 0, checkCommonAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_Common
   { 0, 0, 0, 0, 0, 0, 1, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_Const
@@ -2518,6 +2569,7 @@ static const ParsedAttrInfo AttrInfoMap[AttributeList::UnknownAttribute + 1] = {
   { 0, 0, 0, 0, 0, 0, 1, 0, defaultAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_MayAlias
   { 0, 0, 0, 1, 0, 0, 1, 1, checkMicroMipsAppertainsTo, defaultDiagnoseLangOpts, isTargetmipsmipsel, defaultSpellingIndexToSemanticSpelling, matchRulesForMicroMips },  // AT_MicroMips
   { 0, 0, 0, 0, 0, 0, 0, 0, checkMinSizeAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_MinSize
+  { 1, 0, 0, 0, 0, 0, 0, 1, checkMinVectorWidthAppertainsTo, defaultDiagnoseLangOpts, defaultTargetRequirements, defaultSpellingIndexToSemanticSpelling, matchRulesForMinVectorWidth },  // AT_MinVectorWidth
   { 0, 0, 0, 1, 0, 0, 1, 0, checkMips16AppertainsTo, defaultDiagnoseLangOpts, isTargetmipsmipsel, defaultSpellingIndexToSemanticSpelling, nullptr },  // AT_Mips16
   { 0, 0, 0, 1, 0, 0, 1, 1, checkMipsLongCallAppertainsTo, defaultDiagnoseLangOpts, isTargetmipsmipselmips64mips64el, MipsLongCallAttrSpellingMap, matchRulesForMipsLongCall },  // AT_MipsLongCall
   { 0, 0, 0, 1, 0, 0, 1, 1, checkMipsShortCallAppertainsTo, defaultDiagnoseLangOpts, isTargetmipsmipselmips64mips64el, MipsShortCallAttrSpellingMap, matchRulesForMipsShortCall },  // AT_MipsShortCall

@@ -435,6 +435,34 @@
     New->setImplicit(isImplicit);
     break;
   }
+  case attr::CPUDispatch: {
+    bool isInherited = Record.readInt();
+    bool isImplicit = Record.readInt();
+    unsigned Spelling = Record.readInt();
+    unsigned cpusSize = Record.readInt();
+    SmallVector<IdentifierInfo *, 4> cpus;
+    cpus.reserve(cpusSize);
+    for (unsigned i = 0; i != cpusSize; ++i)
+      cpus.push_back(Record.getIdentifierInfo());
+    New = new (Context) CPUDispatchAttr(Range, Context, cpus.data(), cpusSize, Spelling);
+    cast<InheritableAttr>(New)->setInherited(isInherited);
+    New->setImplicit(isImplicit);
+    break;
+  }
+  case attr::CPUSpecific: {
+    bool isInherited = Record.readInt();
+    bool isImplicit = Record.readInt();
+    unsigned Spelling = Record.readInt();
+    unsigned cpusSize = Record.readInt();
+    SmallVector<IdentifierInfo *, 4> cpus;
+    cpus.reserve(cpusSize);
+    for (unsigned i = 0; i != cpusSize; ++i)
+      cpus.push_back(Record.getIdentifierInfo());
+    New = new (Context) CPUSpecificAttr(Range, Context, cpus.data(), cpusSize, Spelling);
+    cast<InheritableAttr>(New)->setInherited(isInherited);
+    New->setImplicit(isImplicit);
+    break;
+  }
   case attr::CUDAConstant: {
     bool isInherited = Record.readInt();
     bool isImplicit = Record.readInt();
@@ -557,6 +585,16 @@
     unsigned Spelling = Record.readInt();
     FunctionDecl * functionDecl = Record.GetLocalDeclAs<FunctionDecl >(Record.readInt());
     New = new (Context) CleanupAttr(Range, Context, functionDecl, Spelling);
+    cast<InheritableAttr>(New)->setInherited(isInherited);
+    New->setImplicit(isImplicit);
+    break;
+  }
+  case attr::CodeSeg: {
+    bool isInherited = Record.readInt();
+    bool isImplicit = Record.readInt();
+    unsigned Spelling = Record.readInt();
+    std::string name= Record.readString();
+    New = new (Context) CodeSegAttr(Range, Context, name, Spelling);
     cast<InheritableAttr>(New)->setInherited(isInherited);
     New->setImplicit(isImplicit);
     break;
@@ -1071,6 +1109,16 @@
     bool isImplicit = Record.readInt();
     unsigned Spelling = Record.readInt();
     New = new (Context) MinSizeAttr(Range, Context, Spelling);
+    cast<InheritableAttr>(New)->setInherited(isInherited);
+    New->setImplicit(isImplicit);
+    break;
+  }
+  case attr::MinVectorWidth: {
+    bool isInherited = Record.readInt();
+    bool isImplicit = Record.readInt();
+    unsigned Spelling = Record.readInt();
+    unsigned vectorWidth = Record.readInt();
+    New = new (Context) MinVectorWidthAttr(Range, Context, vectorWidth, Spelling);
     cast<InheritableAttr>(New)->setInherited(isInherited);
     New->setImplicit(isImplicit);
     break;

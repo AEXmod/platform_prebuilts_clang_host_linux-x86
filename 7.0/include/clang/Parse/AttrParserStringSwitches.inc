@@ -71,6 +71,11 @@
 .Case("visibility", true)
 #endif // CLANG_ATTR_IDENTIFIER_ARG_LIST
 
+#if defined(CLANG_ATTR_VARIADIC_IDENTIFIER_ARG_LIST)
+.Case("cpu_dispatch", true)
+.Case("cpu_specific", true)
+#endif // CLANG_ATTR_VARIADIC_IDENTIFIER_ARG_LIST
+
 #if defined(CLANG_ATTR_TYPE_ARG_LIST)
 .Case("iboutletcollection", true)
 .Case("vec_type_hint", true)

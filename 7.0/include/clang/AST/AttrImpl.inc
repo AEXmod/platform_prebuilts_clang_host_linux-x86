@@ -1766,6 +1766,132 @@ const char *CFUnknownTransferAttr::getSpelling() const {
   }
 }
 
+CPUDispatchAttr *CPUDispatchAttr::clone(ASTContext &C) const {
+  auto *A = new (C) CPUDispatchAttr(getLocation(), C, cpus_, cpus_Size, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void CPUDispatchAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __attribute__((cpu_dispatch(";
+  bool isFirst = true;
+  for (const auto &Val : cpus()) {
+    if (isFirst) isFirst = false;
+    else OS << ", ";
+    OS << Val;
+  }
+  OS << ")))";
+    break;
+  }
+  case 1 : {
+    OS << " [[clang::cpu_dispatch(";
+  bool isFirst = true;
+  for (const auto &Val : cpus()) {
+    if (isFirst) isFirst = false;
+    else OS << ", ";
+    OS << Val;
+  }
+  OS << ")]]";
+    break;
+  }
+  case 2 : {
+    OS << " [[clang::cpu_dispatch(";
+  bool isFirst = true;
+  for (const auto &Val : cpus()) {
+    if (isFirst) isFirst = false;
+    else OS << ", ";
+    OS << Val;
+  }
+  OS << ")]]";
+    break;
+  }
+}
+}
+
+const char *CPUDispatchAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "cpu_dispatch";
+  case 1:
+    return "cpu_dispatch";
+  case 2:
+    return "cpu_dispatch";
+  }
+}
+
+CPUSpecificAttr *CPUSpecificAttr::clone(ASTContext &C) const {
+  auto *A = new (C) CPUSpecificAttr(getLocation(), C, cpus_, cpus_Size, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void CPUSpecificAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __attribute__((cpu_specific(";
+  bool isFirst = true;
+  for (const auto &Val : cpus()) {
+    if (isFirst) isFirst = false;
+    else OS << ", ";
+    OS << Val;
+  }
+  OS << ")))";
+    break;
+  }
+  case 1 : {
+    OS << " [[clang::cpu_specific(";
+  bool isFirst = true;
+  for (const auto &Val : cpus()) {
+    if (isFirst) isFirst = false;
+    else OS << ", ";
+    OS << Val;
+  }
+  OS << ")]]";
+    break;
+  }
+  case 2 : {
+    OS << " [[clang::cpu_specific(";
+  bool isFirst = true;
+  for (const auto &Val : cpus()) {
+    if (isFirst) isFirst = false;
+    else OS << ", ";
+    OS << Val;
+  }
+  OS << ")]]";
+    break;
+  }
+}
+}
+
+const char *CPUSpecificAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "cpu_specific";
+  case 1:
+    return "cpu_specific";
+  case 2:
+    return "cpu_specific";
+  }
+}
+
 CUDAConstantAttr *CUDAConstantAttr::clone(ASTContext &C) const {
   auto *A = new (C) CUDAConstantAttr(getLocation(), C, getSpellingListIndex());
   A->Inherited = Inherited;
@@ -2209,6 +2335,36 @@ const char *CleanupAttr::getSpelling() const {
     return "cleanup";
   case 1:
     return "cleanup";
+  }
+}
+
+CodeSegAttr *CodeSegAttr::clone(ASTContext &C) const {
+  auto *A = new (C) CodeSegAttr(getLocation(), C, getName(), getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void CodeSegAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __declspec(code_seg(\"" << getName() << "\"))";
+    break;
+  }
+}
+}
+
+const char *CodeSegAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "code_seg";
   }
 }
 
@@ -4183,6 +4339,48 @@ const char *MinSizeAttr::getSpelling() const {
     return "minsize";
   case 2:
     return "minsize";
+  }
+}
+
+MinVectorWidthAttr *MinVectorWidthAttr::clone(ASTContext &C) const {
+  auto *A = new (C) MinVectorWidthAttr(getLocation(), C, vectorWidth, getSpellingListIndex());
+  A->Inherited = Inherited;
+  A->IsPackExpansion = IsPackExpansion;
+  A->Implicit = Implicit;
+  return A;
+}
+
+void MinVectorWidthAttr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    break;
+  case 0 : {
+    OS << " __attribute__((min_vector_width(" << getVectorWidth() << ")))";
+    break;
+  }
+  case 1 : {
+    OS << " [[clang::min_vector_width(" << getVectorWidth() << ")]]";
+    break;
+  }
+  case 2 : {
+    OS << " [[clang::min_vector_width(" << getVectorWidth() << ")]]";
+    break;
+  }
+}
+}
+
+const char *MinVectorWidthAttr::getSpelling() const {
+  switch (SpellingListIndex) {
+  default:
+    llvm_unreachable("Unknown attribute spelling!");
+    return "(No spelling)";
+  case 0:
+    return "min_vector_width";
+  case 1:
+    return "min_vector_width";
+  case 2:
+    return "min_vector_width";
   }
 }
 
@@ -9328,6 +9526,10 @@ const char *Attr::getSpelling() const {
     return cast<CFReturnsRetainedAttr>(this)->getSpelling();
   case attr::CFUnknownTransfer:
     return cast<CFUnknownTransferAttr>(this)->getSpelling();
+  case attr::CPUDispatch:
+    return cast<CPUDispatchAttr>(this)->getSpelling();
+  case attr::CPUSpecific:
+    return cast<CPUSpecificAttr>(this)->getSpelling();
   case attr::CUDAConstant:
     return cast<CUDAConstantAttr>(this)->getSpelling();
   case attr::CUDADevice:
@@ -9354,6 +9556,8 @@ const char *Attr::getSpelling() const {
     return cast<CarriesDependencyAttr>(this)->getSpelling();
   case attr::Cleanup:
     return cast<CleanupAttr>(this)->getSpelling();
+  case attr::CodeSeg:
+    return cast<CodeSegAttr>(this)->getSpelling();
   case attr::Cold:
     return cast<ColdAttr>(this)->getSpelling();
   case attr::Common:
@@ -9460,6 +9664,8 @@ const char *Attr::getSpelling() const {
     return cast<MicroMipsAttr>(this)->getSpelling();
   case attr::MinSize:
     return cast<MinSizeAttr>(this)->getSpelling();
+  case attr::MinVectorWidth:
+    return cast<MinVectorWidthAttr>(this)->getSpelling();
   case attr::Mips16:
     return cast<Mips16Attr>(this)->getSpelling();
   case attr::MipsInterrupt:
@@ -9794,6 +10000,10 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<CFReturnsRetainedAttr>(this)->clone(C);
   case attr::CFUnknownTransfer:
     return cast<CFUnknownTransferAttr>(this)->clone(C);
+  case attr::CPUDispatch:
+    return cast<CPUDispatchAttr>(this)->clone(C);
+  case attr::CPUSpecific:
+    return cast<CPUSpecificAttr>(this)->clone(C);
   case attr::CUDAConstant:
     return cast<CUDAConstantAttr>(this)->clone(C);
   case attr::CUDADevice:
@@ -9820,6 +10030,8 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<CarriesDependencyAttr>(this)->clone(C);
   case attr::Cleanup:
     return cast<CleanupAttr>(this)->clone(C);
+  case attr::CodeSeg:
+    return cast<CodeSegAttr>(this)->clone(C);
   case attr::Cold:
     return cast<ColdAttr>(this)->clone(C);
   case attr::Common:
@@ -9926,6 +10138,8 @@ Attr *Attr::clone(ASTContext &C) const {
     return cast<MicroMipsAttr>(this)->clone(C);
   case attr::MinSize:
     return cast<MinSizeAttr>(this)->clone(C);
+  case attr::MinVectorWidth:
+    return cast<MinVectorWidthAttr>(this)->clone(C);
   case attr::Mips16:
     return cast<Mips16Attr>(this)->clone(C);
   case attr::MipsInterrupt:
@@ -10260,6 +10474,10 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<CFReturnsRetainedAttr>(this)->printPretty(OS, Policy);
   case attr::CFUnknownTransfer:
     return cast<CFUnknownTransferAttr>(this)->printPretty(OS, Policy);
+  case attr::CPUDispatch:
+    return cast<CPUDispatchAttr>(this)->printPretty(OS, Policy);
+  case attr::CPUSpecific:
+    return cast<CPUSpecificAttr>(this)->printPretty(OS, Policy);
   case attr::CUDAConstant:
     return cast<CUDAConstantAttr>(this)->printPretty(OS, Policy);
   case attr::CUDADevice:
@@ -10286,6 +10504,8 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<CarriesDependencyAttr>(this)->printPretty(OS, Policy);
   case attr::Cleanup:
     return cast<CleanupAttr>(this)->printPretty(OS, Policy);
+  case attr::CodeSeg:
+    return cast<CodeSegAttr>(this)->printPretty(OS, Policy);
   case attr::Cold:
     return cast<ColdAttr>(this)->printPretty(OS, Policy);
   case attr::Common:
@@ -10392,6 +10612,8 @@ void Attr::printPretty(raw_ostream &OS, const PrintingPolicy &Policy) const {
     return cast<MicroMipsAttr>(this)->printPretty(OS, Policy);
   case attr::MinSize:
     return cast<MinSizeAttr>(this)->printPretty(OS, Policy);
+  case attr::MinVectorWidth:
+    return cast<MinVectorWidthAttr>(this)->printPretty(OS, Policy);
   case attr::Mips16:
     return cast<Mips16Attr>(this)->printPretty(OS, Policy);
   case attr::MipsInterrupt:

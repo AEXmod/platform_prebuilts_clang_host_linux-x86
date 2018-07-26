@@ -168,6 +168,14 @@
   bool VisitCFUnknownTransferAttr(CFUnknownTransferAttr *A) {
     return true; 
   }
+  bool TraverseCPUDispatchAttr(CPUDispatchAttr *A);
+  bool VisitCPUDispatchAttr(CPUDispatchAttr *A) {
+    return true; 
+  }
+  bool TraverseCPUSpecificAttr(CPUSpecificAttr *A);
+  bool VisitCPUSpecificAttr(CPUSpecificAttr *A) {
+    return true; 
+  }
   bool TraverseCUDAConstantAttr(CUDAConstantAttr *A);
   bool VisitCUDAConstantAttr(CUDAConstantAttr *A) {
     return true; 
@@ -218,6 +226,10 @@
   }
   bool TraverseCleanupAttr(CleanupAttr *A);
   bool VisitCleanupAttr(CleanupAttr *A) {
+    return true; 
+  }
+  bool TraverseCodeSegAttr(CodeSegAttr *A);
+  bool VisitCodeSegAttr(CodeSegAttr *A) {
     return true; 
   }
   bool TraverseColdAttr(ColdAttr *A);
@@ -430,6 +442,10 @@
   }
   bool TraverseMinSizeAttr(MinSizeAttr *A);
   bool VisitMinSizeAttr(MinSizeAttr *A) {
+    return true; 
+  }
+  bool TraverseMinVectorWidthAttr(MinVectorWidthAttr *A);
+  bool VisitMinVectorWidthAttr(MinVectorWidthAttr *A) {
     return true; 
   }
   bool TraverseMips16Attr(Mips16Attr *A);
@@ -1353,6 +1369,24 @@ bool VISITORCLASS<Derived>::TraverseCFUnknownTransferAttr(CFUnknownTransferAttr 
 }
 
 template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseCPUDispatchAttr(CPUDispatchAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitCPUDispatchAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseCPUSpecificAttr(CPUSpecificAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitCPUSpecificAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
 bool VISITORCLASS<Derived>::TraverseCUDAConstantAttr(CUDAConstantAttr *A) {
   if (!getDerived().VisitAttr(A))
     return false;
@@ -1469,6 +1503,15 @@ bool VISITORCLASS<Derived>::TraverseCleanupAttr(CleanupAttr *A) {
   if (!getDerived().VisitAttr(A))
     return false;
   if (!getDerived().VisitCleanupAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseCodeSegAttr(CodeSegAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitCodeSegAttr(A))
     return false;
   return true;
 }
@@ -1977,6 +2020,15 @@ bool VISITORCLASS<Derived>::TraverseMinSizeAttr(MinSizeAttr *A) {
   if (!getDerived().VisitAttr(A))
     return false;
   if (!getDerived().VisitMinSizeAttr(A))
+    return false;
+  return true;
+}
+
+template <typename Derived>
+bool VISITORCLASS<Derived>::TraverseMinVectorWidthAttr(MinVectorWidthAttr *A) {
+  if (!getDerived().VisitAttr(A))
+    return false;
+  if (!getDerived().VisitMinVectorWidthAttr(A))
     return false;
   return true;
 }
@@ -3271,6 +3323,10 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseCFReturnsRetainedAttr(cast<CFReturnsRetainedAttr>(A));
     case attr::CFUnknownTransfer:
       return getDerived().TraverseCFUnknownTransferAttr(cast<CFUnknownTransferAttr>(A));
+    case attr::CPUDispatch:
+      return getDerived().TraverseCPUDispatchAttr(cast<CPUDispatchAttr>(A));
+    case attr::CPUSpecific:
+      return getDerived().TraverseCPUSpecificAttr(cast<CPUSpecificAttr>(A));
     case attr::CUDAConstant:
       return getDerived().TraverseCUDAConstantAttr(cast<CUDAConstantAttr>(A));
     case attr::CUDADevice:
@@ -3297,6 +3353,8 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseCarriesDependencyAttr(cast<CarriesDependencyAttr>(A));
     case attr::Cleanup:
       return getDerived().TraverseCleanupAttr(cast<CleanupAttr>(A));
+    case attr::CodeSeg:
+      return getDerived().TraverseCodeSegAttr(cast<CodeSegAttr>(A));
     case attr::Cold:
       return getDerived().TraverseColdAttr(cast<ColdAttr>(A));
     case attr::Common:
@@ -3403,6 +3461,8 @@ bool VISITORCLASS<Derived>::TraverseAttr(Attr *A) {
       return getDerived().TraverseMicroMipsAttr(cast<MicroMipsAttr>(A));
     case attr::MinSize:
       return getDerived().TraverseMinSizeAttr(cast<MinSizeAttr>(A));
+    case attr::MinVectorWidth:
+      return getDerived().TraverseMinVectorWidthAttr(cast<MinVectorWidthAttr>(A));
     case attr::Mips16:
       return getDerived().TraverseMips16Attr(cast<Mips16Attr>(A));
     case attr::MipsInterrupt:

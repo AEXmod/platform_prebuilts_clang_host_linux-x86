@@ -299,6 +299,24 @@
         return 2;
     break;
   }
+  case AT_CPUDispatch: {
+    if (Name == "cpu_dispatch" && SyntaxUsed == 0 && Scope == "")
+        return 0;
+    if (Name == "cpu_dispatch" && SyntaxUsed == 1 && Scope == "clang")
+        return 1;
+    if (Name == "cpu_dispatch" && SyntaxUsed == 2 && Scope == "clang")
+        return 2;
+    break;
+  }
+  case AT_CPUSpecific: {
+    if (Name == "cpu_specific" && SyntaxUsed == 0 && Scope == "")
+        return 0;
+    if (Name == "cpu_specific" && SyntaxUsed == 1 && Scope == "clang")
+        return 1;
+    if (Name == "cpu_specific" && SyntaxUsed == 2 && Scope == "clang")
+        return 2;
+    break;
+  }
   case AT_CUDAConstant: {
     if (Name == "constant" && SyntaxUsed == 0 && Scope == "")
         return 0;
@@ -379,6 +397,11 @@
         return 0;
     if (Name == "cleanup" && SyntaxUsed == 1 && Scope == "gnu")
         return 1;
+    break;
+  }
+  case AT_CodeSeg: {
+    if (Name == "code_seg" && SyntaxUsed == 3 && Scope == "")
+        return 0;
     break;
   }
   case AT_Cold: {
@@ -754,6 +777,15 @@
     if (Name == "minsize" && SyntaxUsed == 1 && Scope == "clang")
         return 1;
     if (Name == "minsize" && SyntaxUsed == 2 && Scope == "clang")
+        return 2;
+    break;
+  }
+  case AT_MinVectorWidth: {
+    if (Name == "min_vector_width" && SyntaxUsed == 0 && Scope == "")
+        return 0;
+    if (Name == "min_vector_width" && SyntaxUsed == 1 && Scope == "clang")
+        return 1;
+    if (Name == "min_vector_width" && SyntaxUsed == 2 && Scope == "clang")
         return 2;
     break;
   }

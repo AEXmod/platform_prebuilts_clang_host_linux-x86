@@ -216,6 +216,15 @@ public:
   static PathDiagnosticLocation createBegin(const Decl *D,
                                             const SourceManager &SM);
 
+  /// Create a location for the beginning of the declaration.
+  /// The third argument is ignored, useful for generic treatment
+  /// of statements and declarations.
+  static PathDiagnosticLocation
+  createBegin(const Decl *D, const SourceManager &SM,
+              const LocationOrAnalysisDeclContext LAC) {
+    return createBegin(D, SM);
+  }
+
   /// Create a location for the beginning of the statement.
   static PathDiagnosticLocation createBegin(const Stmt *S,
                                             const SourceManager &SM,
@@ -811,7 +820,7 @@ public:
 
   bool isWithinCall() const { return !pathStack.empty(); }
 
-  void setEndOfPath(std::unique_ptr<PathDiagnosticPiece> EndPiece) {
+  void setEndOfPath(std::shared_ptr<PathDiagnosticPiece> EndPiece) {
     assert(!Loc.isValid() && "End location already set!");
     Loc = EndPiece->getLocation();
     assert(Loc.isValid() && "Invalid location for end-of-path piece");
@@ -822,12 +831,6 @@ public:
     if (!ShortDesc.empty())
       ShortDesc += S;
     VerboseDesc += S;
-  }
-
-  void resetPath() {
-    pathStack.clear();
-    pathImpl.clear();
-    Loc = PathDiagnosticLocation();
   }
 
   /// If the last piece of the report point to the header file, resets
@@ -865,7 +868,6 @@ public:
   filesmap_iterator executedLines_end() const { return ExecutedLines->end(); }
 
   PathDiagnosticLocation getLocation() const {
-    assert(Loc.isValid() && "No report location set yet!");
     return Loc;
   }
 

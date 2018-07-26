@@ -79,7 +79,6 @@ CHECKER("alpha.clone.CloneChecker", CloneChecker, CloneChecker.cpp, "Reports sim
 CHECKER("debug.ConfigDumper", ConfigDumper, DebugCheckers.cpp, "Dump config table", -1, false)
 CHECKER("alpha.core.Conversion", ConversionChecker, ConversionChecker.cpp, "Loss of sign/precision in implicit conversions", -1, true)
 CHECKER("valist.CopyToSelf", CopyToSelfChecker, ValistChecker.cpp, "Check for va_lists which are copied onto itself.", -1, false)
-CHECKER("alpha.cplusplus.DanglingInternalBuffer", DanglingInternalBufferChecker, DanglingInternalBufferChecker.cpp, "Check for internal raw pointers of C++ standard library containers used after deallocation", -1, true)
 CHECKER("deadcode.DeadStores", DeadStoresChecker, DeadStoresChecker.cpp, "Check for values stored to variables that are never read afterwards", -1, false)
 CHECKER("alpha.cplusplus.DeleteWithNonVirtualDtor", DeleteWithNonVirtualDtorChecker, DeleteWithNonVirtualDtorChecker.cpp, "Reports destructions of polymorphic objects with a non-virtual destructor in their base class", -1, true)
 CHECKER("core.NullDereference", DereferenceChecker, DereferenceChecker.cpp, "Check for dereferences of null pointers", -1, false)
@@ -98,6 +97,7 @@ CHECKER("optin.performance.GCDAntipattern", GCDAntipattern, GCDAntipatternChecke
 CHECKER("apiModeling.google.GTest", GTestChecker, GTestChecker.cpp, "Model gtest assertion APIs", -1, true)
 CHECKER("alpha.security.taint.TaintPropagation", GenericTaintChecker, GenericTaintChecker.cpp, "Generate taint information used by other checkers", -1, true)
 CHECKER("alpha.core.IdenticalExpr", IdenticalExprChecker, IdenticalExprChecker.cpp, "Warn about unintended use of identical expressions in operators", -1, true)
+CHECKER("alpha.cplusplus.InnerPointer", InnerPointerChecker, InnerPointerChecker.cpp, "Check for inner pointers of C++ containers used after re/deallocation", -1, true)
 CHECKER("alpha.osx.cocoa.InstanceVariableInvalidation", InstanceVariableInvalidation, IvarInvalidationChecker.cpp, "Check that the invalidatable instance variables are invalidated in the methods annotated with objc_instance_variable_invalidator", -1, true)
 CHECKER("alpha.cplusplus.IteratorRange", IteratorRangeChecker, IteratorChecker.cpp, "Check for iterators used outside their valid ranges", -1, true)
 CHECKER("llvm.Conventions", LLVMConventionsChecker, LLVMConventionsChecker.cpp, "Check code for LLVM codebase conventions", -1, false)
@@ -197,17 +197,17 @@ static const short CheckerArray5[] = { 20, -1 };
 static const short CheckerArray6[] = { 24, -1 };
 static const short CheckerArray7[] = { 25, -1 };
 static const short CheckerArray8[] = { 30, -1 };
-static const short CheckerArray9[] = { 40, -1 };
-static const short CheckerArray10[] = { 45, -1 };
-static const short CheckerArray11[] = { 50, -1 };
+static const short CheckerArray9[] = { 39, -1 };
+static const short CheckerArray10[] = { 44, -1 };
+static const short CheckerArray11[] = { 49, -1 };
 static const short CheckerArray12[] = { 95, -1 };
 static const short CheckerArray13[] = { 96, -1 };
 static const short CheckerArray14[] = { 102, -1 };
 static const short CheckerArray15[] = { 103, -1 };
 static const short CheckerArray16[] = { 108, -1 };
 static const short SubPackageArray17[] = { 18, 19, 20, 21, 22, -1 };
-static const short CheckerArray18[] = { 32, -1 };
-static const short CheckerArray19[] = { 34, -1 };
+static const short CheckerArray18[] = { 33, -1 };
+static const short CheckerArray19[] = { 50, -1 };
 static const short CheckerArray20[] = { 52, -1 };
 static const short CheckerArray21[] = { 63, -1 };
 static const short CheckerArray22[] = { 118, -1 };
@@ -215,8 +215,8 @@ static const short SubPackageArray23[] = { 24, -1 };
 static const short CheckerArray24[] = { 121, -1 };
 static const short SubPackageArray25[] = { 26, -1 };
 static const short SubPackageArray26[] = { 31, 29, 30, 27, 28, -1 };
-static const short CheckerArray27[] = { 36, -1 };
-static const short CheckerArray28[] = { 37, -1 };
+static const short CheckerArray27[] = { 35, -1 };
+static const short CheckerArray28[] = { 36, -1 };
 static const short CheckerArray29[] = { 51, -1 };
 static const short CheckerArray30[] = { 62, -1 };
 static const short SubPackageArray31[] = { 32, -1 };
@@ -228,7 +228,7 @@ static const short CheckerArray36[] = { 59, -1 };
 static const short CheckerArray37[] = { 64, -1 };
 static const short CheckerArray38[] = { 99, -1 };
 static const short SubPackageArray39[] = { 40, -1 };
-static const short CheckerArray40[] = { 49, -1 };
+static const short CheckerArray40[] = { 48, -1 };
 static const short SubPackageArray41[] = { 47, 43, 44, 46, 45, 42, -1 };
 static const short CheckerArray42[] = { 5, -1 };
 static const short CheckerArray43[] = { 26, -1 };
@@ -242,14 +242,14 @@ static const short CheckerArray50[] = { 16, -1 };
 static const short SubPackageArray51[] = { 53, 52, -1 };
 static const short CheckerArray52[] = { 110, -1 };
 static const short SubPackageArray53[] = { 54, -1 };
-static const short CheckerArray54[] = { 48, -1 };
+static const short CheckerArray54[] = { 47, -1 };
 static const short SubPackageArray55[] = { 65, 68, 61, 56, 59, 64, 57, 63, 62, 58, 60, -1 };
 static const short CheckerArray56[] = { 19, -1 };
-static const short CheckerArray57[] = { 38, -1 };
-static const short CheckerArray58[] = { 41, -1 };
+static const short CheckerArray57[] = { 37, -1 };
+static const short CheckerArray58[] = { 40, -1 };
 static const short CheckerArray59[] = { 72, -1 };
 static const short CheckerArray60[] = { 73, -1 };
-static const short CheckerArray61[] = { 35, -1 };
+static const short CheckerArray61[] = { 34, -1 };
 static const short CheckerArray62[] = { 104, -1 };
 static const short CheckerArray63[] = { 114, -1 };
 static const short CheckerArray64[] = { 123, -1 };
@@ -267,22 +267,22 @@ static const short CheckerArray75[] = { 67, -1 };
 static const short CheckerArray76[] = { 68, -1 };
 static const short CheckerArray77[] = { 18, -1 };
 static const short SubPackageArray78[] = { 79, -1 };
-static const short CheckerArray79[] = { 33, -1 };
+static const short CheckerArray79[] = { 32, -1 };
 static const short SubPackageArray80[] = { 81, 86, 87, 92, 83, 93, 84, 82, 88, 85, 90, 91, 89, 94, -1 };
 static const short CheckerArray81[] = { 0, -1 };
 static const short CheckerArray82[] = { 29, -1 };
 static const short CheckerArray83[] = { 9, -1 };
 static const short CheckerArray84[] = { 22, -1 };
 static const short CheckerArray85[] = { 21, -1 };
-static const short CheckerArray86[] = { 39, -1 };
+static const short CheckerArray86[] = { 38, -1 };
 static const short CheckerArray87[] = { 54, -1 };
 static const short CheckerArray88[] = { 109, -1 };
-static const short CheckerArray89[] = { 44, -1 };
+static const short CheckerArray89[] = { 43, -1 };
 static const short CheckerArray90[] = { 1, -1 };
 static const short CheckerArray91[] = { 107, -1 };
 static const short CheckerArray92[] = { 10, -1 };
 static const short CheckerArray93[] = { 23, -1 };
-static const short CheckerArray94[] = { 43, -1 };
+static const short CheckerArray94[] = { 42, -1 };
 static const short SubPackageArray95[] = { 96, -1 };
 static const short CheckerArray96[] = { 53, -1 };
 static const short SubPackageArray97[] = { 98, 99, 100, 101, 102, -1 };
@@ -299,10 +299,10 @@ static const short CheckerArray107[] = { 55, -1 };
 static const short SubPackageArray108[] = { 109, -1 };
 static const short SubPackageArray109[] = { 110, -1 };
 static const short SubPackageArray110[] = { 112, 111, -1 };
-static const short CheckerArray111[] = { 42, -1 };
+static const short CheckerArray111[] = { 41, -1 };
 static const short CheckerArray112[] = { 71, -1 };
 static const short SubPackageArray113[] = { 115, 114, -1 };
-static const short CheckerArray114[] = { 47, -1 };
+static const short CheckerArray114[] = { 46, -1 };
 static const short CheckerArray115[] = { 93, -1 };
 static const short SubPackageArray116[] = { 117, -1 };
 static const short CheckerArray117[] = { 120, -1 };
@@ -337,7 +337,7 @@ static const short SubPackageArray145[] = { 147, 146, -1 };
 static const short CheckerArray146[] = { 82, -1 };
 static const short CheckerArray147[] = { 81, -1 };
 static const short SubPackageArray148[] = { 150, 149, -1 };
-static const short CheckerArray149[] = { 46, -1 };
+static const short CheckerArray149[] = { 45, -1 };
 static const short SubPackageArray150[] = { 152, 153, 154, 156, 155, 158, 157, 159, 160, 161, 151, -1 };
 static const short CheckerArray151[] = { 111, -1 };
 static const short CheckerArray152[] = { 127, -1 };
@@ -386,8 +386,8 @@ static const short CheckerArray175[] = { 122, -1 };
   { "alpha.core.StackAddressAsyncEscape",                             CheckerArray15, 0, false },
   { "alpha.core.TestAfterDivZero",                                    CheckerArray16, 0, false },
   { "alpha.cplusplus",                                                0, SubPackageArray17, true },
-  { "alpha.cplusplus.DanglingInternalBuffer",                         CheckerArray18, 0, false },
-  { "alpha.cplusplus.DeleteWithNonVirtualDtor",                       CheckerArray19, 0, false },
+  { "alpha.cplusplus.DeleteWithNonVirtualDtor",                       CheckerArray18, 0, false },
+  { "alpha.cplusplus.InnerPointer",                                   CheckerArray19, 0, false },
   { "alpha.cplusplus.IteratorRange",                                  CheckerArray20, 0, false },
   { "alpha.cplusplus.MisusedMovedObject",                             CheckerArray21, 0, false },
   { "alpha.cplusplus.UninitializedObject",                            CheckerArray22, 0, false },

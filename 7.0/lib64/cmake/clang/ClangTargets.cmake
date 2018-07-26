@@ -209,7 +209,7 @@ set_target_properties(clangTooling PROPERTIES
 add_library(clangIndex STATIC IMPORTED)
 
 set_target_properties(clangIndex PROPERTIES
-  INTERFACE_LINK_LIBRARIES "clangAST;clangBasic;clangFormat;clangFrontend;clangRewrite;clangSerialization;clangToolingCore;LLVMCore;LLVMSupport"
+  INTERFACE_LINK_LIBRARIES "clangAST;clangBasic;clangFormat;clangFrontend;clangLex;clangRewrite;clangSerialization;clangToolingCore;LLVMCore;LLVMSupport"
 )
 
 # Create imported target clangStaticAnalyzerCore

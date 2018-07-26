@@ -238,6 +238,14 @@ Attr *instantiateTemplateAttribute(const Attr *At, ASTContext &C, Sema &S,
       const auto *A = cast<CFUnknownTransferAttr>(At);
       return A->clone(C);
     }
+    case attr::CPUDispatch: {
+      const auto *A = cast<CPUDispatchAttr>(At);
+      return A->clone(C);
+    }
+    case attr::CPUSpecific: {
+      const auto *A = cast<CPUSpecificAttr>(At);
+      return A->clone(C);
+    }
     case attr::CUDAConstant: {
       const auto *A = cast<CUDAConstantAttr>(At);
       return A->clone(C);
@@ -288,6 +296,10 @@ Attr *instantiateTemplateAttribute(const Attr *At, ASTContext &C, Sema &S,
     }
     case attr::Cleanup: {
       const auto *A = cast<CleanupAttr>(At);
+      return A->clone(C);
+    }
+    case attr::CodeSeg: {
+      const auto *A = cast<CodeSegAttr>(At);
       return A->clone(C);
     }
     case attr::Cold: {
@@ -552,6 +564,10 @@ Attr *instantiateTemplateAttribute(const Attr *At, ASTContext &C, Sema &S,
     }
     case attr::MinSize: {
       const auto *A = cast<MinSizeAttr>(At);
+      return A->clone(C);
+    }
+    case attr::MinVectorWidth: {
+      const auto *A = cast<MinVectorWidthAttr>(At);
       return A->clone(C);
     }
     case attr::Mips16: {
@@ -1240,6 +1256,12 @@ Attr *instantiateTemplateAttributeForDecl(const Attr *At,
     case attr::CFUnknownTransfer: {
       return nullptr;
     }
+    case attr::CPUDispatch: {
+      return nullptr;
+    }
+    case attr::CPUSpecific: {
+      return nullptr;
+    }
     case attr::CUDAConstant: {
       return nullptr;
     }
@@ -1277,6 +1299,9 @@ Attr *instantiateTemplateAttributeForDecl(const Attr *At,
       return nullptr;
     }
     case attr::Cleanup: {
+      return nullptr;
+    }
+    case attr::CodeSeg: {
       return nullptr;
     }
     case attr::Cold: {
@@ -1437,6 +1462,9 @@ Attr *instantiateTemplateAttributeForDecl(const Attr *At,
       return nullptr;
     }
     case attr::MinSize: {
+      return nullptr;
+    }
+    case attr::MinVectorWidth: {
       return nullptr;
     }
     case attr::Mips16: {

@@ -1714,6 +1714,102 @@ public:
   static bool classof(const Attr *A) { return A->getKind() == attr::CFUnknownTransfer; }
 };
 
+class CPUDispatchAttr : public InheritableAttr {
+  unsigned cpus_Size;
+  IdentifierInfo * *cpus_;
+
+public:
+  static CPUDispatchAttr *CreateImplicit(ASTContext &Ctx, IdentifierInfo * *Cpus, unsigned CpusSize, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) CPUDispatchAttr(Loc, Ctx, Cpus, CpusSize, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  CPUDispatchAttr(SourceRange R, ASTContext &Ctx
+              , IdentifierInfo * *Cpus, unsigned CpusSize
+              , unsigned SI
+             )
+    : InheritableAttr(attr::CPUDispatch, R, SI, false, false)
+              , cpus_Size(CpusSize), cpus_(new (Ctx, 16) IdentifierInfo *[cpus_Size])
+  {
+    std::copy(Cpus, Cpus + cpus_Size, cpus_);
+  }
+
+  CPUDispatchAttr(SourceRange R, ASTContext &Ctx
+              , unsigned SI
+             )
+    : InheritableAttr(attr::CPUDispatch, R, SI, false, false)
+              , cpus_Size(0), cpus_(nullptr)
+  {
+  }
+
+  CPUDispatchAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+  typedef IdentifierInfo ** cpus_iterator;
+  cpus_iterator cpus_begin() const { return cpus_; }
+  cpus_iterator cpus_end() const { return cpus_ + cpus_Size; }
+  unsigned cpus_size() const { return cpus_Size; }
+  llvm::iterator_range<cpus_iterator> cpus() const { return llvm::make_range(cpus_begin(), cpus_end()); }
+
+
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::CPUDispatch; }
+};
+
+class CPUSpecificAttr : public InheritableAttr {
+  unsigned cpus_Size;
+  IdentifierInfo * *cpus_;
+
+public:
+  static CPUSpecificAttr *CreateImplicit(ASTContext &Ctx, IdentifierInfo * *Cpus, unsigned CpusSize, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) CPUSpecificAttr(Loc, Ctx, Cpus, CpusSize, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  CPUSpecificAttr(SourceRange R, ASTContext &Ctx
+              , IdentifierInfo * *Cpus, unsigned CpusSize
+              , unsigned SI
+             )
+    : InheritableAttr(attr::CPUSpecific, R, SI, false, false)
+              , cpus_Size(CpusSize), cpus_(new (Ctx, 16) IdentifierInfo *[cpus_Size])
+  {
+    std::copy(Cpus, Cpus + cpus_Size, cpus_);
+  }
+
+  CPUSpecificAttr(SourceRange R, ASTContext &Ctx
+              , unsigned SI
+             )
+    : InheritableAttr(attr::CPUSpecific, R, SI, false, false)
+              , cpus_Size(0), cpus_(nullptr)
+  {
+  }
+
+  CPUSpecificAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+  typedef IdentifierInfo ** cpus_iterator;
+  cpus_iterator cpus_begin() const { return cpus_; }
+  cpus_iterator cpus_end() const { return cpus_ + cpus_Size; }
+  unsigned cpus_size() const { return cpus_Size; }
+  llvm::iterator_range<cpus_iterator> cpus() const { return llvm::make_range(cpus_begin(), cpus_end()); }
+
+
+
+    unsigned ActiveArgIndex = 0;
+
+    IdentifierInfo *getCurCPUName() const {
+      return *(cpus_begin() + ActiveArgIndex);
+    }
+  
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::CPUSpecific; }
+};
+
 class CUDAConstantAttr : public InheritableAttr {
 public:
   static CUDAConstantAttr *CreateImplicit(ASTContext &Ctx, SourceRange Loc = SourceRange()) {
@@ -2148,6 +2244,50 @@ public:
 
 
   static bool classof(const Attr *A) { return A->getKind() == attr::Cleanup; }
+};
+
+class CodeSegAttr : public InheritableAttr {
+unsigned nameLength;
+char *name;
+
+public:
+  static CodeSegAttr *CreateImplicit(ASTContext &Ctx, llvm::StringRef Name, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) CodeSegAttr(Loc, Ctx, Name, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  CodeSegAttr(SourceRange R, ASTContext &Ctx
+              , llvm::StringRef Name
+              , unsigned SI
+             )
+    : InheritableAttr(attr::CodeSeg, R, SI, false, false)
+              , nameLength(Name.size()),name(new (Ctx, 1) char[nameLength])
+  {
+      if (!Name.empty())
+        std::memcpy(name, Name.data(), nameLength);
+  }
+
+  CodeSegAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+  llvm::StringRef getName() const {
+    return llvm::StringRef(name, nameLength);
+  }
+  unsigned getNameLength() const {
+    return nameLength;
+  }
+  void setName(ASTContext &C, llvm::StringRef S) {
+    nameLength = S.size();
+    this->name = new (C, 1) char [nameLength];
+    if (!S.empty())
+      std::memcpy(this->name, S.data(), nameLength);
+  }
+
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::CodeSeg; }
 };
 
 class ColdAttr : public InheritableAttr {
@@ -4226,6 +4366,38 @@ public:
 
 
   static bool classof(const Attr *A) { return A->getKind() == attr::MinSize; }
+};
+
+class MinVectorWidthAttr : public InheritableAttr {
+unsigned vectorWidth;
+
+public:
+  static MinVectorWidthAttr *CreateImplicit(ASTContext &Ctx, unsigned VectorWidth, SourceRange Loc = SourceRange()) {
+    auto *A = new (Ctx) MinVectorWidthAttr(Loc, Ctx, VectorWidth, 0);
+    A->setImplicit(true);
+    return A;
+  }
+
+  MinVectorWidthAttr(SourceRange R, ASTContext &Ctx
+              , unsigned VectorWidth
+              , unsigned SI
+             )
+    : InheritableAttr(attr::MinVectorWidth, R, SI, false, false)
+              , vectorWidth(VectorWidth)
+  {
+  }
+
+  MinVectorWidthAttr *clone(ASTContext &C) const;
+  void printPretty(raw_ostream &OS,
+                   const PrintingPolicy &Policy) const;
+  const char *getSpelling() const;
+  unsigned getVectorWidth() const {
+    return vectorWidth;
+  }
+
+
+
+  static bool classof(const Attr *A) { return A->getKind() == attr::MinVectorWidth; }
 };
 
 class Mips16Attr : public InheritableAttr {
@@ -7801,7 +7973,7 @@ public:
         // overall feature validity for the function with the rest of the
         // attributes on the function.
         if (Feature.startswith("fpmath=") || Feature.startswith("tune="))
-	  continue;
+          continue;
 
         // While we're here iterating check for a different target cpu.
         if (Feature.startswith("arch=")) {
